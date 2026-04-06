@@ -1,0 +1,33 @@
+{
+  "name": "kanban-metrics-frontend",
+  "version": "0.1.0",
+  "private": true,
+  "scripts": {
+    "dev": "next dev --port 5173",
+    "build": "next build",
+    "start": "next start",
+    "lint": "eslint",
+    "generate": "npm run generate:types && npm run generate:aliases && npm run generate:zod",
+    "generate:types": "dotenv -e .env -- sh -c 'openapi-typescript \"$API_SCHEMA_URL\" -o src/generated/api-types.ts'",
+    "generate:aliases": "dotenv -e .env -- tsx scripts/generate-api-aliases.ts",
+    "generate:zod": "dotenv -e .env -- orval --config orval.config.ts"
+  },
+  "dependencies": {
+    "next": "16.2.2",
+    "react": "19.2.4",
+    "react-dom": "19.2.4",
+    "zod": "^4.3.6"
+  },
+  "devDependencies": {
+    "@types/node": "^20",
+    "@types/react": "^19",
+    "@types/react-dom": "^19",
+    "dotenv-cli": "^11.0.0",
+    "eslint": "^9",
+    "eslint-config-next": "16.2.2",
+    "openapi-typescript": "^7.13.0",
+    "orval": "^8.6.2",
+    "tsx": "^4.21.0",
+    "typescript": "^5"
+  }
+}

@@ -8,6 +8,7 @@ import (
 
 type loadConfigReturnType struct {
 	AppPort string
+	AppURL  string
 }
 
 const (
@@ -20,8 +21,11 @@ func Load() loadConfigReturnType {
 		port = defaultServerPort
 	}
 
+	appURL := os.Getenv("APP_URL")
+
 	return loadConfigReturnType{
 		AppPort: port,
+		AppURL:  appURL,
 	}
 }
 

@@ -2,9 +2,11 @@ package main
 
 import (
 	"KanbanMetrics/db"
+	"KanbanMetrics/internal/apiDocs"
 	"KanbanMetrics/internal/appConfig"
 	"KanbanMetrics/internal/router"
 	"KanbanMetrics/internal/validation"
+	"log"
 
 	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v3"
@@ -29,7 +31,14 @@ func main() {
 	db.ConnectDb()
 	app := fiber.New()
 
-	router.InitializeRouter(app, validatorService)
+	apiDocsService, err := apiDocs.NewService(config.AppURL)
+	if err != nil {
+		log.Fatal(err)
+	}
+
+	if err := router.InitializeRouter(app, validatorService, apiDocsService); err != nil {
+		log.Fatal(err)
+	}
 
 	app.Listen(config.AppPort)
 }
