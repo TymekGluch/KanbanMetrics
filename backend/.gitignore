@@ -1,5 +1,11 @@
 .env
 
+# Generated files
+docs/
+postman/
+
 tmp
 ./tmp/*
 ./tmp/**
+
+kanbanMetrics.exe

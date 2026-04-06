@@ -16,6 +16,16 @@ func newHandlers(validatorService *validation.Service) *handlers {
 	return &handlers{validatorService: validatorService}
 }
 
+// deleteUserHandler godoc
+// @Summary Delete current user
+// @Description Deletes the currently authenticated user and removes auth cookie.
+// @Tags users
+// @Produce plain
+// @Security CookieAuth
+// @Success 200 {string} string "OK"
+// @Failure 401 {string} string "Unauthorized"
+// @Failure 500 {string} string "Internal server error"
+// @Router /users/delete [delete]
 func (handler *handlers) deleteUserHandler(ctx fiber.Ctx) error {
 	userID, ok := ctx.Locals(auth.ContextUserIDKey).(uint)
 	if !ok || userID == 0 {
@@ -31,6 +41,19 @@ func (handler *handlers) deleteUserHandler(ctx fiber.Ctx) error {
 	return ctx.SendStatus(fiber.StatusOK)
 }
 
+// updateUserHandler godoc
+// @Summary Update current user
+// @Description Updates selected fields for the currently authenticated user.
+// @Tags users
+// @Accept json
+// @Produce plain
+// @Security CookieAuth
+// @Param input body users.UpdateUserHandlerInput true "Update payload"
+// @Success 200 {string} string "OK"
+// @Failure 400 {string} string "Invalid request"
+// @Failure 401 {string} string "Unauthorized"
+// @Failure 500 {string} string "Internal server error"
+// @Router /users/update [put]
 func (handler *handlers) updateUserHandler(ctx fiber.Ctx) error {
 	var input users.UpdateUserHandlerInput
 
@@ -65,6 +88,16 @@ func (handler *handlers) updateUserHandler(ctx fiber.Ctx) error {
 	return ctx.SendStatus(fiber.StatusOK)
 }
 
+// meHandler godoc
+// @Summary Get current user
+// @Description Returns profile of the currently authenticated user.
+// @Tags users
+// @Produce json
+// @Security CookieAuth
+// @Success 200 {object} users.User
+// @Failure 401 {string} string "Unauthorized"
+// @Failure 500 {string} string "Internal server error"
+// @Router /users/me [get]
 func (handler *handlers) meHandler(ctx fiber.Ctx) error {
 	userID, ok := ctx.Locals(auth.ContextUserIDKey).(uint)
 	if !ok || userID == 0 {

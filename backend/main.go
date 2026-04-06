@@ -10,6 +10,15 @@ import (
 	"github.com/gofiber/fiber/v3"
 )
 
+// @title KanbanMetrics API
+// @version 1.0
+// @description API for authentication and user management.
+// @BasePath /api
+// @schemes http https
+// @securityDefinitions.apikey CookieAuth
+// @in cookie
+// @name auth_token
+
 func main() {
 	config := appConfig.Load()
 

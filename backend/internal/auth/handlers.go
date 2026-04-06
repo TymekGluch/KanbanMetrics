@@ -14,6 +14,17 @@ func newHandlers(validatorService *validation.Service) *handlers {
 	return &handlers{validatorService: validatorService}
 }
 
+// registerHandler godoc
+// @Summary Register user
+// @Description Creates a user account and sets auth cookie.
+// @Tags auth
+// @Accept json
+// @Produce plain
+// @Param input body RegisterUserInput true "Register payload"
+// @Success 201 {string} string "Created"
+// @Failure 400 {string} string "Invalid request"
+// @Failure 500 {string} string "Internal server error"
+// @Router /auth/register [post]
 func (handler *handlers) registerHandler(ctx fiber.Ctx) error {
 	var input RegisterUserInput
 
@@ -35,6 +46,17 @@ func (handler *handlers) registerHandler(ctx fiber.Ctx) error {
 	return ctx.SendStatus(fiber.StatusCreated)
 }
 
+// loginHandler godoc
+// @Summary Login user
+// @Description Authenticates user and sets auth cookie.
+// @Tags auth
+// @Accept json
+// @Produce plain
+// @Param input body LoginUserInput true "Login payload"
+// @Success 200 {string} string "OK"
+// @Failure 400 {string} string "Invalid request"
+// @Failure 401 {string} string "Unauthorized"
+// @Router /auth/login [post]
 func (handler *handlers) loginHandler(ctx fiber.Ctx) error {
 	var input LoginUserInput
 
@@ -56,6 +78,13 @@ func (handler *handlers) loginHandler(ctx fiber.Ctx) error {
 	return ctx.SendStatus(fiber.StatusOK)
 }
 
+// logoutHandler godoc
+// @Summary Logout user
+// @Description Removes auth cookie.
+// @Tags auth
+// @Produce plain
+// @Success 200 {string} string "OK"
+// @Router /auth/logout [post]
 func (handler *handlers) logoutHandler(ctx fiber.Ctx) error {
 	RemoveAuthCookie(ctx)
 
