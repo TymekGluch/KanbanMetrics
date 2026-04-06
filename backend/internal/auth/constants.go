@@ -1,0 +1,11 @@
+package auth
+
+const (
+	ErrorUnauthorized    = "Unauthorized"
+	ErrorMissingToken    = "Missing or invalid token"
+	ErrorInvalidBody     = "Invalid request body"
+	ErrorInternalDBError = "Something went wrong, please try again later"
+
+	CookieName       = "auth_token"
+	ContextUserIDKey = "user_id"
+)

@@ -1,0 +1,24 @@
+package router
+
+import (
+	"KanbanMetrics/internal/appConfig"
+	"KanbanMetrics/internal/auth"
+	"KanbanMetrics/internal/validation"
+	usersRoutes "KanbanMetrics/internal/users/http"
+
+	"github.com/gofiber/fiber/v3"
+)
+
+func InitializeRouter(router *fiber.App, validatorService *validation.Service) error {
+	api := router.Group("/api")
+	api.Use(appConfig.SetupCorsAndHeaders())
+
+	api.Get("/hello", func(ctx fiber.Ctx) error {
+		return ctx.SendString("Hello, World!")
+	})
+
+	auth.RegisterRoutes(api, validatorService)
+	usersRoutes.RegisterRoutes(api, validatorService)
+
+	return nil
+}
