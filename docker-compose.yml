@@ -1,0 +1,31 @@
+services:
+  db:
+    image: postgres:16
+    restart: always
+    ports:
+      - 5433:5432
+    environment:
+      POSTGRES_PASSWORD: password
+      POSTGRES_USER: user
+      POSTGRES_DB: postgres
+    volumes:
+      - dbData:/var/lib/postgresql/data
+    networks:
+      - kanban-net
+
+  adminer:
+    image: adminer
+    restart: always
+    ports:
+      - 8081:8080
+    depends_on:
+      - db
+    networks:
+      - kanban-net
+
+volumes:
+  dbData:
+
+networks:
+  kanban-net:
+    driver: bridge
