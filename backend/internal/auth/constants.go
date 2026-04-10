@@ -6,6 +6,7 @@ const (
 	ErrorInvalidBody     = "Invalid request body"
 	ErrorInternalDBError = "Something went wrong, please try again later"
 
-	CookieName       = "auth_token"
-	ContextUserIDKey = "user_id"
+	CookieName         = "auth_token"
+	ContextUserIDKey   = "user_id"
+	ContextUserRoleKey = "user_role"
 )

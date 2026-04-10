@@ -1,0 +1,3 @@
+SELECT role 
+FROM users 
+WHERE id = $1

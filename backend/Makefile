@@ -23,7 +23,7 @@ zod: openapi
 	npx -y openapi-zod-client $(OPENAPI_FILE) -o $(OPENAPI_ZOD_FILE) --export-schemas --export-types --with-docs
 
 .PHONY: api-artifacts
-api-artifacts: openapi types-check zod postman-collection
+api-artifacts: openapi types-check zod postman-sync
 
 docs-clean:
 	rm -rf docs/
@@ -44,6 +44,13 @@ postman-collection: openapi
 	mkdir -p postman
 	npx -y openapi-to-postmanv2 -s $(OPENAPI_FILE) -o $(POSTMAN_COLLECTION_FILE) -p
 
+.PHONY: postman-sync
+postman-sync: postman-collection
+	POSTMAN_API_KEY=$(POSTMAN_API_KEY) \
+	POSTMAN_COLLECTION_UID=$(POSTMAN_COLLECTION_UID) \
+	POSTMAN_COLLECTION_FILE=$(POSTMAN_COLLECTION_FILE) \
+	bash scripts/postman-sync.sh
+
 .PHONY: postman-clean
 postman-clean:
 	rm -f $(POSTMAN_COLLECTION_FILE)
@@ -63,5 +70,6 @@ help:
 	@echo "  openapi-clean   - Remove generated OpenAPI file"
 	@echo "  zod-clean       - Remove generated Zod file"
 	@echo "  postman-collection - Generate Postman collection from OpenAPI"
+	@echo "  postman-sync       - Generate and upload collection to Postman API"
 	@echo "  postman-clean   - Remove generated Postman collection"
 	@echo "  help            - Show this help message"

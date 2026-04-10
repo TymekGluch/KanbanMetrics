@@ -1,6 +1,10 @@
 package auth
 
-import "github.com/gofiber/fiber/v3"
+import (
+	"KanbanMetrics/internal/users"
+
+	"github.com/gofiber/fiber/v3"
+)
 
 func VerifyJwtTokenMiddleware() fiber.Handler {
 	return func(ctx fiber.Ctx) error {
@@ -19,7 +23,13 @@ func VerifyJwtTokenMiddleware() fiber.Handler {
 			return fiber.NewError(fiber.StatusUnauthorized, ErrorUnauthorized)
 		}
 
+		userRole, err := users.GetUserRoleById(ctx.Context(), userID)
+		if err != nil {
+			return fiber.NewError(fiber.StatusUnauthorized, ErrorUnauthorized)
+		}
+
 		ctx.Locals(ContextUserIDKey, userID)
+		ctx.Locals(ContextUserRoleKey, userRole)
 
 		return ctx.Next()
 	}

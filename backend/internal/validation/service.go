@@ -6,10 +6,14 @@ type Service struct {
 	validator *validator.Validate
 }
 
-func NewService(validatorInstance *validator.Validate) *Service {
+func newService(validatorInstance *validator.Validate) *Service {
 	return &Service{validator: validatorInstance}
 }
 
-func (s *Service) Struct(input any) error {
-	return s.validator.Struct(input)
+func (service *Service) Struct(input any) error {
+	if err := service.validator.Struct(input); err != nil {
+		return translateError(err)
+	}
+
+	return nil
 }
