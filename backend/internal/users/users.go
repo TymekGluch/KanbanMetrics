@@ -2,6 +2,8 @@ package users
 
 import (
 	"context"
+	"fmt"
+	"strconv"
 	"time"
 )
 
@@ -44,15 +46,16 @@ func UpdateUser(ctx context.Context, input UpdateUserInput, shouldMarkAsUpdated 
 	}
 
 	dbInput := dbUpdateUserInput{
-		ID:             input.ID,
-		Name:           input.Name,
-		Email:          input.Email,
-		hashedPassword: hashedPassword,
-		Role:           input.Role,
-		IsActive:       input.IsActive,
-		IsVerified:     input.IsVerified,
-		LastLoginAt:    input.LastLoginAt,
-		UpdatedAt:      updateTime,
+		ID:                             input.ID,
+		Name:                           input.Name,
+		Email:                          input.Email,
+		hashedPassword:                 hashedPassword,
+		Role:                           input.Role,
+		IsActive:                       input.IsActive,
+		IsVerified:                     input.IsVerified,
+		IsAccountExpirationDetailsSend: input.IsAccountExpirationDetailsSend,
+		LastLoginAt:                    input.LastLoginAt,
+		UpdatedAt:                      updateTime,
 	}
 
 	return dbUpdateUser(ctx, dbInput)
@@ -64,4 +67,27 @@ func GetUserById(ctx context.Context, userId int) (*User, error) {
 
 func GetUserByEmail(ctx context.Context, email string) (*User, error) {
 	return dbSelectUserByEmail(ctx, email)
+}
+
+func getUserLifeCycleConfig(input getUserLifeCycleConfigInput) userLifeCycleConfig {
+	intervalForSelectAlmostExpiredUsers := input.deletionAfterDays - input.notificationBeforeDeletionDays
+	intervalExcludeLastHourBeforeDeletion := fmt.Sprintf("%d days 23 hours", input.deletionAfterDays-1)
+
+	return userLifeCycleConfig{
+		deletionAfterDaysConfig:       fmt.Sprintf("%d days", input.deletionAfterDays),
+		almostExpiredUsersStartConfig: fmt.Sprintf("%d days", intervalForSelectAlmostExpiredUsers),
+		almostExpiredUsersEndConfig:   intervalExcludeLastHourBeforeDeletion,
+	}
+}
+
+func deleteExpiredUnverifiedUsersWhichAreNotAdmin(ctx context.Context, expirationInterval string) ([]droppedUser, error) {
+	return dbDropExpiredUnverifiedUsersWhichAreNotAdmin(ctx, expirationInterval)
+}
+
+func getAlmostExpiredUsers(ctx context.Context, expirationInterval string, actionInterval string) ([]almostExpiredUser, error) {
+	return dbSelectAlmostExpiredUsers(ctx, expirationInterval, actionInterval)
+}
+
+func GetUserRoleById(ctx context.Context, userId uint) (string, error) {
+	return dbSelectUserRoleById(ctx, strconv.FormatUint(uint64(userId), 10))
 }

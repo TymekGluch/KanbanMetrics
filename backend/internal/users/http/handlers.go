@@ -1,6 +1,7 @@
 package users
 
 import (
+	"KanbanMetrics/internal/appErrors"
 	"KanbanMetrics/internal/auth"
 	"KanbanMetrics/internal/users"
 	"KanbanMetrics/internal/validation"
@@ -19,13 +20,13 @@ func newHandlers(validatorService *validation.Service) *handlers {
 // deleteUserHandler godoc
 // @Summary Delete current user
 // @Description Deletes the currently authenticated user and removes auth cookie.
-// @Tags users
+// @Tags user
 // @Produce plain
 // @Security CookieAuth
 // @Success 200 {string} string "OK"
 // @Failure 401 {string} string "Unauthorized"
 // @Failure 500 {string} string "Internal server error"
-// @Router /users/delete [delete]
+// @Router /api/user/delete [delete]
 func (handler *handlers) deleteUserHandler(ctx fiber.Ctx) error {
 	userID, ok := ctx.Locals(auth.ContextUserIDKey).(uint)
 	if !ok || userID == 0 {
@@ -33,7 +34,7 @@ func (handler *handlers) deleteUserHandler(ctx fiber.Ctx) error {
 	}
 
 	if err := users.DeleteUser(ctx, int(userID)); err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, auth.ErrorInternalDBError)
+		return appErrors.TranslatePostgresDbError(err).FiberNewError()
 	}
 
 	auth.RemoveAuthCookie(ctx)
@@ -44,7 +45,7 @@ func (handler *handlers) deleteUserHandler(ctx fiber.Ctx) error {
 // updateUserHandler godoc
 // @Summary Update current user
 // @Description Updates selected fields for the currently authenticated user.
-// @Tags users
+// @Tags user
 // @Accept json
 // @Produce plain
 // @Security CookieAuth
@@ -53,7 +54,7 @@ func (handler *handlers) deleteUserHandler(ctx fiber.Ctx) error {
 // @Failure 400 {string} string "Invalid request"
 // @Failure 401 {string} string "Unauthorized"
 // @Failure 500 {string} string "Internal server error"
-// @Router /users/update [put]
+// @Router /api/user/update [put]
 func (handler *handlers) updateUserHandler(ctx fiber.Ctx) error {
 	var input users.UpdateUserHandlerInput
 
@@ -67,7 +68,7 @@ func (handler *handlers) updateUserHandler(ctx fiber.Ctx) error {
 	}
 
 	if err := handler.validatorService.Struct(input); err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+		return appErrors.Send(ctx, err)
 	}
 
 	payload := users.UpdateUserInput{
@@ -82,7 +83,7 @@ func (handler *handlers) updateUserHandler(ctx fiber.Ctx) error {
 	}
 
 	if err := users.UpdateUser(ctx, payload, true); err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, auth.ErrorInternalDBError)
+		return appErrors.TranslatePostgresDbError(err).FiberNewError()
 	}
 
 	return ctx.SendStatus(fiber.StatusOK)
@@ -91,13 +92,13 @@ func (handler *handlers) updateUserHandler(ctx fiber.Ctx) error {
 // meHandler godoc
 // @Summary Get current user
 // @Description Returns profile of the currently authenticated user.
-// @Tags users
+// @Tags user
 // @Produce json
 // @Security CookieAuth
 // @Success 200 {object} users.User
 // @Failure 401 {string} string "Unauthorized"
 // @Failure 500 {string} string "Internal server error"
-// @Router /users/me [get]
+// @Router /api/user/me [get]
 func (handler *handlers) meHandler(ctx fiber.Ctx) error {
 	userID, ok := ctx.Locals(auth.ContextUserIDKey).(uint)
 	if !ok || userID == 0 {
@@ -105,7 +106,7 @@ func (handler *handlers) meHandler(ctx fiber.Ctx) error {
 	}
 
 	if user, err := users.GetUserById(ctx, int(userID)); err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, auth.ErrorInternalDBError)
+		return appErrors.TranslatePostgresDbError(err).FiberNewError()
 	} else {
 		return ctx.Status(fiber.StatusOK).JSON(user)
 	}

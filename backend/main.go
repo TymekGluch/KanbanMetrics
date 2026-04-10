@@ -5,10 +5,12 @@ import (
 	"KanbanMetrics/internal/apiDocs"
 	"KanbanMetrics/internal/appConfig"
 	"KanbanMetrics/internal/router"
+	"KanbanMetrics/internal/scheduler"
+	"KanbanMetrics/internal/users"
 	"KanbanMetrics/internal/validation"
+	"context"
 	"log"
 
-	"github.com/go-playground/validator/v10"
 	"github.com/gofiber/fiber/v3"
 )
 
@@ -24,12 +26,17 @@ import (
 func main() {
 	config := appConfig.Load()
 
-	validatorInstance := validator.New()
-	validation.RegisterCustomValidations(validatorInstance)
-	validatorService := validation.NewService(validatorInstance)
+	validatorService := validation.InitNewService()
 
 	db.ConnectDb()
 	app := fiber.New()
+
+	ctx := context.Background()
+
+	worker := scheduler.InitCallbackWorker()
+	defer worker.Stop()
+
+	users.ExpiredUnverifiedUsersCleanupService(ctx, worker)
 
 	apiDocsService, err := apiDocs.NewService(config.AppURL)
 	if err != nil {

@@ -20,7 +20,7 @@ func defaultHTTPConfig() fiber.Handler {
 
 	origins := os.Getenv("ALLOWED_ORIGINS")
 	if origins == "" || origins == "[]" {
-		allowedOrigins = []string{"*"}
+		allowedOrigins = []string{""}
 	} else {
 		allowedOrigins = parseAllowedOrigins(origins)
 	}

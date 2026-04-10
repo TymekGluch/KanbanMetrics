@@ -1,6 +1,7 @@
 package auth
 
 import (
+	"KanbanMetrics/internal/appErrors"
 	"KanbanMetrics/internal/validation"
 
 	"github.com/gofiber/fiber/v3"
@@ -24,7 +25,7 @@ func newHandlers(validatorService *validation.Service) *handlers {
 // @Success 201 {string} string "Created"
 // @Failure 400 {string} string "Invalid request"
 // @Failure 500 {string} string "Internal server error"
-// @Router /auth/register [post]
+// @Router /api/auth/register [post]
 func (handler *handlers) registerHandler(ctx fiber.Ctx) error {
 	var input RegisterUserInput
 
@@ -33,12 +34,12 @@ func (handler *handlers) registerHandler(ctx fiber.Ctx) error {
 	}
 
 	if err := handler.validatorService.Struct(input); err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+		return appErrors.Send(ctx, err)
 	}
 
 	token, err := RegisterUser(ctx.Context(), input)
 	if err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		return appErrors.TranslatePostgresDbError(err).FiberNewError()
 	}
 
 	SetAuthCookie(ctx, token)
@@ -56,7 +57,7 @@ func (handler *handlers) registerHandler(ctx fiber.Ctx) error {
 // @Success 200 {string} string "OK"
 // @Failure 400 {string} string "Invalid request"
 // @Failure 401 {string} string "Unauthorized"
-// @Router /auth/login [post]
+// @Router /api/auth/login [post]
 func (handler *handlers) loginHandler(ctx fiber.Ctx) error {
 	var input LoginUserInput
 
@@ -65,7 +66,7 @@ func (handler *handlers) loginHandler(ctx fiber.Ctx) error {
 	}
 
 	if err := handler.validatorService.Struct(input); err != nil {
-		return fiber.NewError(fiber.StatusBadRequest, err.Error())
+		return appErrors.Send(ctx, err)
 	}
 
 	token, err := LoginUser(ctx.Context(), input)
@@ -84,7 +85,7 @@ func (handler *handlers) loginHandler(ctx fiber.Ctx) error {
 // @Tags auth
 // @Produce plain
 // @Success 200 {string} string "OK"
-// @Router /auth/logout [post]
+// @Router /api/auth/logout [post]
 func (handler *handlers) logoutHandler(ctx fiber.Ctx) error {
 	RemoveAuthCookie(ctx)
 
