@@ -1,8 +1,10 @@
-name: frontend packages audit
+name: frontend code check and vulnerability audit
 on:
   pull_request:
     branches:
       - main
+    paths:
+      - 'frontend/**'
 
 defaults:
   run:
