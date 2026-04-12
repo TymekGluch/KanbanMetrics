@@ -22,7 +22,7 @@ type CreateUserInput struct {
 	Name     string `json:"name" validate:"required"`
 	Email    string `json:"email" validate:"required,email"`
 	Password string `json:"password" validate:"required,min=8,max=64,password,containsNumber,containsUppercase,containsSpecial"`
-	Role     string `json:"role" validate:"required,oneof=admin user"`
+	Role     string `json:"role" validate:"required,oneof=app_admin app_user"`
 }
 
 type UpdateUserInput struct {
@@ -30,7 +30,7 @@ type UpdateUserInput struct {
 	Name                           *string    `json:"name,omitempty"`
 	Email                          *string    `json:"email,omitempty" validate:"omitempty,email"`
 	Password                       *string    `json:"password,omitempty" validate:"omitempty,min=8,max=64,password,containsNumber,containsUppercase,containsSpecial"`
-	Role                           *string    `json:"role,omitempty" validate:"omitempty,oneof=admin user"`
+	Role                           *string    `json:"role,omitempty" validate:"omitempty,oneof=app_admin app_user"`
 	IsActive                       *bool      `json:"is_active,omitempty"`
 	IsVerified                     *bool      `json:"is_verified,omitempty"`
 	IsAccountExpirationDetailsSend *bool      `json:"is_account_expiration_details_send,omitempty"`
@@ -41,7 +41,7 @@ type UpdateUserHandlerInput struct {
 	Name                           *string    `json:"name,omitempty"`
 	Email                          *string    `json:"email,omitempty" validate:"omitempty,email"`
 	Password                       *string    `json:"password,omitempty" validate:"omitempty,min=8,max=64,password,containsNumber,containsUppercase,containsSpecial"`
-	Role                           *string    `json:"role,omitempty" validate:"omitempty,oneof=admin user"`
+	Role                           *string    `json:"role,omitempty" validate:"omitempty,oneof=app_admin app_user"`
 	IsActive                       *bool      `json:"is_active,omitempty"`
 	IsVerified                     *bool      `json:"is_verified,omitempty"`
 	IsAccountExpirationDetailsSend *bool      `json:"is_account_expiration_details_send,omitempty"`
@@ -67,7 +67,7 @@ type getUserLifeCycleConfigInput struct {
 }
 
 type userLifeCycleConfig struct {
-	deletionAfterDaysConfig              string
-	almostExpiredUsersStartConfig        string
-	almostExpiredUsersEndConfig          string
+	deletionAfterDaysConfig       string
+	almostExpiredUsersStartConfig string
+	almostExpiredUsersEndConfig   string
 }

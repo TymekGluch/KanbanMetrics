@@ -6,6 +6,10 @@ import (
 	"github.com/gofiber/fiber/v3"
 )
 
+const (
+	default_auth_cookie_expiration_time = 6 * time.Hour
+)
+
 func RemoveAuthCookie(ctx fiber.Ctx) {
 	ctx.Cookie(&fiber.Cookie{
 		Name:     CookieName,
@@ -23,8 +27,8 @@ func SetAuthCookie(ctx fiber.Ctx, jwtToken string) {
 	ctx.Cookie(&fiber.Cookie{
 		Name:     CookieName,
 		Value:    jwtToken,
-		MaxAge:   int((24 * time.Hour) / time.Second),
-		Expires:  time.Now().Add(24 * time.Hour),
+		MaxAge:   int(default_auth_cookie_expiration_time / time.Second),
+		Expires:  time.Now().Add(default_auth_cookie_expiration_time),
 		Path:     "/",
 		HTTPOnly: true,
 		Secure:   cookieSecureEnabled(),

@@ -10,7 +10,7 @@ func RegisterUser(ctx context.Context, input RegisterUserInput) (string, error) 
 	var role string
 
 	if input.Role == nil {
-		role = users.RoleUser
+		role = users.APP_ROLE_USER
 	} else {
 		role = *input.Role
 	}

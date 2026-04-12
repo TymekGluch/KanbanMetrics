@@ -1,4 +1,4 @@
-package users
+package workspaceRouter
 
 import (
 	"KanbanMetrics/internal/auth"
@@ -9,13 +9,11 @@ import (
 )
 
 func RegisterRoutes(app fiber.Router, validatorService *validation.Service) {
-	route := app.Group("/user", auth.VerifyJwtTokenMiddleware())
+	route := app.Group("/workspaces", auth.VerifyJwtTokenMiddleware())
 	handlers := newHandlers(validatorService)
 
 	authorizer := permission.NewRBACAuthorizer(permission.NewStaticRolePermissionResolver())
 	permissionMiddleware := permission.NewMiddleware(authorizer)
 
-	route.Delete("/delete", permissionMiddleware.Require(permission.UsersDeleteSelf), handlers.deleteUserHandler)
-	route.Put("/update", permissionMiddleware.Require(permission.UsersUpdateSelf), handlers.updateUserHandler)
-	route.Get("/me", permissionMiddleware.Require(permission.UsersReadSelf), handlers.meHandler)
+	route.Post("/create", permissionMiddleware.Require(permission.WorkspaceCreate), handlers.createWorkspaceHandler)
 }

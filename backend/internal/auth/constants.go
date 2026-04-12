@@ -9,4 +9,6 @@ const (
 	CookieName         = "auth_token"
 	ContextUserIDKey   = "user_id"
 	ContextUserRoleKey = "user_role"
+
+	ContextUserWorkspaceRoleKey = "user_workspace_role"
 )
