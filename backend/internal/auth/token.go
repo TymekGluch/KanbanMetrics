@@ -4,12 +4,12 @@ import (
 	"fmt"
 	"os"
 
-	"github.com/dgrijalva/jwt-go"
+	"github.com/golang-jwt/jwt/v5"
 )
 
 type jwtClaims struct {
 	UserID uint `json:"user_id"`
-	jwt.StandardClaims
+	jwt.RegisteredClaims
 }
 
 func GenerateJwtToken(id uint) (string, error) {
@@ -41,7 +41,7 @@ func GetUserIDFromToken(tokenString string) (uint, error) {
 	}
 
 	if !token.Valid {
-		return 0, jwt.ErrSignatureInvalid
+		return 0, jwt.ErrTokenSignatureInvalid
 	}
 
 	if claims.UserID == 0 {
@@ -56,7 +56,7 @@ func parseJwtToken(tokenString string) (*jwt.Token, *jwtClaims, error) {
 
 	token, err := jwt.ParseWithClaims(tokenString, claims, func(token *jwt.Token) (interface{}, error) {
 		if _, ok := token.Method.(*jwt.SigningMethodHMAC); !ok {
-			return nil, jwt.ErrSignatureInvalid
+			return nil, jwt.ErrTokenSignatureInvalid
 		}
 
 		return []byte(os.Getenv("JWT_SECRET")), nil
