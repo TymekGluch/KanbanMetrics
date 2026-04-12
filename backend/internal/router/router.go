@@ -4,8 +4,9 @@ import (
 	"KanbanMetrics/internal/apiDocs"
 	"KanbanMetrics/internal/appConfig"
 	"KanbanMetrics/internal/auth"
-	usersRoutes "KanbanMetrics/internal/users/http"
+	usersRouter "KanbanMetrics/internal/users/router"
 	"KanbanMetrics/internal/validation"
+	workspaceRouter "KanbanMetrics/internal/workspace/router"
 
 	"github.com/gofiber/fiber/v3"
 )
@@ -21,7 +22,8 @@ func InitializeRouter(router *fiber.App, validatorService *validation.Service, a
 	})
 
 	auth.RegisterRoutes(api, validatorService)
-	usersRoutes.RegisterRoutes(api, validatorService)
+	usersRouter.RegisterRoutes(api, validatorService)
+	workspaceRouter.RegisterRoutes(api, validatorService)
 
 	return nil
 }

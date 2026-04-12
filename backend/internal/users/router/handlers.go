@@ -1,4 +1,4 @@
-package users
+package usersRouter
 
 import (
 	"KanbanMetrics/internal/appErrors"

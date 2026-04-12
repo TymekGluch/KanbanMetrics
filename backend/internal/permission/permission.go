@@ -3,6 +3,7 @@ package permission
 import (
 	"KanbanMetrics/internal/auth"
 	"KanbanMetrics/internal/users"
+	"KanbanMetrics/internal/workspace"
 	"fmt"
 	"strings"
 
@@ -19,6 +20,11 @@ const (
 	UsersReadAny   Permission = "users.read.any"
 	UsersUpdateAny Permission = "users.update.any"
 	UsersDeleteAny Permission = "users.delete.any"
+
+	WorkspaceRead   Permission = "workspace.read"
+	WorkspaceUpdate Permission = "workspace.update"
+	WorkspaceDelete Permission = "workspace.delete"
+	WorkspaceCreate Permission = "workspace.create"
 )
 
 type RolePermissionResolver interface {
@@ -36,18 +42,34 @@ type StaticRolePermissionResolver struct {
 func NewStaticRolePermissionResolver() *StaticRolePermissionResolver {
 	return &StaticRolePermissionResolver{
 		permissionsByRole: map[string]map[Permission]struct{}{
-			users.RoleUser: {
+			users.APP_ROLE_USER: {
 				UsersReadSelf:   {},
 				UsersUpdateSelf: {},
 				UsersDeleteSelf: {},
+				WorkspaceCreate: {},
 			},
-			users.RoleAdmin: {
+			users.APP_ROLE_ADMIN: {
 				UsersReadSelf:   {},
 				UsersUpdateSelf: {},
 				UsersDeleteSelf: {},
 				UsersReadAny:    {},
 				UsersUpdateAny:  {},
 				UsersDeleteAny:  {},
+				WorkspaceCreate: {},
+				WorkspaceDelete: {},
+			},
+			workspace.WORKSPACE_VIEWER_ROLE: {
+				WorkspaceRead: {},
+			},
+			workspace.WORKSPACE_ADMIN_ROLE: {
+				WorkspaceRead:   {},
+				WorkspaceUpdate: {},
+			},
+			workspace.WORKSPACE_OWNER_ROLE: {
+				WorkspaceRead:   {},
+				WorkspaceUpdate: {},
+				WorkspaceDelete: {},
+				WorkspaceCreate: {},
 			},
 		},
 	}
@@ -89,4 +111,13 @@ func ContextUserRole(ctx fiber.Ctx) (string, error) {
 	}
 
 	return strings.ToLower(strings.TrimSpace(userRole)), nil
+}
+
+func ContextUserWorkspaceRole(ctx fiber.Ctx) (string, error) {
+	workspaceRole, ok := ctx.Locals(auth.ContextUserWorkspaceRoleKey).(string)
+	if !ok || strings.TrimSpace(workspaceRole) == "" {
+		return "", fmt.Errorf("missing workspace role in request context")
+	}
+
+	return strings.ToLower(strings.TrimSpace(workspaceRole)), nil
 }
