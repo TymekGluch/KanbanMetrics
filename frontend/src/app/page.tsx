@@ -1,5 +1,5 @@
 import Image from "next/image";
-import styles from "./page.module.css";
+import styles from "./page.module.scss";
 
 export default function Home() {
   return (
@@ -7,10 +7,10 @@ export default function Home() {
       <main className={styles.main}>
         <Image
           className={styles.logo}
-          src="/next.svg"
+          src="/logoMetricsLight.svg"
           alt="Next.js logo"
-          width={100}
-          height={20}
+          width={220}
+          height={54}
           priority
         />
         <div className={styles.intro}>

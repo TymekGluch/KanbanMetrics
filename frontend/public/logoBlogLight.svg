@@ -1,13 +1,13 @@
-<svg width="440" height="108" viewBox="36 31 440 108" xmlns="http://www.w3.org/2000/svg">
+<svg width="440" height="104" viewBox="36 33 440 104" xmlns="http://www.w3.org/2000/svg">
   <defs>
     <linearGradient id="g1" x1="0" y1="0" x2="1" y2="1">
       <stop offset="0%" stop-color="#7c3aed"/>
-      <stop offset="50%" stop-color="#06b6d4"/>
-      <stop offset="100%" stop-color="#0ea5e9"/>
+      <stop offset="50%" stop-color="#0891b2"/>
+      <stop offset="100%" stop-color="#0284c7"/>
     </linearGradient>
 
     <filter id="glow">
-      <feGaussianBlur stdDeviation="4" result="blur"/>
+      <feGaussianBlur stdDeviation="2" result="blur"/>
       <feMerge>
         <feMergeNode in="blur"/>
         <feMergeNode in="SourceGraphic"/>
@@ -21,7 +21,7 @@
           fill="none" stroke="url(#g1)" stroke-width="4"/>
 
     <path d="M40 25 L55 35 L55 55 L40 65 L25 55 L25 35 Z"
-          fill="url(#g1)" opacity="0.9"/>
+          fill="url(#g1)" opacity="0.95"/>
   </g>
 
   <!-- Text -->
@@ -38,13 +38,13 @@
         font-family="Arial, sans-serif"
         font-size="16"
         font-weight="600"
-        fill="#7dd3fc"
+        fill="#075985"
         letter-spacing="5"
-        opacity="0.9">
-    METRICS
+        opacity="0.95">
+    BLOG
   </text>
-  
+
   <!-- Subtle underline -->
   <line x1="130" y1="110" x2="470" y2="110"
-        stroke="url(#g1)" stroke-width="2" opacity="0.5"/>
+        stroke="url(#g1)" stroke-width="2" opacity="0.8"/>
 </svg>
