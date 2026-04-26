@@ -28,6 +28,7 @@
     "eslint-config-next": "16.2.2",
     "openapi-typescript": "^7.13.0",
     "orval": "^8.6.2",
+    "sass": "^1.99.0",
     "tsx": "^4.21.0",
     "typescript": "^5"
   }
