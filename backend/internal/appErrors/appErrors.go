@@ -22,11 +22,17 @@ const (
 	ErrConstraintViolation       = "Provided data violates a business constraint"
 	ErrDatabaseTemporarilyBusy   = "Database is temporarily busy, please retry"
 	ErrDatabaseTimeout           = "Database timeout, please retry"
+	ErrRequestTimeout            = "Request timeout"
+	ErrNotFound                  = "The requested resource was not found"
 )
 
 type AppError struct {
 	message string
 	status  int
+}
+
+type AppErrorResponse struct {
+	Message string `json:"message"`
 }
 
 type FiberMappableError interface {
@@ -57,8 +63,12 @@ func (appErr *AppError) FiberNewError() *fiber.Error {
 	return fiber.NewError(appErr.status, appErr.message)
 }
 
-func (appErr *AppError) Send(_ fiber.Ctx) error {
-	return appErr.FiberNewError()
+func (appErr *AppError) Send(ctx fiber.Ctx) error {
+	return ctx.Status(appErr.status).JSON(AppErrorResponse{Message: appErr.message})
+}
+
+func NewRequestTimeoutError() *AppError {
+	return newAppError(ErrRequestTimeout, fiber.StatusRequestTimeout)
 }
 
 func NewInvalidValidationConfigError() *AppError {

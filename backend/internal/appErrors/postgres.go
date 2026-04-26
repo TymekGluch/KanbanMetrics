@@ -5,10 +5,15 @@ import (
 	"net/http"
 	"strings"
 
+	"github.com/jackc/pgx/v5"
 	"github.com/jackc/pgx/v5/pgconn"
 )
 
 func TranslatePostgresDbError(err error) FiberMappableError {
+	if stdErrors.Is(err, pgx.ErrNoRows) {
+		return newAppError(ErrNotFound, http.StatusNotFound)
+	}
+
 	var pgErr *pgconn.PgError
 
 	if !stdErrors.As(err, &pgErr) {
@@ -46,6 +51,6 @@ func TranslatePostgresDbError(err error) FiberMappableError {
 	case "P0001":
 		return newAppError(ErrConflict, http.StatusConflict)
 	default:
-		return newAppError(ErrConflict, http.StatusConflict)
+		return newAppError(ErrUnknownDatabaseError, http.StatusInternalServerError)
 	}
 }

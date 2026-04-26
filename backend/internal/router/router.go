@@ -4,6 +4,7 @@ import (
 	"KanbanMetrics/internal/apiDocs"
 	"KanbanMetrics/internal/appConfig"
 	"KanbanMetrics/internal/auth"
+	"KanbanMetrics/internal/requests"
 	usersRouter "KanbanMetrics/internal/users/router"
 	"KanbanMetrics/internal/validation"
 	workspaceRouter "KanbanMetrics/internal/workspace/router"
@@ -14,6 +15,7 @@ import (
 func InitializeRouter(router *fiber.App, validatorService *validation.Service, apiDocsService *apiDocs.Service) error {
 	api := router.Group("/api")
 	api.Use(appConfig.SetupCorsAndHeaders())
+	api.Use(requests.TimeoutMiddleware(requests.TimeoutConfig{}))
 
 	apiDocs.RegisterRoutes(api, apiDocsService)
 

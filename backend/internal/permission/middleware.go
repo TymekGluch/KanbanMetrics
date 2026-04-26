@@ -8,7 +8,8 @@ import (
 )
 
 const (
-	ErrorForbidden = "Forbidden"
+	ErrorForbidden          = "Forbidden"
+	ErrorMissingWorkspaceID = "Missing workspace ID"
 )
 
 type Middleware struct {
@@ -60,7 +61,7 @@ func (middleware *Middleware) LoadWorkspaceRole(workspaceIDParam string) fiber.H
 
 		workspaceID := ctx.Params(workspaceIDParam)
 		if workspaceID == "" {
-			return fiber.NewError(fiber.StatusBadRequest, "missing workspace id")
+			return fiber.NewError(fiber.StatusBadRequest, ErrorMissingWorkspaceID)
 		}
 
 		workspaceRole, err := workspace.GetUserWorkspaceRole(ctx.Context(), userID, workspaceID)
@@ -68,14 +69,43 @@ func (middleware *Middleware) LoadWorkspaceRole(workspaceIDParam string) fiber.H
 			return fiber.NewError(fiber.StatusForbidden, ErrorForbidden)
 		}
 
+		ctx.Locals(auth.ContextWorkspaceIDKey, workspaceID)
 		ctx.Locals(auth.ContextUserWorkspaceRoleKey, workspaceRole)
 
 		return ctx.Next()
 	}
 }
 
+func (middleware *Middleware) LoadWorkspaceRoleOrGlobal(permission Permission, workspaceIDParam string) fiber.Handler {
+	return func(ctx fiber.Ctx) error {
+		userRole, err := ContextUserRole(ctx)
+		if err != nil {
+			return fiber.NewError(fiber.StatusUnauthorized, err.Error())
+		}
+
+		if middleware.authorizer.HasPermission(userRole, permission) {
+			return ctx.Next()
+		}
+
+		return middleware.LoadWorkspaceRole(workspaceIDParam)(ctx)
+	}
+}
+
 func (middleware *Middleware) RequireWorkspace(permission Permission) fiber.Handler {
 	return func(ctx fiber.Ctx) error {
+		userRole, err := ContextUserRole(ctx)
+		if err != nil {
+			return fiber.NewError(fiber.StatusUnauthorized, err.Error())
+		}
+
+		if middleware.authorizer.HasPermission(userRole, permission) {
+			return ctx.Next()
+		}
+
+		if _, err := ContextWorkspaceID(ctx); err != nil {
+			return fiber.NewError(fiber.StatusBadRequest, err.Error())
+		}
+
 		role, err := ContextUserWorkspaceRole(ctx)
 		if err != nil {
 			return fiber.NewError(fiber.StatusUnauthorized, err.Error())
@@ -91,6 +121,21 @@ func (middleware *Middleware) RequireWorkspace(permission Permission) fiber.Hand
 
 func (middleware *Middleware) RequireAnyWorkspace(permissions ...Permission) fiber.Handler {
 	return func(ctx fiber.Ctx) error {
+		userRole, err := ContextUserRole(ctx)
+		if err != nil {
+			return fiber.NewError(fiber.StatusUnauthorized, err.Error())
+		}
+
+		for _, permission := range permissions {
+			if middleware.authorizer.HasPermission(userRole, permission) {
+				return ctx.Next()
+			}
+		}
+
+		if _, err := ContextWorkspaceID(ctx); err != nil {
+			return fiber.NewError(fiber.StatusBadRequest, err.Error())
+		}
+
 		role, err := ContextUserWorkspaceRole(ctx)
 		if err != nil {
 			return fiber.NewError(fiber.StatusUnauthorized, err.Error())

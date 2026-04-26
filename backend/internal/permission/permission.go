@@ -56,6 +56,7 @@ func NewStaticRolePermissionResolver() *StaticRolePermissionResolver {
 				UsersUpdateAny:  {},
 				UsersDeleteAny:  {},
 				WorkspaceCreate: {},
+				WorkspaceRead:   {},
 				WorkspaceDelete: {},
 			},
 			workspace.WORKSPACE_VIEWER_ROLE: {
@@ -120,4 +121,13 @@ func ContextUserWorkspaceRole(ctx fiber.Ctx) (string, error) {
 	}
 
 	return strings.ToLower(strings.TrimSpace(workspaceRole)), nil
+}
+
+func ContextWorkspaceID(ctx fiber.Ctx) (string, error) {
+	workspaceID, ok := ctx.Locals(auth.ContextWorkspaceIDKey).(string)
+	if !ok || strings.TrimSpace(workspaceID) == "" {
+		return "", fmt.Errorf("missing workspace id in request context")
+	}
+
+	return strings.TrimSpace(workspaceID), nil
 }
