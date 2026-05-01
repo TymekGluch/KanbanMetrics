@@ -1,7 +1,7 @@
-'use client';
+"use client";
 
 import { BREAKPOINTS_KEYS } from "../responsive.constants";
-import { ResponsiveValue } from "../responsive.types";
+import { type ResponsiveValue } from "../responsive.types";
 import { useAdvancedMedia } from "./useMedia";
 
 type BreakpointKey = keyof typeof BREAKPOINTS_KEYS;
@@ -12,7 +12,7 @@ const breakpointKeys = Object.keys(BREAKPOINTS_KEYS) as BreakpointKey[];
 export function useResponsiveProp<T>(prop: ResponsiveValue<T>): T {
   const { currentBreakpoint } = useAdvancedMedia();
 
-  if (!prop || typeof prop !== 'object' || !('default' in prop)) {
+  if (!prop || typeof prop !== "object" || !("default" in prop)) {
     return prop;
   }
 
@@ -21,10 +21,14 @@ export function useResponsiveProp<T>(prop: ResponsiveValue<T>): T {
 
   const namedCandidates = breakpointKeys
     .filter((key) => key in responsiveProp)
-    .map((key) => ({ key, minWidth: BREAKPOINTS_KEYS[key], value: responsiveMap[key] as T }));
+    .map((key) => ({
+      key,
+      minWidth: BREAKPOINTS_KEYS[key],
+      value: responsiveMap[key] as T,
+    }));
 
   const numericCandidates = Object.keys(responsiveProp)
-    .filter((key) => key !== 'default' && !(key in BREAKPOINTS_KEYS))
+    .filter((key) => key !== "default" && !(key in BREAKPOINTS_KEYS))
     .map((key) => ({
       minWidth: Number(key),
       value: responsiveMap[key] as T,

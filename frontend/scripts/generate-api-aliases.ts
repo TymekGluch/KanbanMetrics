@@ -6,16 +6,7 @@ const NON_ALPHANUMERIC_PATTERN = /[^a-zA-Z0-9]+/g;
 const CONSECUTIVE_WHITESPACE_PATTERN = /\s+/;
 const NUMERIC_STATUS_CODE_PATTERN = /^\d+$/;
 
-const HTTP_METHODS = [
-  "get",
-  "post",
-  "put",
-  "patch",
-  "delete",
-  "options",
-  "head",
-  "trace",
-] as const;
+const HTTP_METHODS = ["get", "post", "put", "patch", "delete", "options", "head", "trace"] as const;
 
 type HttpMethod = (typeof HTTP_METHODS)[number];
 
@@ -81,8 +72,7 @@ function buildSchemaAliasName(schemaName: string): string {
 function isSuccessStatusCode(statusCode: string): boolean {
   const numericCode = parseInt(statusCode, 10);
   return (
-    numericCode >= SUCCESS_HTTP_STATUS_RANGE_START &&
-    numericCode <= SUCCESS_HTTP_STATUS_RANGE_END
+    numericCode >= SUCCESS_HTTP_STATUS_RANGE_START && numericCode <= SUCCESS_HTTP_STATUS_RANGE_END
   );
 }
 
@@ -98,7 +88,7 @@ function generateFileHeader(): string[] {
     'export type ApiSchemas = components["schemas"];',
     "export type ApiPathKey = keyof ApiPaths;",
     'export type ApiMethod<P extends ApiPathKey> = Exclude<keyof ApiPaths[P], "parameters">;',
-    'export type ApiOperation<P extends ApiPathKey, M extends ApiMethod<P>> = NonNullable<ApiPaths[P][M]>;',
+    "export type ApiOperation<P extends ApiPathKey, M extends ApiMethod<P>> = NonNullable<ApiPaths[P][M]>;",
     "",
   ];
 }
@@ -118,7 +108,7 @@ function generateRequestBodyAliases(
   operationName: string,
   routePath: string,
   method: HttpMethod,
-  requestBody: OpenAPIRequestBody,
+  requestBody: OpenAPIRequestBody
 ): string[] {
   const contentTypes = Object.keys(requestBody.content ?? {}).sort();
   if (contentTypes.length === 0) return [];
@@ -137,7 +127,7 @@ function generateResponseAliasesForStatus(
   method: HttpMethod,
   statusCode: string,
   responseSpec: OpenAPIResponse,
-  includeSuccessAlias: boolean,
+  includeSuccessAlias: boolean
 ): string[] {
   const contentTypes = Object.keys(responseSpec.content ?? {}).sort();
   if (contentTypes.length === 0) return [];
@@ -163,7 +153,7 @@ function generateResponseAliasesForStatus(
 function generateOperationAliases(
   routePath: string,
   method: HttpMethod,
-  operation: OpenAPIOperation,
+  operation: OpenAPIOperation
 ): string[] {
   const operationName = buildOperationName(method, routePath);
 
@@ -172,13 +162,13 @@ function generateOperationAliases(
     : [];
 
   const sortedResponseStatuses = Object.keys(operation.responses ?? {}).sort((a, b) =>
-    a.localeCompare(b, undefined, { numeric: true }),
+    a.localeCompare(b, undefined, { numeric: true })
   );
 
   const firstSuccessStatus = sortedResponseStatuses.find(
     (statusCode) =>
       isSuccessStatusCode(statusCode) &&
-      Object.keys(operation.responses?.[statusCode]?.content ?? {}).length > 0,
+      Object.keys(operation.responses?.[statusCode]?.content ?? {}).length > 0
   );
 
   const responseAliases = sortedResponseStatuses.flatMap((statusCode) => {
@@ -191,7 +181,7 @@ function generateOperationAliases(
       method,
       statusCode,
       responseSpec,
-      statusCode === firstSuccessStatus,
+      statusCode === firstSuccessStatus
     );
   });
 
@@ -220,7 +210,7 @@ async function main(): Promise<void> {
 
   if (!fetchResponse.ok) {
     throw new Error(
-      `Failed to fetch OpenAPI schema from ${apiSchemaUrl}: ${fetchResponse.status} ${fetchResponse.statusText}`,
+      `Failed to fetch OpenAPI schema from ${apiSchemaUrl}: ${fetchResponse.status} ${fetchResponse.statusText}`
     );
   }
 
@@ -237,8 +227,8 @@ async function main(): Promise<void> {
   await mkdir(path.dirname(outputPath), { recursive: true });
   await writeFile(outputPath, output, "utf8");
 
-  console.log(
-    `Generated ${pathAliases.filter((line) => line.startsWith("export type")).length} type aliases to ${outputPath}`,
+  console.warn(
+    `Generated ${pathAliases.filter((line) => line.startsWith("export type")).length} type aliases to ${outputPath}`
   );
 }
 

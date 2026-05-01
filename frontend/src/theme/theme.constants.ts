@@ -70,4 +70,4 @@ export const COLORS = {
   GRADIENT_PAGE_BG: "var(--gradient-page-bg)",
   GRADIENT_PAGE_BOTTOM_RIGHT: "var(--gradient-page-bottom-right)",
   GRADIENT_PAGE_BG_CORNERS: "var(--gradient-page-bg-corners)",
-} as const
+} as const;

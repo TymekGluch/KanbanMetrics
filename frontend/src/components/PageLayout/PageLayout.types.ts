@@ -1,5 +1,5 @@
-import { ValueOf } from "@/types/valueOf";
-import { PAGE_LAYOUT_VARIANTS } from "./PageLayout.constants";
+import { type ValueOf } from "@/types/valueOf";
+import { type PAGE_LAYOUT_VARIANTS } from "./PageLayout.constants";
 
 type PageLayoutVariant = ValueOf<typeof PAGE_LAYOUT_VARIANTS>;
 

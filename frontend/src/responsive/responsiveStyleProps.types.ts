@@ -1,27 +1,25 @@
 import type { CSSProperties } from "react";
-import { WithResponsiveValues } from "./responsive.types";
+import { type WithResponsiveValues } from "./responsive.types";
 
 type StyleAliasProps = {
+  insetX?: CSSProperties["left"];
+  insetY?: CSSProperties["top"];
   marginX?: CSSProperties["marginLeft"];
   marginY?: CSSProperties["marginTop"];
   paddingX?: CSSProperties["paddingLeft"];
   paddingY?: CSSProperties["paddingTop"];
-  insetX?: CSSProperties["left"];
-  insetY?: CSSProperties["top"];
   spacing?: CSSProperties["gap"];
 };
 
 export type ResponsiveStyleProps = WithResponsiveValues<CSSProperties & StyleAliasProps>;
 
-export type BaseDisplayProps = Pick<ResponsiveStyleProps,
-  | "display"
-  | "visibility"
-  | "overflow"
-  | "overflowX"
-  | "overflowY"
+export type BaseDisplayProps = Pick<
+  ResponsiveStyleProps,
+  "display" | "visibility" | "overflow" | "overflowX" | "overflowY"
 >;
 
-export type BaseFlexProps = Pick<ResponsiveStyleProps,
+export type BaseFlexProps = Pick<
+  ResponsiveStyleProps,
   | "display"
   | "flex"
   | "flexBasis"
@@ -40,7 +38,8 @@ export type BaseFlexProps = Pick<ResponsiveStyleProps,
   | "spacing"
 >;
 
-export type BaseGridProps = Pick<ResponsiveStyleProps,
+export type BaseGridProps = Pick<
+  ResponsiveStyleProps,
   | "display"
   | "grid"
   | "gridArea"
@@ -71,7 +70,8 @@ export type BaseGridProps = Pick<ResponsiveStyleProps,
   | "spacing"
 >;
 
-export type BaseMarginProps = Pick<ResponsiveStyleProps,
+export type BaseMarginProps = Pick<
+  ResponsiveStyleProps,
   | "margin"
   | "marginTop"
   | "marginRight"
@@ -87,7 +87,8 @@ export type BaseMarginProps = Pick<ResponsiveStyleProps,
   | "marginY"
 >;
 
-export type BasePaddingProps = Pick<ResponsiveStyleProps,
+export type BasePaddingProps = Pick<
+  ResponsiveStyleProps,
   | "padding"
   | "paddingTop"
   | "paddingRight"
@@ -103,14 +104,13 @@ export type BasePaddingProps = Pick<ResponsiveStyleProps,
   | "paddingY"
 >;
 
-export type BaseSpacingProps = Pick<ResponsiveStyleProps,
-  | "gap"
-  | "rowGap"
-  | "columnGap"
-  | "spacing"
+export type BaseSpacingProps = Pick<
+  ResponsiveStyleProps,
+  "gap" | "rowGap" | "columnGap" | "spacing"
 >;
 
-export type BaseSizeProps = Pick<ResponsiveStyleProps,
+export type BaseSizeProps = Pick<
+  ResponsiveStyleProps,
   | "width"
   | "minWidth"
   | "maxWidth"
@@ -121,7 +121,8 @@ export type BaseSizeProps = Pick<ResponsiveStyleProps,
   | "boxSizing"
 >;
 
-export type BasePositionProps = Pick<ResponsiveStyleProps,
+export type BasePositionProps = Pick<
+  ResponsiveStyleProps,
   | "position"
   | "top"
   | "right"
@@ -139,7 +140,8 @@ export type BasePositionProps = Pick<ResponsiveStyleProps,
   | "zIndex"
 >;
 
-export type BaseTypographyProps = Pick<ResponsiveStyleProps,
+export type BaseTypographyProps = Pick<
+  ResponsiveStyleProps,
   | "font"
   | "fontFamily"
   | "fontSize"
@@ -157,7 +159,8 @@ export type BaseTypographyProps = Pick<ResponsiveStyleProps,
   | "color"
 >;
 
-export type BaseBackgroundProps = Pick<ResponsiveStyleProps,
+export type BaseBackgroundProps = Pick<
+  ResponsiveStyleProps,
   | "background"
   | "backgroundColor"
   | "backgroundImage"
@@ -168,7 +171,8 @@ export type BaseBackgroundProps = Pick<ResponsiveStyleProps,
   | "opacity"
 >;
 
-export type BaseBorderProps = Pick<ResponsiveStyleProps,
+export type BaseBorderProps = Pick<
+  ResponsiveStyleProps,
   | "border"
   | "borderTop"
   | "borderRight"
@@ -185,15 +189,14 @@ export type BaseBorderProps = Pick<ResponsiveStyleProps,
   | "boxShadow"
 >;
 
-export type BaseStyleGroups =
-  & BaseDisplayProps
-  & BaseFlexProps
-  & BaseGridProps
-  & BaseMarginProps
-  & BasePaddingProps
-  & BaseSpacingProps
-  & BaseSizeProps
-  & BasePositionProps
-  & BaseTypographyProps
-  & BaseBackgroundProps
-  & BaseBorderProps;
+export type BaseStyleGroups = BaseDisplayProps &
+  BaseFlexProps &
+  BaseGridProps &
+  BaseMarginProps &
+  BasePaddingProps &
+  BaseSpacingProps &
+  BaseSizeProps &
+  BasePositionProps &
+  BaseTypographyProps &
+  BaseBackgroundProps &
+  BaseBorderProps;

@@ -1,11 +1,8 @@
-'use client';
+"use client";
 
-import React from 'react';
+import React from "react";
 
-export function useOutsideClick (
-  callback: () => void,
-  ...refs: React.RefObject<HTMLElement>[]
-)  {
+export function useOutsideClick(callback: () => void, ...refs: React.RefObject<HTMLElement>[]) {
   React.useEffect(() => {
     const handleClickOutside = (event: MouseEvent) => {
       const isOutside = refs.every((ref) => {
@@ -17,12 +14,12 @@ export function useOutsideClick (
       }
     };
 
-    document.addEventListener('mousedown', handleClickOutside);
+    document.addEventListener("mousedown", handleClickOutside);
 
     return () => {
-      document.removeEventListener('mousedown', handleClickOutside);
+      document.removeEventListener("mousedown", handleClickOutside);
     };
   }, [refs, callback]);
 
   return refs;
-};
+}

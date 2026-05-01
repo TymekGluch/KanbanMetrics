@@ -1,33 +1,57 @@
-import { ResponsiveValue } from "../responsive.types";
+import { type ResponsiveValue } from "../responsive.types";
 import { BREAKPOINTS_KEYS } from "../responsive.constants";
 import { hashDescriptor } from "../../utils/hashString";
-import { GroupedProps, ResolvedByBreakpoint } from "./createStylesHash.types";
+import { type GroupedProps, type ResolvedByBreakpoint } from "./createStylesHash.types";
 
 type StylePropsInput = Record<string, ResponsiveValue<unknown>>[] | Record<string, unknown>;
 
 type StyleSheetResult = {
-  hash: string;
   cssText: string;
+  hash: string;
 };
 
 const STYLE_CLASS_PREFIX = "rb-";
 
-function normalizeStylePropsInput(props: StylePropsInput): Record<string, ResponsiveValue<unknown>>[] {
-  return Array.isArray(props)
-    ? props
-    : [props as Record<string, ResponsiveValue<unknown>>];
+function normalizeStylePropsInput(
+  props: StylePropsInput
+): Record<string, ResponsiveValue<unknown>>[] {
+  return Array.isArray(props) ? props : [props as Record<string, ResponsiveValue<unknown>>];
 }
 
 function expandStyleAliases(
   styleKey: string,
   value: ResponsiveValue<unknown>
 ): Array<[string, ResponsiveValue<unknown>]> {
-  if (styleKey === "marginX") return [["marginLeft", value], ["marginRight", value]];
-  if (styleKey === "marginY") return [["marginTop", value], ["marginBottom", value]];
-  if (styleKey === "paddingX") return [["paddingLeft", value], ["paddingRight", value]];
-  if (styleKey === "paddingY") return [["paddingTop", value], ["paddingBottom", value]];
-  if (styleKey === "insetX") return [["left", value], ["right", value]];
-  if (styleKey === "insetY") return [["top", value], ["bottom", value]];
+  if (styleKey === "marginX")
+    return [
+      ["marginLeft", value],
+      ["marginRight", value],
+    ];
+  if (styleKey === "marginY")
+    return [
+      ["marginTop", value],
+      ["marginBottom", value],
+    ];
+  if (styleKey === "paddingX")
+    return [
+      ["paddingLeft", value],
+      ["paddingRight", value],
+    ];
+  if (styleKey === "paddingY")
+    return [
+      ["paddingTop", value],
+      ["paddingBottom", value],
+    ];
+  if (styleKey === "insetX")
+    return [
+      ["left", value],
+      ["right", value],
+    ];
+  if (styleKey === "insetY")
+    return [
+      ["top", value],
+      ["bottom", value],
+    ];
   if (styleKey === "spacing") return [["gap", value]];
 
   return [[styleKey, value]];
@@ -99,7 +123,10 @@ function groupPropByBreakpoints(props: Record<string, ResponsiveValue<unknown>>[
     }
 
     for (const [styleKey, responsiveValue] of Object.entries(prop)) {
-      for (const [expandedStyleKey, expandedValue] of expandStyleAliases(styleKey, responsiveValue)) {
+      for (const [expandedStyleKey, expandedValue] of expandStyleAliases(
+        styleKey,
+        responsiveValue
+      )) {
         if (!result[expandedStyleKey]) {
           result[expandedStyleKey] = { default: [] };
         }
