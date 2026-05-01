@@ -1,0 +1,39 @@
+@use "@/styles/colorsTokens.scss" as colors;
+@use "@/styles/pxToRem.scss" as mixins;
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: mixins.pxToRem(4);
+  width: fit-content;
+  color: colors.$color-link-default;
+  font-size: mixins.pxToRem(14);
+
+  &:hover {
+    color: colors.$color-link-hover;
+    text-decoration: solid underline;
+  }
+
+  &_icon {
+    display: flex;
+    align-items: center;
+    flex-shrink: 1;
+    line-height: 1;
+    color: inherit;
+  }
+
+  &__Disabled {
+    color: colors.$color-link-disabled;
+    pointer-events: none;
+    cursor: text;
+  }
+
+  &__Inherit {
+    font: inherit;
+    line-height: inherit;
+    letter-spacing: inherit;
+    text-transform: inherit;
+    text-decoration: inherit;
+  }
+}

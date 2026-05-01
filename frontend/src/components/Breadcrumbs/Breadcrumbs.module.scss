@@ -1,0 +1,19 @@
+@use "@/styles/colorsTokens.scss" as colors;
+@use "@/styles/pxToRem.scss" as mixins;
+
+.breadcrumbs {
+  display: flex;
+  align-items: center;
+  gap: mixins.pxToRem(8);
+
+  &_icon {
+    width: mixins.pxToRem(16);
+    height: mixins.pxToRem(16);
+  }
+
+  &_separator {
+    fill: colors.$color-link-disabled;
+    width: mixins.pxToRem(18);
+    height: mixins.pxToRem(18);
+  }
+}
