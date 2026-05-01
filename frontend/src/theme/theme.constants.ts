@@ -25,6 +25,7 @@ export const COLORS = {
   LINK_DEFAULT: "var(--color-link-default)",
   LINK_HOVER: "var(--color-link-hover)",
   LINK_VISITED: "var(--color-link-visited)",
+  LINK_DISABLED: "var(--color-link-disabled)",
   BUTTON_PRIMARY_BG: "var(--color-button-primary-bg)",
   BUTTON_PRIMARY_HOVER: "var(--color-button-primary-hover)",
   BUTTON_PRIMARY_ACTIVE: "var(--color-button-primary-active)",

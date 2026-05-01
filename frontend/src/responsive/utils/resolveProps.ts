@@ -129,12 +129,12 @@ const STYLE_PROP_KEYS = new Set<string>([
   "boxShadow",
 ]);
 
-type SplitResolvedProps<T extends Record<string, unknown>> = {
+type SplitResolvedProps<T extends object> = {
   rest: Omit<T, keyof ResponsiveStyleProps>;
   stylesProps: Partial<ResponsiveStyleProps>;
 };
 
-export function resolveProps<T extends Record<string, unknown>>(props: T): SplitResolvedProps<T> {
+export function resolveProps<T extends object>(props: T): SplitResolvedProps<T> {
   const stylesProps: Partial<ResponsiveStyleProps> = {};
   const rest: Record<string, unknown> = {};
 

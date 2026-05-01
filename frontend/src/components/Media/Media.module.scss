@@ -1,0 +1,15 @@
+.media {
+  display: block;
+
+  &__forDarkMode {
+    display: none;
+  }
+
+  @media (prefers-color-scheme: dark) {
+    display: none;
+
+    &__forDarkMode {
+      display: block;
+    }
+  }
+}

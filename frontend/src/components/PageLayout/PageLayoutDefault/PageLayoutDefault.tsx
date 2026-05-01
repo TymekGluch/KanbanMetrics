@@ -1,0 +1,76 @@
+import { Media } from "@/components/Media";
+import { MEDIA_CONDITION } from "@/components/Media/Media.constants";
+import Image from "next/image";
+import Link from "next/link";
+import styles from "./PageLayoutDefault.module.scss";
+import {
+  type PageLayoutDefaultRootProps,
+  type PageLayoutDefaultNavigationProps,
+} from "./PageLayoutDefault.types";
+import React from "react";
+import { Breadcrumbs } from "@/components/Breadcrumbs/Breadcrumbs";
+
+export function Navigation(props: PageLayoutDefaultNavigationProps) {
+  const { children, withBreadcrumbs = false, BreadcrumbsSlot = null } = props;
+
+  return (
+    <div className={styles.pageLayoutDefaultNavigation}>
+      <nav className={styles.pageLayoutDefaultNavigation_nav}>
+        <div className={styles.pageLayoutDefaultNavigation_navContent}>
+          <Link className={styles.pageLayoutDefaultNavigation_logoLink} href="/">
+          <Media.Server
+            variant={MEDIA_CONDITION.THEME}
+            Fallback={
+              <Image
+                src="/logoMetricsDark.svg"
+                className={styles.pageLayoutDefaultNavigation_logo}
+                alt="Morphyxis - kanban metrics"
+                width={220}
+                height={54}
+                priority
+              />
+            }
+          >
+            <Image
+              className={styles.pageLayoutDefaultNavigation_logo}
+              src="/logoMetricsLight.svg"
+              alt="Morphyxis - kanban metrics"
+              width={220}
+              height={54}
+              priority
+            />
+          </Media.Server>
+        </Link>
+
+        <div className={styles.pageLayoutDefaultNavigation_content}>{children}</div>
+        </div>
+      </nav>
+
+      {withBreadcrumbs && (
+        <div className={styles.pageLayoutDefaultNavigation_breadcrumbs}>
+          {Boolean(BreadcrumbsSlot) ? BreadcrumbsSlot : <Breadcrumbs />}
+        </div>
+      )}
+    </div>
+  );
+}
+
+export function Content() {}
+
+export function Footer() {}
+
+export function Root(props: PageLayoutDefaultRootProps) {
+  const { children } = props;
+
+  React.Children.forEach(children, (child) => {
+    const validChild = [Navigation, Footer, Content];
+
+    if (React.isValidElement(child) && !validChild.some((component) => child.type === component)) {
+      console.warn(
+        "Use Only compound components inside PageLayoutDefault.Root, other components will be ignored."
+      );
+    }
+  });
+
+  return <main className={styles.pageLayoutDefault}>{children}</main>;
+}
