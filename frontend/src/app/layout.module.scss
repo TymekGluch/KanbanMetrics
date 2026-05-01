@@ -1,0 +1,9 @@
+@use "../styles/pxToRem" as mixins;
+
+.layout {
+  display: flex;
+  flex-direction: column;
+  width: 100vw;
+  min-height: 100vh;
+  padding: mixins.pxToRem(16);
+}

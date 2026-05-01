@@ -1,0 +1,8 @@
+@use "../../../styles/pxToRem";
+
+.pageLayoutDefault {
+  display: flex;
+  flex-direction: column;
+  gap: pxToRem(16);
+  padding: pxToRem(16);
+}
