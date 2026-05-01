@@ -5,37 +5,37 @@ $screen-xl-min: 1280px;
 $screen-xxl-min: 1536px;
 
 @mixin sm {
-    @media (min-width: #{$screen-sm-min}) {
-        @content;
-    }
- }
+  @media (min-width: #{$screen-sm-min}) {
+    @content;
+  }
+}
 
- @mixin md {
-    @media (min-width: #{$screen-md-min}) {
-        @content;
-    }
- }
- 
- @mixin lg {
-    @media (min-width: #{$screen-lg-min}) {
-        @content;
-    }
- }
- 
- @mixin xl {
-    @media (min-width: #{$screen-xl-min}) {
-        @content;
-    }
- }
- 
- @mixin xxl {
-    @media (min-width: #{$screen-xxl-min}) {
-        @content;
-    }
- }
+@mixin md {
+  @media (min-width: #{$screen-md-min}) {
+    @content;
+  }
+}
+
+@mixin lg {
+  @media (min-width: #{$screen-lg-min}) {
+    @content;
+  }
+}
+
+@mixin xl {
+  @media (min-width: #{$screen-xl-min}) {
+    @content;
+  }
+}
+
+@mixin xxl {
+  @media (min-width: #{$screen-xxl-min}) {
+    @content;
+  }
+}
 
 @mixin rwd($screen) {
-    @media (min-width: $screen) {
-        @content;
-    }
- }
+  @media (min-width: $screen) {
+    @content;
+  }
+}

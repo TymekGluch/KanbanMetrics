@@ -79,14 +79,34 @@
   --color-chart-axis: #64748b;
 
   --gradient-brand-main: linear-gradient(135deg, #7c3aed 0%, #0891b2 52%, #0284c7 100%);
-  --gradient-page-top: radial-gradient(1200px 520px at 10% -10%, rgba(124, 58, 237, 0.16) 0%, rgba(124, 58, 237, 0) 65%);
-  --gradient-page-right: radial-gradient(1000px 480px at 100% 0%, rgba(2, 132, 199, 0.12) 0%, rgba(2, 132, 199, 0) 62%);
-  --gradient-page-bottom: radial-gradient(900px 420px at 50% 115%, rgba(8, 145, 178, 0.1) 0%, rgba(8, 145, 178, 0) 65%);
-  --gradient-page-bg: var(--gradient-page-top), var(--gradient-page-right), var(--gradient-page-bottom),
+  --gradient-page-top: radial-gradient(
+    1200px 520px at 10% -10%,
+    rgba(124, 58, 237, 0.16) 0%,
+    rgba(124, 58, 237, 0) 65%
+  );
+  --gradient-page-right: radial-gradient(
+    1000px 480px at 100% 0%,
+    rgba(2, 132, 199, 0.12) 0%,
+    rgba(2, 132, 199, 0) 62%
+  );
+  --gradient-page-bottom: radial-gradient(
+    900px 420px at 50% 115%,
+    rgba(8, 145, 178, 0.1) 0%,
+    rgba(8, 145, 178, 0) 65%
+  );
+  --gradient-page-bg:
+    var(--gradient-page-top), var(--gradient-page-right), var(--gradient-page-bottom),
     linear-gradient(180deg, #f8fbff 0%, #f8fafc 100%);
-  --gradient-page-bottom-right: radial-gradient(1400px 640px at 100% 110%, rgba(2, 132, 199, 0.18) 0%, rgba(8, 145, 178, 0.12) 35%, rgba(124, 58, 237, 0.06) 60%, rgba(124, 58, 237, 0) 75%);
-  --gradient-page-bg-corners: var(--gradient-page-top), var(--gradient-page-bottom-right), var(--gradient-page-right), var(--gradient-page-bottom),
-    linear-gradient(180deg, #f8fbff 0%, #f8fafc 100%);
+  --gradient-page-bottom-right: radial-gradient(
+    1400px 640px at 100% 110%,
+    rgba(2, 132, 199, 0.18) 0%,
+    rgba(8, 145, 178, 0.12) 35%,
+    rgba(124, 58, 237, 0.06) 60%,
+    rgba(124, 58, 237, 0) 75%
+  );
+  --gradient-page-bg-corners:
+    var(--gradient-page-top), var(--gradient-page-bottom-right), var(--gradient-page-right),
+    var(--gradient-page-bottom), linear-gradient(180deg, #f8fbff 0%, #f8fafc 100%);
 
   --background: var(--color-surface-page);
   --foreground: var(--color-text-primary);
@@ -174,14 +194,34 @@
     --color-chart-axis: #8ea1c5;
 
     --gradient-brand-main: linear-gradient(135deg, #7c3aed 0%, #06b6d4 52%, #0ea5e9 100%);
-    --gradient-page-top: radial-gradient(1100px 480px at 15% -10%, rgba(124, 58, 237, 0.28) 0%, rgba(124, 58, 237, 0) 60%);
-    --gradient-page-right: radial-gradient(950px 420px at 100% 5%, rgba(14, 165, 233, 0.22) 0%, rgba(14, 165, 233, 0) 58%);
-    --gradient-page-bottom: radial-gradient(850px 400px at 55% 115%, rgba(6, 182, 212, 0.16) 0%, rgba(6, 182, 212, 0) 62%);
-    --gradient-page-bg: var(--gradient-page-top), var(--gradient-page-right), var(--gradient-page-bottom),
+    --gradient-page-top: radial-gradient(
+      1100px 480px at 15% -10%,
+      rgba(124, 58, 237, 0.28) 0%,
+      rgba(124, 58, 237, 0) 60%
+    );
+    --gradient-page-right: radial-gradient(
+      950px 420px at 100% 5%,
+      rgba(14, 165, 233, 0.22) 0%,
+      rgba(14, 165, 233, 0) 58%
+    );
+    --gradient-page-bottom: radial-gradient(
+      850px 400px at 55% 115%,
+      rgba(6, 182, 212, 0.16) 0%,
+      rgba(6, 182, 212, 0) 62%
+    );
+    --gradient-page-bg:
+      var(--gradient-page-top), var(--gradient-page-right), var(--gradient-page-bottom),
       linear-gradient(180deg, #070b16 0%, #0b1020 100%);
-    --gradient-page-bottom-right: radial-gradient(1400px 640px at 100% 110%, rgba(14, 165, 233, 0.28) 0%, rgba(6, 182, 212, 0.2) 35%, rgba(124, 58, 237, 0.1) 60%, rgba(124, 58, 237, 0) 75%);
-    --gradient-page-bg-corners: var(--gradient-page-top), var(--gradient-page-bottom-right), var(--gradient-page-right), var(--gradient-page-bottom),
-      linear-gradient(180deg, #070b16 0%, #0b1020 100%);
+    --gradient-page-bottom-right: radial-gradient(
+      1400px 640px at 100% 110%,
+      rgba(14, 165, 233, 0.28) 0%,
+      rgba(6, 182, 212, 0.2) 35%,
+      rgba(124, 58, 237, 0.1) 60%,
+      rgba(124, 58, 237, 0) 75%
+    );
+    --gradient-page-bg-corners:
+      var(--gradient-page-top), var(--gradient-page-bottom-right), var(--gradient-page-right),
+      var(--gradient-page-bottom), linear-gradient(180deg, #070b16 0%, #0b1020 100%);
 
     --background: var(--color-surface-page);
     --foreground: var(--color-text-primary);

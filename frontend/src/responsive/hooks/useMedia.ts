@@ -1,18 +1,18 @@
-'use client';
+"use client";
 
-import { ValueOf } from "@/types/valueOf";
+import { type ValueOf } from "@/types/valueOf";
 import { BREAKPOINTS_KEYS } from "../responsive.constants";
 import React from "react";
 
 export function useMedia(breakpoints: ValueOf<typeof BREAKPOINTS_KEYS>): boolean {
   const [matches, setMatches] = React.useState(() => {
-    if (typeof window === 'undefined') {
+    if (typeof window === "undefined") {
       return false;
     }
 
     return window.matchMedia(`(min-width: ${breakpoints}px)`).matches;
   });
-  
+
   React.useEffect(() => {
     const mediaQuery = window.matchMedia(`(min-width: ${breakpoints}px)`);
 
@@ -20,15 +20,15 @@ export function useMedia(breakpoints: ValueOf<typeof BREAKPOINTS_KEYS>): boolean
       setMatches(event.matches);
     };
 
-    mediaQuery.addEventListener('change', handleChange);
+    mediaQuery.addEventListener("change", handleChange);
 
     return () => {
-      mediaQuery.removeEventListener('change', handleChange);
+      mediaQuery.removeEventListener("change", handleChange);
     };
   }, [breakpoints]);
 
   return matches;
-} 
+}
 
 export function useIsMobile(): boolean {
   return !useMedia(BREAKPOINTS_KEYS.lg);
@@ -46,26 +46,20 @@ export function useAdvancedMedia(): UseAdvancedMediaResult {
   const [matches, setMatches] = React.useState<MatchBreakpoint>(() => {
     const breakpointKeys = Object.keys(BREAKPOINTS_KEYS) as BreakpointKey[];
 
-    if (typeof window === 'undefined') {
-      return breakpointKeys.reduce<MatchBreakpoint>(
-        (accumulator, key) => {
-          accumulator[key] = false;
-
-          return accumulator;
-        },
-        {} as MatchBreakpoint
-      );
-    }
-
-    return breakpointKeys.reduce<MatchBreakpoint>(
-      (accumulator, key) => {
-        const value = BREAKPOINTS_KEYS[key];
-        accumulator[key] = window.matchMedia(`(min-width: ${value}px)`).matches;
+    if (typeof window === "undefined") {
+      return breakpointKeys.reduce<MatchBreakpoint>((accumulator, key) => {
+        accumulator[key] = false;
 
         return accumulator;
-      },
-      {} as MatchBreakpoint
-    );
+      }, {} as MatchBreakpoint);
+    }
+
+    return breakpointKeys.reduce<MatchBreakpoint>((accumulator, key) => {
+      const value = BREAKPOINTS_KEYS[key];
+      accumulator[key] = window.matchMedia(`(min-width: ${value}px)`).matches;
+
+      return accumulator;
+    }, {} as MatchBreakpoint);
   });
 
   React.useEffect(() => {
@@ -76,18 +70,24 @@ export function useAdvancedMedia(): UseAdvancedMediaResult {
       const mediaQuery = window.matchMedia(`(min-width: ${value}px)`);
 
       const handleChange = (event: MediaQueryListEvent) => {
-        setMatches((previousKeys) => ({ ...previousKeys, [key]: event.matches }));
+        setMatches((previousKeys) => ({
+          ...previousKeys,
+          [key]: event.matches,
+        }));
       };
 
-      setMatches((previousKeys) => ({ ...previousKeys, [key]: mediaQuery.matches }));
-      mediaQuery.addEventListener('change', handleChange);
+      setMatches((previousKeys) => ({
+        ...previousKeys,
+        [key]: mediaQuery.matches,
+      }));
+      mediaQuery.addEventListener("change", handleChange);
 
       return { key, mediaQuery, handleChange };
     });
 
     return () => {
       mediaQueries.forEach(({ mediaQuery, handleChange }) => {
-        mediaQuery.removeEventListener('change', handleChange);
+        mediaQuery.removeEventListener("change", handleChange);
       });
     };
   }, []);

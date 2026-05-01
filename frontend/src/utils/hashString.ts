@@ -11,8 +11,8 @@ export type HashDescriptor =
   | { [key: string]: HashDescriptor };
 
 type IncrementalHash = {
-  update: (chunk: string) => void;
   digest: () => string;
+  update: (chunk: string) => void;
 };
 
 export function createIncrementalHash(): IncrementalHash {
