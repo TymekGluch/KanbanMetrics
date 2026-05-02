@@ -5,6 +5,9 @@ import Link from "../Link";
 import styles from "./Breadcrumbs.module.scss";
 import { HomeSvg } from "@/assets/HomeSvg";
 import { ChevronRightSvg } from "@/assets/ChevronRightSvg";
+import clsx from "clsx";
+
+const hiddenRoutes = ["auth"];
 
 export function Breadcrumbs() {
   const pathname = usePathname();
@@ -21,6 +24,9 @@ export function Breadcrumbs() {
         href="/"
         disabled={isHomeActive}
         StartIconSlot={<HomeSvg className={styles.breadcrumbs_icon} />}
+        className={clsx(styles.breadcrumbs_link, {
+          [styles.breadcrumbs_link__active]: isHomeActive,
+        })}
       >
         Home Page
       </Link.AsNextLink>
@@ -28,20 +34,31 @@ export function Breadcrumbs() {
       {urls.map((url, index) => {
         const isActive = url === pathname;
         const label = pathnameChunks[index];
-        const  capitalisedLabel = label
+        const capitalisedLabel = label
           .split("")
           .map((char, index) => (index === 0 ? char.toUpperCase() : char))
           .join("");
 
+        const shouldHideLink = hiddenRoutes.some((hiddenRoute) => url.endsWith(hiddenRoute));
+
         return (
           <>
-            <ChevronRightSvg className={
-              styles.breadcrumbs_separator
-            } />
+            <ChevronRightSvg className={styles.breadcrumbs_separator} />
 
-            <Link.AsNextLink key={url} href={url} disabled={isActive}>
-              {capitalisedLabel}
-            </Link.AsNextLink>
+            {shouldHideLink ? (
+              <p className={styles.breadcrumbs_inactiveLink}>{capitalisedLabel}</p>
+            ) : (
+              <Link.AsNextLink
+                key={url}
+                href={url}
+                disabled={isActive}
+                className={clsx(styles.breadcrumbs_link, {
+                  [styles.breadcrumbs_link__active]: isActive,
+                })}
+              >
+                {capitalisedLabel}
+              </Link.AsNextLink>
+            )}
           </>
         );
       })}

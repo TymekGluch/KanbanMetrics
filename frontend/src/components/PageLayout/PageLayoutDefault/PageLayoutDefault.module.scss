@@ -5,15 +5,31 @@
 .pageLayoutDefault {
   display: flex;
   flex-direction: column;
-  gap: mixins.pxToRem(16);
+  justify-content: space-between;
+  gap: mixins.pxToRem(24);
   flex: 1;
   width: 100%;
   margin-inline: auto;
   max-width: mixins.pxToRem(1200);
 
-  @include breakpoints.xl {
+  @include breakpoints.md {
     gap: mixins.pxToRem(48);
+  }
+
+  @include breakpoints.lg {
+    gap: mixins.pxToRem(64);
+  }
+
+  @include breakpoints.xl {
+    gap: mixins.pxToRem(80);
     padding-top: mixins.pxToRem(32);
+  }
+
+  &_content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    flex: 1;
   }
 }
 
@@ -63,5 +79,19 @@
     @include breakpoints.lg {
       justify-content: flex-start;
     }
+  }
+}
+
+.pageLayoutDefaultContent {
+  display: flex;
+  flex-direction: column;
+  gap: mixins.pxToRem(16);
+
+  &__center {
+    align-items: center;
+  }
+
+  &__right {
+    align-items: flex-end;
   }
 }

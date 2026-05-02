@@ -3,6 +3,7 @@
 import { type ValueOf } from "@/types/valueOf";
 import { BREAKPOINTS_KEYS } from "../responsive.constants";
 import React from "react";
+import { ResponsiveContext } from "../Responsive.Provider";
 
 export function useMedia(breakpoints: ValueOf<typeof BREAKPOINTS_KEYS>): boolean {
   const [matches, setMatches] = React.useState(() => {
@@ -43,12 +44,14 @@ interface UseAdvancedMediaResult {
 }
 
 export function useAdvancedMedia(): UseAdvancedMediaResult {
+  const { ssrBreakpoint } = React.useContext(ResponsiveContext);
+
   const [matches, setMatches] = React.useState<MatchBreakpoint>(() => {
     const breakpointKeys = Object.keys(BREAKPOINTS_KEYS) as BreakpointKey[];
 
     if (typeof window === "undefined") {
       return breakpointKeys.reduce<MatchBreakpoint>((accumulator, key) => {
-        accumulator[key] = false;
+        accumulator[key] = ssrBreakpoint[key];
 
         return accumulator;
       }, {} as MatchBreakpoint);

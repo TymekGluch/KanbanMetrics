@@ -16,4 +16,17 @@
     width: mixins.pxToRem(18);
     height: mixins.pxToRem(18);
   }
+
+  &_inactiveLink {
+    color: colors.$color-link-disabled;
+    font-size: mixins.pxToRem(14);
+  }
+
+  &_link {
+    color: colors.$color-link-disabled;
+
+    &__active {
+      color: colors.$color-link-visited;
+    }
+  }
 }

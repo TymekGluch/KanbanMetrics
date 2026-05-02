@@ -1,0 +1,83 @@
+@use "@/styles/pxToRem.scss" as mixins;
+@use "@/styles/breakpoints.scss" as breakpoints;
+@use "@/styles/colorsTokens.scss" as colors;
+
+.authContent {
+  display: grid;
+  grid-template-columns: 1fr;
+  align-items: center;
+  width: 100%;
+  gap: mixins.pxToRem(32);
+  margin-bottom: mixins.pxToRem(16);
+
+  @include breakpoints.lg {
+    grid-template-columns: 1fr 1fr;
+    gap: mixins.pxToRem(48);
+  }
+
+  &_header {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: mixins.pxToRem(16);
+    width: 100%;
+    max-width: mixins.pxToRem(535);
+    margin-inline: auto;
+  }
+
+  &_title {
+    font-size: mixins.pxToRem(32);
+    font-weight: 500;
+    text-align: center;
+    color: colors.$color-focus-ring;
+  }
+
+  &_description {
+    font-size: mixins.pxToRem(16);
+    text-align: center;
+    color: colors.$color-text-primary;
+    max-inline-size: 60ch;
+    margin-inline: auto;
+    text-wrap: balance;
+  }
+
+  &_emphasis {
+    font-style: italic;
+    color: colors.$color-text-secondary;
+  }
+
+  &_form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    gap: mixins.pxToRem(16);
+    width: 100%;
+    max-width: mixins.pxToRem(500);
+    height: 100%;
+    padding: mixins.pxToRem(16);
+    margin-inline: auto;
+    background: colors.$color-surface-popover;
+    opacity: 70%;
+    border-radius: mixins.pxToRem(12);
+    box-shadow: mixins.pxToRem(4) mixins.pxToRem(4) mixins.pxToRem(8) mixins.pxToRem(4)
+      colors.$color-border-default;
+
+    @include breakpoints.md {
+      padding: mixins.pxToRem(24);
+    }
+
+    @include breakpoints.lg {
+      padding: mixins.pxToRem(32);
+      border-radius: mixins.pxToRem(24);
+    }
+  }
+
+  &_image {
+    width: 100%;
+    max-width: mixins.pxToRem(535);
+    height: auto;
+    aspect-ratio: 535 / 467;
+    object-fit: contain;
+  }
+}

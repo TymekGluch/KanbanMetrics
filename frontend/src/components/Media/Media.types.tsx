@@ -10,7 +10,7 @@ interface MediaThemeCondition {
 
 export interface MediaBreakpointsCondition {
   variant: typeof MEDIA_CONDITION.BREAKPOINTS;
-  condition: Record<BreakPointsKeys, boolean>;
+  condition: Partial<Record<BreakPointsKeys, boolean>>;
 }
 
 type MediaCondition = MediaThemeCondition | MediaBreakpointsCondition;
