@@ -8,7 +8,6 @@
   align-items: center;
   width: 100%;
   gap: mixins.pxToRem(32);
-  margin-bottom: mixins.pxToRem(16);
 
   @include breakpoints.lg {
     grid-template-columns: 1fr 1fr;

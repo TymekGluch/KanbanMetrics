@@ -6,22 +6,34 @@ html {
 
 html,
 body {
-  max-width: 100vw;
-  overflow-x: clip;
+  width: 100%;
+  overflow-x: hidden;
 }
 
 body {
-  min-height: 100%;
+  min-height: 100dvh;
+  position: relative;
+  isolation: isolate;
   display: flex;
   flex-direction: column;
   color: var(--color-text-primary);
-  background: var(--gradient-page-bg-corners);
-  background-attachment: fixed;
+  background: var(--color-surface-page);
   font-family: var(--font-inter), sans-serif;
   -webkit-font-smoothing: antialiased;
   -moz-osx-font-smoothing: grayscale;
+}
 
-  @media screen and (min-width: 1024px) {
+body::before {
+  content: "";
+  position: fixed;
+  inset: 0;
+  z-index: -1;
+  pointer-events: none;
+  background: var(--gradient-page-bg-corners);
+}
+
+@media screen and (min-width: 1024px) {
+  body::before {
     background: var(--gradient-page-bg-corners-wide);
   }
 }

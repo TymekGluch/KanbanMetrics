@@ -30,6 +30,15 @@
     flex-direction: column;
     justify-content: space-between;
     flex: 1;
+    gap: mixins.pxToRem(32);
+
+    @include breakpoints.lg {
+      gap: mixins.pxToRem(48);
+    }
+
+    @include breakpoints.xl {
+      gap: mixins.pxToRem(64);
+    }
   }
 }
 
@@ -76,7 +85,7 @@
     justify-content: center;
     width: 100%;
 
-    @include breakpoints.lg {
+    @include breakpoints.xl {
       justify-content: flex-start;
     }
   }
@@ -85,7 +94,15 @@
 .pageLayoutDefaultContent {
   display: flex;
   flex-direction: column;
-  gap: mixins.pxToRem(16);
+  gap: mixins.pxToRem(24);
+
+  @include breakpoints.md {
+    gap: mixins.pxToRem(48);
+  }
+
+  @include breakpoints.lg {
+    gap: mixins.pxToRem(64);
+  }
 
   &__center {
     align-items: center;
