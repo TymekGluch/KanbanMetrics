@@ -19,16 +19,21 @@ export function LinkAsAnchor(props: LinkAsAnchorProps) {
     StartIconSlot = null,
     EndIconSlot = null,
     disabled = false,
+    className,
     ...anchorProps
   } = rest;
 
   return (
     <Base
       {...stylesProps}
-      className={clsx(styles.link, {
-        [styles.link__Inherit]: isInherits,
-        [styles.link__Disabled]: disabled,
-      })}
+      className={clsx(
+        styles.link,
+        {
+          [styles.link__Inherit]: isInherits,
+          [styles.link__Disabled]: disabled,
+        },
+        className
+      )}
       asChild
     >
       <a {...anchorProps}>
@@ -48,16 +53,21 @@ export function LinkAsButton(props: LinkAsButtonProps) {
     StartIconSlot = null,
     EndIconSlot = null,
     disabled = false,
+    className,
     ...buttonProps
   } = rest;
 
   return (
     <Base
       {...stylesProps}
-      className={clsx(styles.link, {
-        [styles.link__Inherit]: isInherits,
-        [styles.link__Disabled]: disabled,
-      })}
+      className={clsx(
+        styles.link,
+        {
+          [styles.link__Inherit]: isInherits,
+          [styles.link__Disabled]: disabled,
+        },
+        className
+      )}
       asChild
     >
       <button {...buttonProps} disabled={disabled}>
@@ -77,16 +87,21 @@ export function LinkAsNextLink(props: LinkAsNextLinkProps) {
     StartIconSlot = null,
     EndIconSlot = null,
     disabled = false,
+    className,
     ...nextLinkProps
   } = rest;
 
   return (
     <Base
       {...stylesProps}
-      className={clsx(styles.link, {
-        [styles.link__Inherit]: isInherits,
-        [styles.link__Disabled]: disabled,
-      })}
+      className={clsx(
+        styles.link,
+        {
+          [styles.link__Inherit]: isInherits,
+          [styles.link__Disabled]: disabled,
+        },
+        className
+      )}
       asChild
     >
       <Link {...nextLinkProps}>

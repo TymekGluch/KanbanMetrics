@@ -71,4 +71,6 @@ export const COLORS = {
   GRADIENT_PAGE_BG: "var(--gradient-page-bg)",
   GRADIENT_PAGE_BOTTOM_RIGHT: "var(--gradient-page-bottom-right)",
   GRADIENT_PAGE_BG_CORNERS: "var(--gradient-page-bg-corners)",
+  GRADIENT_PAGE_BOTTOM_RIGHT_WIDE: "var(--gradient-page-bottom-right-wide)",
+  GRADIENT_PAGE_BG_CORNERS_WIDE: "var(--gradient-page-bg-corners-wide)",
 } as const;

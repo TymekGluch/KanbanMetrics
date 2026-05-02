@@ -9,7 +9,6 @@ import {
 import type Link from "next/link";
 import type React from "react";
 
-type OmittedLinkProps = "className";
 
 type LinkSizeProps = Pick<BaseSizeProps, "width" | "minWidth">;
 
@@ -27,14 +26,14 @@ interface LinkCommonProps {
   EndIconSlot?: React.ReactNode;
 }
 
-export type LinkAsAnchorProps = Omit<React.ComponentPropsWithRef<"a">, OmittedLinkProps> &
+export type LinkAsAnchorProps = React.ComponentPropsWithRef<"a"> &
   LinkStylesProps &
   LinkCommonProps;
 
-export type LinkAsButtonProps = Omit<React.ComponentPropsWithRef<"button">, OmittedLinkProps> &
+export type LinkAsButtonProps = React.ComponentPropsWithRef<"button"> &
   LinkStylesProps &
   LinkCommonProps;
 
-export type LinkAsNextLinkProps = Omit<React.ComponentPropsWithRef<typeof Link>, OmittedLinkProps> &
+export type LinkAsNextLinkProps = React.ComponentPropsWithRef<typeof Link> &
   LinkStylesProps &
   LinkCommonProps;

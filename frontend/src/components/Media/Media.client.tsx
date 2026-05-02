@@ -29,11 +29,11 @@ function MediaBreakpointsConditionClient(props: MediaProps) {
   }
 
   switch (true) {
-    case condition.xxl && matches.xxl:
-    case condition.xl && matches.xl:
-    case condition.lg && matches.lg:
-    case condition.md && matches.md:
-    case condition.sm && matches.sm:
+    case `${BREAKPOINTS_KEYS.xxl}` in condition && matches.xxl:
+    case `${BREAKPOINTS_KEYS.xl}` in condition && matches.xl:
+    case `${BREAKPOINTS_KEYS.lg}` in condition && matches.lg:
+    case `${BREAKPOINTS_KEYS.md}` in condition && matches.md:
+    case `${BREAKPOINTS_KEYS.sm}` in condition && matches.sm:
       return <>{children}</>;
     default:
       return <>{Fallback}</>;

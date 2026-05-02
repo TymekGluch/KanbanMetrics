@@ -1,0 +1,55 @@
+@use "@/styles/pxToRem.scss" as mixins;
+@use "@/styles/breakpoints.scss" as breakpoints;
+@use "@/styles/colorsTokens.scss" as colors;
+
+.footer {
+  display: flex;
+  flex-direction: column;
+  gap: mixins.pxToRem(24);
+  min-height: mixins.pxToRem(58);
+
+  @include breakpoints.lg {
+    gap: mixins.pxToRem(36);
+  }
+
+  &::before {
+    content: "";
+    display: block;
+    width: 100%;
+    height: mixins.pxToRem(1);
+    background: colors.$gradient-divider-strong;
+  }
+
+  &_content {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: mixins.pxToRem(16);
+    width: 100%;
+
+    @include breakpoints.lg {
+      flex-direction: row;
+    }
+  }
+
+  &_copyright {
+    color: colors.$color-text-secondary;
+    font-size: mixins.pxToRem(10);
+  }
+
+  &_nav {
+    display: flex;
+    gap: mixins.pxToRem(16);
+  }
+
+  &_navIcon {
+    width: mixins.pxToRem(16);
+    height: mixins.pxToRem(16);
+  }
+
+  &_navSeparator {
+    font-size: mixins.pxToRem(12);
+    color: colors.$color-divider-strong;
+  }
+}

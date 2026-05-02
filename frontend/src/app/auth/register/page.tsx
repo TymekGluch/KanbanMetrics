@@ -6,10 +6,10 @@ import { MEDIA_CONDITION } from "@/components/Media/Media.constants";
 import { BREAKPOINTS_KEYS } from "@/responsive/responsive.constants";
 
 export const metadata = {
-  title: "Login",
+  title: "Register",
 };
 
-export default function Login() {
+export default function Register() {
   return (
     <PageLayoutDefault.Root>
       <PageLayoutDefault.Navigation withBreadcrumbs />
@@ -17,10 +17,12 @@ export default function Login() {
       <PageLayoutDefault.Content align="center">
         <div className={styles.authContent}>
           <header className={styles.authContent_header}>
-            <h1 className={styles.authContent_title}>Log in to your account!</h1>
+            <h1 className={styles.authContent_title}>Create your account</h1>
 
             <p className={styles.authContent_description}>
-              Access your dashboard and continue your work.
+              Get started with{" "}
+              <em className={styles.authContent_emphasis}>Morphyxis Kanban Metrics</em> and track
+              your workflow performance.
             </p>
 
             <Media.Client
