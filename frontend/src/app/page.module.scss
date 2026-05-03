@@ -1,0 +1,241 @@
+@use "@/styles/pxToRem.scss" as mixins;
+@use "@/styles/breakpoints.scss" as breakpoints;
+@use "@/styles/colorsTokens.scss" as colors;
+
+@mixin alignedText {
+  max-inline-size: 45ch;
+  text-wrap: balance;
+}
+
+@mixin alignedItemText {
+  max-inline-size: 25ch;
+  text-wrap: balance;
+  text-align: center;
+}
+
+.homeContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: mixins.pxToRem(32);
+  width: 100%;
+
+  @include breakpoints.lg {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+  }
+
+  &_header {
+    display: flex;
+    flex-direction: column;
+    gap: mixins.pxToRem(24);
+    align-items: center;
+    justify-content: center;
+    width: fit-content;
+
+    @include breakpoints.lg {
+      align-items: start;
+    }
+  }
+
+  &_title {
+    font-size: mixins.pxToRem(28);
+    font-weight: 500;
+    color: colors.$color-text-primary;
+    text-align: center;
+    max-inline-size: 20ch;
+    text-wrap: balance;
+
+    @include breakpoints.sm {
+      font-size: mixins.pxToRem(32);
+    }
+
+    @include breakpoints.md {
+      font-size: mixins.pxToRem(48);
+    }
+
+    @include breakpoints.lg {
+      max-inline-size: 25ch;
+      text-align: left;
+    }
+  }
+
+  &_description {
+    font-size: mixins.pxToRem(16);
+    color: colors.$color-text-secondary;
+    text-align: center;
+
+    @include alignedText;
+
+    @include breakpoints.lg {
+      text-align: left;
+    }
+  }
+
+  &_imageWrapper {
+    display: flex;
+    justify-content: center;
+
+    @include breakpoints.lg {
+      justify-content: end;
+    }
+  }
+
+  &_image {
+    width: 100%;
+    max-width: mixins.pxToRem(250);
+    height: auto;
+
+    @include breakpoints.sm {
+      max-width: mixins.pxToRem(300);
+    }
+
+    @include breakpoints.md {
+      max-width: mixins.pxToRem(350);
+    }
+
+    @include breakpoints.lg {
+      max-width: unset;
+    }
+  }
+
+  &_buttonIcon {
+    width: mixins.pxToRem(16);
+    height: mixins.pxToRem(16);
+  }
+}
+
+.homeFilledContent {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: mixins.pxToRem(48);
+  padding-top: mixins.pxToRem(8);
+
+  &_title {
+    font-size: mixins.pxToRem(24);
+    color: colors.$color-text-primary;
+    text-align: center;
+  }
+
+  &_description {
+    font-size: mixins.pxToRem(16);
+    color: colors.$color-text-secondary;
+    text-align: center;
+  }
+
+  &_section {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: mixins.pxToRem(32);
+    width: 100%;
+
+    @include breakpoints.lg {
+      gap: mixins.pxToRem(48);
+    }
+  }
+
+  &_sectionHeader {
+    display: flex;
+    flex-direction: column;
+    gap: mixins.pxToRem(40);
+    width: 100%;
+
+    &::before {
+      content: "";
+      display: block;
+      width: 100%;
+      height: mixins.pxToRem(1);
+      background: colors.$gradient-divider-strong;
+    }
+
+    &Content {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      gap: mixins.pxToRem(24);
+      width: 100%;
+    }
+  }
+
+  &_list {
+    display: grid;
+    grid-template-columns: 1fr;
+    gap: mixins.pxToRem(32);
+    width: 100%;
+    list-style: none;
+
+    @include breakpoints.sm {
+      grid-template-columns: repeat(2, 1fr);
+    }
+
+    @include breakpoints.lg {
+      grid-template-columns: repeat(4, 1fr);
+    }
+
+    &Item {
+      &Content {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: mixins.pxToRem(8);
+      }
+
+      &Icon {
+        position: relative;
+        z-index: 1;
+        width: mixins.pxToRem(48);
+        height: mixins.pxToRem(48);
+        color: colors.$color-surface-popover;
+      }
+
+      &Title {
+        margin-top: mixins.pxToRem(8);
+
+        @include alignedItemText;
+      }
+
+      &Description {
+        color: colors.$color-text-secondary;
+
+        @include alignedItemText;
+      }
+    }
+  }
+
+  &_brandList {
+    display: grid;
+    grid-template-columns: 1fr;
+    list-style: none;
+    gap: mixins.pxToRem(16);
+
+    @include breakpoints.md {
+      grid-template-columns: repeat(3, 1fr);
+    }
+
+    &Item {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      padding: mixins.pxToRem(16);
+      border-radius: mixins.pxToRem(24);
+      background: colors.$color-surface-card-hover;
+      border: solid mixins.pxToRem(1) colors.$color-text-tertiary;
+
+      &Text {
+        font-size: mixins.pxToRem(18);
+        color: colors.$color-text-tertiary;
+        text-align: center;
+
+        @include alignedText;
+      }
+    }
+  }
+
+  &_brandDisclaimer {
+    font-size: mixins.pxToRem(12);
+    color: colors.$color-status-info-text;
+    text-align: center;
+  }
+}

@@ -74,7 +74,10 @@ export const COLORS = {
   GRADIENT_PAGE_BG_CORNERS: "var(--gradient-page-bg-corners)",
   GRADIENT_PAGE_BOTTOM_RIGHT_WIDE: "var(--gradient-page-bottom-right-wide)",
   GRADIENT_PAGE_BG_CORNERS_WIDE: "var(--gradient-page-bg-corners-wide)",
+  GRADIENT_BLOB_PURPLE_1: "var(--gradient-blob-purple-1)",
+  GRADIENT_BLOB_PURPLE_2: "var(--gradient-blob-purple-2)",
+  GRADIENT_BLOB_PURPLE_3: "var(--gradient-blob-purple-3)",
   SKELETON_BASE: "var(--color-skeleton-base)",
   SKELETON_SHINE: "var(--color-skeleton-shine)",
-    GRADIENT_BUTTON_PURPLE: "var(--gradient-button-purple)",
+  GRADIENT_BUTTON_PURPLE: "var(--gradient-button-purple)",
 } as const;

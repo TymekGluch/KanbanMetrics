@@ -3,9 +3,12 @@ package auth
 import (
 	"fmt"
 	"os"
+	"time"
 
 	"github.com/golang-jwt/jwt/v5"
 )
+
+const tokenExpirationTime = 6 * time.Hour
 
 type jwtClaims struct {
 	UserID uint `json:"user_id"`
@@ -13,8 +16,11 @@ type jwtClaims struct {
 }
 
 func GenerateJwtToken(id uint) (string, error) {
+	now := time.Now()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"user_id": id,
+		"iat":     now.Unix(),
+		"exp":     now.Add(tokenExpirationTime).Unix(),
 	})
 
 	newToken, err := token.SignedString([]byte(os.Getenv("JWT_SECRET")))

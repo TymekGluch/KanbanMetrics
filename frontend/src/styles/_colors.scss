@@ -49,7 +49,7 @@
   --color-button-secondary-text: #0f172a;
   --color-button-secondary-border: #cbd5e1;
 
-    --gradient-button-purple: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+  --gradient-button-purple: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
 
   --color-input-bg: #ffffff;
   --color-input-border: #cbd5e1;
@@ -128,6 +128,24 @@
   --gradient-page-bg-corners-wide:
     var(--gradient-page-top), var(--gradient-page-bottom-right-wide), var(--gradient-page-right),
     var(--gradient-page-bottom), linear-gradient(180deg, #f8fbff 0%, #f8fafc 100%);
+  --gradient-blob-purple-1: radial-gradient(
+    circle at 30% 35%,
+    rgba(162, 92, 255, 0.5) 0%,
+    rgba(162, 92, 255, 0.14) 66%,
+    rgba(162, 92, 255, 0) 100%
+  );
+  --gradient-blob-purple-2: radial-gradient(
+    circle at 70% 30%,
+    rgba(119, 46, 233, 0.5) 0%,
+    rgba(119, 46, 233, 0.16) 64%,
+    rgba(119, 46, 233, 0) 100%
+  );
+  --gradient-blob-purple-3: radial-gradient(
+    circle at 35% 60%,
+    rgba(191, 133, 255, 0.4) 0%,
+    rgba(191, 133, 255, 0.12) 62%,
+    rgba(191, 133, 255, 0) 100%
+  );
 
   --color-skeleton-base: #e2e8f0;
   --color-skeleton-shine: #f1f5f9;
@@ -258,6 +276,24 @@
     --gradient-page-bg-corners-wide:
       var(--gradient-page-top), var(--gradient-page-bottom-right-wide), var(--gradient-page-right),
       var(--gradient-page-bottom), linear-gradient(180deg, #070b16 0%, #0b1020 100%);
+    --gradient-blob-purple-1: radial-gradient(
+      circle at 30% 35%,
+      rgba(124, 58, 237, 0.62) 0%,
+      rgba(124, 58, 237, 0.22) 66%,
+      rgba(124, 58, 237, 0) 100%
+    );
+    --gradient-blob-purple-2: radial-gradient(
+      circle at 70% 30%,
+      rgba(167, 139, 250, 0.56) 0%,
+      rgba(167, 139, 250, 0.2) 64%,
+      rgba(167, 139, 250, 0) 100%
+    );
+    --gradient-blob-purple-3: radial-gradient(
+      circle at 35% 60%,
+      rgba(196, 181, 253, 0.46) 0%,
+      rgba(196, 181, 253, 0.16) 62%,
+      rgba(196, 181, 253, 0) 100%
+    );
 
     --color-skeleton-base: #1e293b;
     --color-skeleton-shine: #293548;

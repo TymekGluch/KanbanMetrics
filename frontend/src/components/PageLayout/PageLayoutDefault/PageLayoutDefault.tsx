@@ -7,6 +7,7 @@ import {
   type PageLayoutDefaultRootProps,
   type PageLayoutDefaultNavigationProps,
   type PageLayoutDefaultContentProps,
+  type PageLayoutDefaultFilledContentProps,
 } from "./PageLayoutDefault.types";
 import React from "react";
 import { Breadcrumbs } from "@/components/Breadcrumbs/Breadcrumbs";
@@ -74,6 +75,29 @@ export function Content(props: PageLayoutDefaultContentProps) {
   );
 }
 
+export function FilledContent(props: PageLayoutDefaultFilledContentProps) {
+  const { children, align = PAGE_LAYOUT_CONTENT_ALIGN.LEFT, FooterSlot = null } = props;
+
+  return (
+    <div
+      className={clsx(styles.pageLayoutDefaultFilledContent, {
+        [styles.pageLayoutDefaultFilledContent__center]: align === PAGE_LAYOUT_CONTENT_ALIGN.CENTER,
+        [styles.pageLayoutDefaultFilledContent__right]: align === PAGE_LAYOUT_CONTENT_ALIGN.RIGHT,
+      })}
+    >
+      <div className={styles.pageLayoutDefaultFilledContent_fullWidthWrapper}>
+        <div className={styles.pageLayoutDefaultFilledContent_content}>
+          <div className={styles.pageLayoutDefaultFilledContent_body}>{children}</div>
+
+          {!!FooterSlot && (
+            <div className={styles.pageLayoutDefaultFilledContent_footer}>{FooterSlot}</div>
+          )}
+        </div>
+      </div>
+    </div>
+  );
+}
+
 export function Footer() {
   return <FooterComponent />;
 }
@@ -85,7 +109,7 @@ export function Root(props: PageLayoutDefaultRootProps) {
   const contentGroup: React.ReactElement[] = [];
 
   React.Children.forEach(children, (child) => {
-    const validChild = [Navigation, Footer, Content];
+    const validChild = [Navigation, Footer, Content, FilledContent];
 
     if (React.isValidElement(child) && !validChild.some((component) => child.type === component)) {
       throw new Error(
@@ -97,7 +121,10 @@ export function Root(props: PageLayoutDefaultRootProps) {
       navigationGroup.push(child);
     }
 
-    if (React.isValidElement(child) && (child.type === Content || child.type === Footer)) {
+    if (
+      React.isValidElement(child) &&
+      (child.type === Content || child.type === FilledContent || child.type === Footer)
+    ) {
       contentGroup.push(child);
     }
   });

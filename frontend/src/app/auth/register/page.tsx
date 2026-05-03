@@ -1,11 +1,10 @@
-import Link from "@/components/Link";
+import { AuthForm } from "@/components/Forms/AuthForm/AuthForm";
+import { AUTH_FORM_VARIANTS } from "@/components/Forms/AuthForm/AuthForm.constants";
 import { Media } from "@/components/Media";
 import { MEDIA_CONDITION } from "@/components/Media/Media.constants";
 import PageLayoutDefault from "@/components/PageLayout/PageLayoutDefault";
 import { BREAKPOINTS_KEYS } from "@/responsive/responsive.constants";
 import styles from "./page.module.scss";
-import { AuthForm } from "@/components/Forms/AuthForm/AuthForm";
-import { AUTH_FORM_VARIANTS } from "@/components/Forms/AuthForm/AuthForm.constants";
 
 export const metadata = {
   title: "Register",
