@@ -3,7 +3,7 @@
 import React from "react";
 
 export function useIsLightMode(): boolean {
-  const [isLightMode, setIsLightMode] = React.useState(false);
+  const [isLightMode, setIsLightMode] = React.useState(true);
 
   React.useEffect(() => {
     const mediaQuery = window.matchMedia("(prefers-color-scheme: light)");

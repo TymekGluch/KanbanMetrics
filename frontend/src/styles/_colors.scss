@@ -49,6 +49,8 @@
   --color-button-secondary-text: #0f172a;
   --color-button-secondary-border: #cbd5e1;
 
+    --gradient-button-purple: linear-gradient(135deg, #7c3aed 0%, #5b21b6 100%);
+
   --color-input-bg: #ffffff;
   --color-input-border: #cbd5e1;
   --color-input-border-hover: #94a3b8;
@@ -125,6 +127,9 @@
   --gradient-page-bg-corners-wide:
     var(--gradient-page-top), var(--gradient-page-bottom-right-wide), var(--gradient-page-right),
     var(--gradient-page-bottom), linear-gradient(180deg, #f8fbff 0%, #f8fafc 100%);
+
+  --color-skeleton-base: #e2e8f0;
+  --color-skeleton-shine: #f1f5f9;
 
   --background: var(--color-surface-page);
   --foreground: var(--color-text-primary);
@@ -251,6 +256,9 @@
     --gradient-page-bg-corners-wide:
       var(--gradient-page-top), var(--gradient-page-bottom-right-wide), var(--gradient-page-right),
       var(--gradient-page-bottom), linear-gradient(180deg, #070b16 0%, #0b1020 100%);
+
+    --color-skeleton-base: #1e293b;
+    --color-skeleton-shine: #293548;
 
     --background: var(--color-surface-page);
     --foreground: var(--color-text-primary);

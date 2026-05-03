@@ -6,10 +6,19 @@
  * OpenAPI spec version: 1.0
  */
 
+export * from './appErrorsAppError.zod';
+export * from './appErrorsFieldError.zod';
+export * from './appErrorsValidationErrorResponse.zod';
 export * from './authLoginUserInput.zod';
 export * from './authRegisterUserInput.zod';
-export * from './postAuthLoginBody.zod';
-export * from './postAuthRegisterBody.zod';
-export * from './putUsersUpdateBody.zod';
+export * from './getApiWorkspacesBody.zod';
+export * from './postApiAuthLoginBody.zod';
+export * from './postApiAuthRegisterBody.zod';
+export * from './postApiWorkspacesCreateBody.zod';
+export * from './putApiUserUpdateBody.zod';
 export * from './usersUpdateUserHandlerInput.zod';
 export * from './usersUser.zod';
+export * from './workspaceListWorkspacesResult.zod';
+export * from './workspaceRouterCreateWorkspaceRequest.zod';
+export * from './workspaceRouterListWorkspacesRequest.zod';
+export * from './workspaceWorkspace.zod';

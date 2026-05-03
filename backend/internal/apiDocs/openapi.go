@@ -8,7 +8,29 @@ import (
 
 	"github.com/getkin/kin-openapi/openapi2"
 	"github.com/getkin/kin-openapi/openapi2conv"
+	"github.com/getkin/kin-openapi/openapi3"
 )
+
+const passwordComplexityPattern = `^(?=.*[0-9])(?=.*[A-Z])(?=.*[^A-Za-z0-9]).{8,64}$`
+
+func applyPasswordPatternConstraints(openAPIDoc *openapi3.T) {
+	if openAPIDoc == nil {
+		return
+	}
+
+	for _, schemaRef := range openAPIDoc.Components.Schemas {
+		if schemaRef == nil || schemaRef.Value == nil {
+			continue
+		}
+
+		passwordRef, hasPassword := schemaRef.Value.Properties["password"]
+		if !hasPassword || passwordRef == nil || passwordRef.Value == nil {
+			continue
+		}
+
+		passwordRef.Value.Pattern = passwordComplexityPattern
+	}
+}
 
 func generateOpenAPIJSON() ([]byte, error) {
 	var swaggerDoc openapi2.T
@@ -20,6 +42,8 @@ func generateOpenAPIJSON() ([]byte, error) {
 	if err != nil {
 		return nil, fmt.Errorf("convert swagger document to openapi: %w", err)
 	}
+
+	applyPasswordPatternConstraints(openAPIDoc)
 
 	openAPIJSON, err := json.MarshalIndent(openAPIDoc, "", "  ")
 	if err != nil {

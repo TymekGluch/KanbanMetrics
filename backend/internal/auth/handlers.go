@@ -24,12 +24,13 @@ func newHandlers(validatorService *validation.Service) *handlers {
 // @Param input body RegisterUserInput true "Register payload"
 // @Success 201 {string} string "Created"
 // @Failure 400 {string} string "Invalid request"
+// @Failure 409 {object} appErrors.ValidationErrorResponse "Conflict"
 // @Failure 500 {string} string "Internal server error"
 // @Router /api/auth/register [post]
 func (handler *handlers) registerHandler(ctx fiber.Ctx) error {
 	var input RegisterUserInput
 
-	if err := ctx.Bind().Body(&input); err != nil {
+	if err := validation.BindJSONStrict(ctx, &input); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, ErrorInvalidBody)
 	}
 
@@ -39,7 +40,18 @@ func (handler *handlers) registerHandler(ctx fiber.Ctx) error {
 
 	token, err := RegisterUser(ctx.Context(), input)
 	if err != nil {
-		return appErrors.TranslatePostgresDbError(err).FiberNewError()
+		mappedErr := appErrors.TranslatePostgresDbError(err)
+
+		if mappedErr.Status() == fiber.StatusConflict && mappedErr.Error() == appErrors.ErrEmailAlreadyInUse {
+			return ctx.Status(fiber.StatusConflict).JSON(appErrors.ValidationErrorResponse{
+				Message: appErrors.ErrConflict,
+				Fields: []appErrors.FieldError{
+					{Field: "email", Message: appErrors.ErrEmailAlreadyInUse},
+				},
+			})
+		}
+
+		return mappedErr.FiberNewError()
 	}
 
 	SetAuthCookie(ctx, token)
@@ -56,12 +68,12 @@ func (handler *handlers) registerHandler(ctx fiber.Ctx) error {
 // @Param input body LoginUserInput true "Login payload"
 // @Success 200 {string} string "OK"
 // @Failure 400 {string} string "Invalid request"
-// @Failure 401 {string} string "Unauthorized"
+// @Failure 401 {object} appErrors.ValidationErrorResponse "Unauthorized"
 // @Router /api/auth/login [post]
 func (handler *handlers) loginHandler(ctx fiber.Ctx) error {
 	var input LoginUserInput
 
-	if err := ctx.Bind().Body(&input); err != nil {
+	if err := validation.BindJSONStrict(ctx, &input); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, ErrorInvalidBody)
 	}
 
@@ -71,7 +83,12 @@ func (handler *handlers) loginHandler(ctx fiber.Ctx) error {
 
 	token, err := LoginUser(ctx.Context(), input)
 	if err != nil {
-		return fiber.NewError(fiber.StatusUnauthorized, ErrorUnauthorized)
+		return ctx.Status(fiber.StatusUnauthorized).JSON(appErrors.ValidationErrorResponse{
+			Message: ErrorUnauthorized,
+			Fields: []appErrors.FieldError{
+				{Field: "global", Message: ErrorInvalidCredentials},
+			},
+		})
 	}
 
 	SetAuthCookie(ctx, token)

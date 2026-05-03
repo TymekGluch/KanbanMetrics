@@ -12,6 +12,7 @@ import (
 
 var (
 	defaultHeaders = "Content-Type, Authorization"
+	defaultMethods = "GET,POST,PUT,PATCH,DELETE,OPTIONS"
 )
 
 func defaultHTTPConfig() fiber.Handler {
@@ -26,7 +27,7 @@ func defaultHTTPConfig() fiber.Handler {
 	}
 
 	headers := os.Getenv("DEFAULT_HEADERS")
-	if headers == "" || headers == "[]" {
+	if headers == "" || headers == "[]" || headers == "{}" {
 		allowedHeaders = parseAllowedHeaders(defaultHeaders)
 	} else {
 		allowedHeaders = parseAllowedHeaders(headers)
@@ -35,6 +36,8 @@ func defaultHTTPConfig() fiber.Handler {
 	return cors.New(cors.Config{
 		AllowOrigins: allowedOrigins,
 		AllowHeaders: allowedHeaders,
+		AllowMethods: parseAllowedHeaders(defaultMethods),
+		AllowCredentials: true,
 	})
 }
 

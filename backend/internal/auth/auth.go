@@ -9,11 +9,7 @@ import (
 func RegisterUser(ctx context.Context, input RegisterUserInput) (string, error) {
 	var role string
 
-	if input.Role == nil {
-		role = users.APP_ROLE_USER
-	} else {
-		role = *input.Role
-	}
+	role = users.APP_ROLE_USER
 
 	payload := users.CreateUserInput{
 		Email:    input.Email,

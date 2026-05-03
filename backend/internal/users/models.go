@@ -7,7 +7,7 @@ import (
 type User struct {
 	ID                             int        `json:"id"`
 	Name                           string     `json:"name"`
-	Email                          string     `json:"email"`
+	Email                          string     `json:"email" format:"email"`
 	HashedPassword                 string     `json:"-"`
 	LastLoginAt                    *time.Time `json:"last_login_at,omitempty"`
 	Role                           *string    `json:"role,omitempty"`
@@ -20,7 +20,7 @@ type User struct {
 
 type CreateUserInput struct {
 	Name     string `json:"name" validate:"required"`
-	Email    string `json:"email" validate:"required,email"`
+	Email    string `json:"email" validate:"required,email" format:"email"`
 	Password string `json:"password" validate:"required,min=8,max=64,password,containsNumber,containsUppercase,containsSpecial"`
 	Role     string `json:"role" validate:"required,oneof=app_admin app_user"`
 }
@@ -28,7 +28,7 @@ type CreateUserInput struct {
 type UpdateUserInput struct {
 	ID                             int        `json:"id" validate:"required"`
 	Name                           *string    `json:"name,omitempty"`
-	Email                          *string    `json:"email,omitempty" validate:"omitempty,email"`
+	Email                          *string    `json:"email,omitempty" validate:"omitempty,email" format:"email"`
 	Password                       *string    `json:"password,omitempty" validate:"omitempty,min=8,max=64,password,containsNumber,containsUppercase,containsSpecial"`
 	Role                           *string    `json:"role,omitempty" validate:"omitempty,oneof=app_admin app_user"`
 	IsActive                       *bool      `json:"is_active,omitempty"`
@@ -39,7 +39,7 @@ type UpdateUserInput struct {
 
 type UpdateUserHandlerInput struct {
 	Name                           *string    `json:"name,omitempty"`
-	Email                          *string    `json:"email,omitempty" validate:"omitempty,email"`
+	Email                          *string    `json:"email,omitempty" validate:"omitempty,email" format:"email"`
 	Password                       *string    `json:"password,omitempty" validate:"omitempty,min=8,max=64,password,containsNumber,containsUppercase,containsSpecial"`
 	Role                           *string    `json:"role,omitempty" validate:"omitempty,oneof=app_admin app_user"`
 	IsActive                       *bool      `json:"is_active,omitempty"`

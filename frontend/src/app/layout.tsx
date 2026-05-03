@@ -3,6 +3,7 @@ import { Inter } from "next/font/google";
 import "./globals.scss";
 import styles from "./layout.module.scss";
 import { headers } from "next/headers";
+import { QueryProvider } from "./QueryProvider";
 import { ResponsiveProvider } from "@/responsive/Responsive.Provider";
 import { parseUABreakpoint } from "@/responsive/utils/parseUABreakpoint";
 
@@ -28,9 +29,11 @@ export default async function RootLayout({
   return (
     <html lang="en" className={`${inter.variable}`}>
       <body className={inter.className}>
-        <ResponsiveProvider ssrBreakpoint={ssrBreakpoint}>
-          <div className={styles.layout}>{children}</div>
-        </ResponsiveProvider>
+        <QueryProvider>
+          <ResponsiveProvider ssrBreakpoint={ssrBreakpoint}>
+            <div className={styles.layout}>{children}</div>
+          </ResponsiveProvider>
+        </QueryProvider>
       </body>
     </html>
   );

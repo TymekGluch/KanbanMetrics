@@ -1,0 +1,141 @@
+@use "@/styles/pxToRem.scss" as mixins;
+@use "@/styles/breakpoints.scss" as breakpoints;
+@use "@/styles/colorsTokens.scss" as colors;
+
+.form {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: mixins.pxToRem(16);
+}
+
+.fieldset {
+  display: flex;
+  flex-direction: column;
+  gap: mixins.pxToRem(16);
+  border: none;
+  padding: 0;
+  margin: 0;
+
+  &_legend {
+    font-size: mixins.pxToRem(18);
+    font-weight: 600;
+    color: colors.$color-text-primary;
+  }
+}
+
+.input {
+  width: 100%;
+
+  &_required {
+    color: colors.$color-status-danger-text;
+  }
+
+  &_root {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    gap: mixins.pxToRem(6);
+  }
+
+  &_label {
+    margin: 0;
+    color: colors.$color-text-secondary;
+    font-size: mixins.pxToRem(14);
+    line-height: 1.4;
+    font-weight: 600;
+  }
+
+  &_field {
+    width: 100%;
+    min-height: mixins.pxToRem(44);
+    padding: mixins.pxToRem(10) mixins.pxToRem(12);
+    border: mixins.pxToRem(1) solid colors.$color-input-border;
+    border-radius: mixins.pxToRem(10);
+    background-color: colors.$color-input-bg;
+    color: colors.$color-input-text;
+    font-size: mixins.pxToRem(16);
+    line-height: 1.35;
+    transition:
+      border-color 160ms ease,
+      box-shadow 160ms ease,
+      background-color 160ms ease,
+      color 160ms ease;
+
+    &::placeholder {
+      color: colors.$color-input-placeholder;
+    }
+
+    &:hover:not(:disabled):not([readonly]) {
+      border-color: colors.$color-input-border-hover;
+    }
+
+    &:focus-visible {
+      outline: none;
+      border-color: colors.$color-input-border-focus;
+      box-shadow: 0 0 0 mixins.pxToRem(1) colors.$color-focus-ring;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      color: colors.$color-text-disabled;
+      border-color: colors.$color-border-default;
+      background-color: colors.$color-surface-subtle;
+      -webkit-text-fill-color: colors.$color-text-disabled;
+      opacity: 1;
+    }
+
+    &[readonly] {
+      border-style: dashed;
+      background-color: colors.$color-surface-card-hover;
+      color: colors.$color-text-secondary;
+    }
+
+    &:-webkit-autofill,
+    &:-webkit-autofill:hover,
+    &:-webkit-autofill:focus {
+      -webkit-text-fill-color: colors.$color-input-text;
+      transition: background-color 9999s ease-in-out 0s;
+    }
+  }
+
+  &_helperText {
+    margin: 0;
+    color: colors.$color-text-tertiary;
+    font-size: mixins.pxToRem(13);
+    line-height: 1.35;
+  }
+
+  &_message {
+    margin: 0;
+    min-height: calc(#{mixins.pxToRem(13)} * 1.35);
+    color: colors.$color-text-secondary;
+    font-size: mixins.pxToRem(13);
+    line-height: 1.35;
+
+    &__error {
+      color: colors.$color-status-danger-text;
+    }
+
+    &__placeholder {
+      visibility: hidden;
+    }
+  }
+
+  &__invalid &_field {
+    border-color: colors.$color-status-danger-border;
+  }
+
+  &__invalid &_field:focus-visible {
+    border-color: colors.$color-status-danger-border;
+    box-shadow: 0 0 0 mixins.pxToRem(1) colors.$color-status-danger-bg;
+  }
+
+  &__invalid &_label {
+    color: colors.$color-status-danger-text;
+  }
+
+  &__disabled &_label {
+    color: colors.$color-text-disabled;
+  }
+}

@@ -1,12 +1,16 @@
-import PageLayoutDefault from "@/components/PageLayout/PageLayoutDefault";
-import Image from "next/image";
-import styles from "./page.module.scss";
+import { AuthForm } from "@/components/Forms/AuthForm/AuthForm";
+import { AUTH_FORM_VARIANTS } from "@/components/Forms/AuthForm/AuthForm.constants";
+import Link from "@/components/Link";
 import { Media } from "@/components/Media";
 import { MEDIA_CONDITION } from "@/components/Media/Media.constants";
+import PageLayoutDefault from "@/components/PageLayout/PageLayoutDefault";
 import { BREAKPOINTS_KEYS } from "@/responsive/responsive.constants";
+import styles from "./page.module.scss";
 
 export const metadata = {
   title: "Login",
+  description:
+    "Access your account to view your personalized dashboard, track your workflow performance, and gain insights with Morphyxis Kanban Metrics.",
 };
 
 export default function Login() {
@@ -17,7 +21,7 @@ export default function Login() {
       <PageLayoutDefault.Content align="center">
         <div className={styles.authContent}>
           <header className={styles.authContent_header}>
-            <h1 className={styles.authContent_title}>Log in to your account!</h1>
+            <h1 className={styles.authContent_title}>Log in to your account</h1>
 
             <p className={styles.authContent_description}>
               Access your dashboard and continue your work.
@@ -29,17 +33,38 @@ export default function Login() {
                 [BREAKPOINTS_KEYS.lg]: true,
               }}
             >
-              <Image
-                src="/login.webp"
-                alt=""
-                width={535}
-                height={467}
-                className={styles.authContent_image}
-              />
+              <div className={styles.authContent_imageWrapper}>
+                <picture>
+                  <source srcSet="/loginDark.webp" media="(prefers-color-scheme: dark)" />
+                  <img
+                    src="/login.webp"
+                    alt=""
+                    width={535}
+                    height={467}
+                    className={styles.authContent_image}
+                    loading="lazy"
+                  />
+                </picture>
+              </div>
             </Media.Client>
           </header>
 
-          <div className={styles.authContent_form}>fsdf</div>
+          <div className={styles.authContent_form}>
+            <AuthForm variant={AUTH_FORM_VARIANTS.LOGIN} />
+
+            <div className={styles.authContent_options}>
+              <p className={styles.authContent_optionsText}>
+                Don&apos;t have an account?{" "}
+                <Link.AsNextLink
+                  href="/auth/register"
+                  isInherits
+                  className={styles.authContent_link}
+                >
+                  Sign up
+                </Link.AsNextLink>
+              </p>
+            </div>
+          </div>
         </div>
         <Media.Client
           variant={MEDIA_CONDITION.BREAKPOINTS}
@@ -47,13 +72,19 @@ export default function Login() {
             [BREAKPOINTS_KEYS.lg]: true,
           }}
           Fallback={
-            <Image
-              src="/login.webp"
-              alt=""
-              width={535}
-              height={467}
-              className={styles.authContent_image}
-            />
+            <div className={styles.authContent_imageWrapper}>
+              <picture>
+                <source srcSet="/loginDark.webp" media="(prefers-color-scheme: dark)" />
+                <img
+                  src="/login.webp"
+                  alt=""
+                  width={535}
+                  height={467}
+                  className={styles.authContent_image}
+                  loading="lazy"
+                />
+              </picture>
+            </div>
           }
         />
       </PageLayoutDefault.Content>

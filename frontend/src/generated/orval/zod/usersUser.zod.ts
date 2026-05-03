@@ -9,8 +9,9 @@ import { z as zod } from 'zod';
 
 export const UsersUser = zod.object({
   "created_at": zod.string().optional(),
-  "email": zod.string().optional(),
+  "email": zod.email().optional(),
   "id": zod.number().optional(),
+  "is_account_expiration_details_send": zod.boolean().optional(),
   "is_active": zod.boolean().optional(),
   "is_verified": zod.boolean().optional(),
   "last_login_at": zod.string().optional(),

@@ -11,14 +11,17 @@ export const usersUpdateUserHandlerInputPasswordMin = 8;
 export const usersUpdateUserHandlerInputPasswordMax = 64;
 
 
+export const usersUpdateUserHandlerInputPasswordRegExp = new RegExp('^(?=.\*[0-9])(?=.\*[A-Z])(?=.\*[^A-Za-z0-9]).{8,64}$');
+
 export const UsersUpdateUserHandlerInput = zod.object({
-  "email": zod.string().optional(),
+  "email": zod.email().optional(),
+  "is_account_expiration_details_send": zod.boolean().optional(),
   "is_active": zod.boolean().optional(),
   "is_verified": zod.boolean().optional(),
   "last_login_at": zod.string().optional(),
   "name": zod.string().optional(),
-  "password": zod.string().min(usersUpdateUserHandlerInputPasswordMin).max(usersUpdateUserHandlerInputPasswordMax).optional(),
-  "role": zod.enum(['admin', 'user']).optional()
+  "password": zod.string().min(usersUpdateUserHandlerInputPasswordMin).max(usersUpdateUserHandlerInputPasswordMax).regex(usersUpdateUserHandlerInputPasswordRegExp).optional(),
+  "role": zod.enum(['app_admin', 'app_user']).optional()
 })
 
 export type UsersUpdateUserHandlerInput = zod.input<typeof UsersUpdateUserHandlerInput>;

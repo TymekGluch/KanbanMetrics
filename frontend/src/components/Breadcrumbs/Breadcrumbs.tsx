@@ -6,6 +6,7 @@ import styles from "./Breadcrumbs.module.scss";
 import { HomeSvg } from "@/assets/HomeSvg";
 import { ChevronRightSvg } from "@/assets/ChevronRightSvg";
 import clsx from "clsx";
+import React from "react";
 
 const hiddenRoutes = ["auth"];
 
@@ -42,14 +43,13 @@ export function Breadcrumbs() {
         const shouldHideLink = hiddenRoutes.some((hiddenRoute) => url.endsWith(hiddenRoute));
 
         return (
-          <>
+          <React.Fragment key={url}>
             <ChevronRightSvg className={styles.breadcrumbs_separator} />
 
             {shouldHideLink ? (
               <p className={styles.breadcrumbs_inactiveLink}>{capitalisedLabel}</p>
             ) : (
               <Link.AsNextLink
-                key={url}
                 href={url}
                 disabled={isActive}
                 className={clsx(styles.breadcrumbs_link, {
@@ -59,7 +59,7 @@ export function Breadcrumbs() {
                 {capitalisedLabel}
               </Link.AsNextLink>
             )}
-          </>
+          </React.Fragment>
         );
       })}
     </div>

@@ -6,12 +6,18 @@
  * OpenAPI spec version: 1.0
  */
 import {
-  UsersUser
+  UsersUser,
+  WorkspaceListWorkspacesResult,
+  WorkspaceWorkspace
 } from './zod/index.zod';
 import type {
+  AppErrorsAppError,
+  AppErrorsValidationErrorResponse,
   AuthLoginUserInput,
   AuthRegisterUserInput,
-  UsersUpdateUserHandlerInput
+  UsersUpdateUserHandlerInput,
+  WorkspaceRouterCreateWorkspaceRequest,
+  WorkspaceRouterListWorkspacesRequest
 } from './zod/index.zod';
 
 
@@ -19,41 +25,41 @@ import type {
  * Authenticates user and sets auth cookie.
  * @summary Login user
  */
-export type postAuthLoginResponse200 = {
+export type postApiAuthLoginResponse200 = {
   data: string
   status: 200
 }
 
-export type postAuthLoginResponse400 = {
+export type postApiAuthLoginResponse400 = {
   data: string
   status: 400
 }
 
-export type postAuthLoginResponse401 = {
-  data: string
+export type postApiAuthLoginResponse401 = {
+  data: AppErrorsValidationErrorResponse
   status: 401
 }
 
-export type postAuthLoginResponseSuccess = (postAuthLoginResponse200) & {
+export type postApiAuthLoginResponseSuccess = (postApiAuthLoginResponse200) & {
   headers: Headers;
 };
-export type postAuthLoginResponseError = (postAuthLoginResponse400 | postAuthLoginResponse401) & {
+export type postApiAuthLoginResponseError = (postApiAuthLoginResponse400 | postApiAuthLoginResponse401) & {
   headers: Headers;
 };
 
-export type postAuthLoginResponse = (postAuthLoginResponseSuccess | postAuthLoginResponseError)
+export type postApiAuthLoginResponse = (postApiAuthLoginResponseSuccess | postApiAuthLoginResponseError)
 
-export const getPostAuthLoginUrl = () => {
-
-
+export const getPostApiAuthLoginUrl = () => {
 
 
-  return `http://localhost:3000/api/auth/login`
+
+
+  return `http://localhost:3000/api/api/auth/login`
 }
 
-export const postAuthLogin = async (authLoginUserInput: AuthLoginUserInput, options?: RequestInit): Promise<postAuthLoginResponse> => {
+export const postApiAuthLogin = async (authLoginUserInput: AuthLoginUserInput, options?: RequestInit): Promise<postApiAuthLoginResponse> => {
 
-  const res = await fetch(getPostAuthLoginUrl(),
+  const res = await fetch(getPostApiAuthLoginUrl(),
   {
     ...options,
     method: 'POST',
@@ -65,8 +71,8 @@ export const postAuthLogin = async (authLoginUserInput: AuthLoginUserInput, opti
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text();
 
-  const data: postAuthLoginResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as postAuthLoginResponse
+  const data: postApiAuthLoginResponse['data'] = body ? JSON.parse(body) : {}
+  return { data, status: res.status, headers: res.headers } as postApiAuthLoginResponse
 }
 
 
@@ -75,29 +81,29 @@ export const postAuthLogin = async (authLoginUserInput: AuthLoginUserInput, opti
  * Removes auth cookie.
  * @summary Logout user
  */
-export type postAuthLogoutResponse200 = {
+export type postApiAuthLogoutResponse200 = {
   data: string
   status: 200
 }
 
-export type postAuthLogoutResponseSuccess = (postAuthLogoutResponse200) & {
+export type postApiAuthLogoutResponseSuccess = (postApiAuthLogoutResponse200) & {
   headers: Headers;
 };
 ;
 
-export type postAuthLogoutResponse = (postAuthLogoutResponseSuccess)
+export type postApiAuthLogoutResponse = (postApiAuthLogoutResponseSuccess)
 
-export const getPostAuthLogoutUrl = () => {
-
-
+export const getPostApiAuthLogoutUrl = () => {
 
 
-  return `http://localhost:3000/api/auth/logout`
+
+
+  return `http://localhost:3000/api/api/auth/logout`
 }
 
-export const postAuthLogout = async ( options?: RequestInit): Promise<postAuthLogoutResponse> => {
+export const postApiAuthLogout = async ( options?: RequestInit): Promise<postApiAuthLogoutResponse> => {
 
-  const res = await fetch(getPostAuthLogoutUrl(),
+  const res = await fetch(getPostApiAuthLogoutUrl(),
   {
     ...options,
     method: 'POST'
@@ -108,8 +114,8 @@ export const postAuthLogout = async ( options?: RequestInit): Promise<postAuthLo
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text();
 
-  const data: postAuthLogoutResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as postAuthLogoutResponse
+  const data: postApiAuthLogoutResponse['data'] = body ? JSON.parse(body) : {}
+  return { data, status: res.status, headers: res.headers } as postApiAuthLogoutResponse
 }
 
 
@@ -118,41 +124,46 @@ export const postAuthLogout = async ( options?: RequestInit): Promise<postAuthLo
  * Creates a user account and sets auth cookie.
  * @summary Register user
  */
-export type postAuthRegisterResponse201 = {
+export type postApiAuthRegisterResponse201 = {
   data: string
   status: 201
 }
 
-export type postAuthRegisterResponse400 = {
+export type postApiAuthRegisterResponse400 = {
   data: string
   status: 400
 }
 
-export type postAuthRegisterResponse500 = {
+export type postApiAuthRegisterResponse409 = {
+  data: AppErrorsValidationErrorResponse
+  status: 409
+}
+
+export type postApiAuthRegisterResponse500 = {
   data: string
   status: 500
 }
 
-export type postAuthRegisterResponseSuccess = (postAuthRegisterResponse201) & {
+export type postApiAuthRegisterResponseSuccess = (postApiAuthRegisterResponse201) & {
   headers: Headers;
 };
-export type postAuthRegisterResponseError = (postAuthRegisterResponse400 | postAuthRegisterResponse500) & {
+export type postApiAuthRegisterResponseError = (postApiAuthRegisterResponse400 | postApiAuthRegisterResponse409 | postApiAuthRegisterResponse500) & {
   headers: Headers;
 };
 
-export type postAuthRegisterResponse = (postAuthRegisterResponseSuccess | postAuthRegisterResponseError)
+export type postApiAuthRegisterResponse = (postApiAuthRegisterResponseSuccess | postApiAuthRegisterResponseError)
 
-export const getPostAuthRegisterUrl = () => {
-
-
+export const getPostApiAuthRegisterUrl = () => {
 
 
-  return `http://localhost:3000/api/auth/register`
+
+
+  return `http://localhost:3000/api/api/auth/register`
 }
 
-export const postAuthRegister = async (authRegisterUserInput: AuthRegisterUserInput, options?: RequestInit): Promise<postAuthRegisterResponse> => {
+export const postApiAuthRegister = async (authRegisterUserInput: AuthRegisterUserInput, options?: RequestInit): Promise<postApiAuthRegisterResponse> => {
 
-  const res = await fetch(getPostAuthRegisterUrl(),
+  const res = await fetch(getPostApiAuthRegisterUrl(),
   {
     ...options,
     method: 'POST',
@@ -164,8 +175,8 @@ export const postAuthRegister = async (authRegisterUserInput: AuthRegisterUserIn
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text();
 
-  const data: postAuthRegisterResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as postAuthRegisterResponse
+  const data: postApiAuthRegisterResponse['data'] = body ? JSON.parse(body) : {}
+  return { data, status: res.status, headers: res.headers } as postApiAuthRegisterResponse
 }
 
 
@@ -174,41 +185,41 @@ export const postAuthRegister = async (authRegisterUserInput: AuthRegisterUserIn
  * Deletes the currently authenticated user and removes auth cookie.
  * @summary Delete current user
  */
-export type deleteUsersDeleteResponse200 = {
+export type deleteApiUserDeleteResponse200 = {
   data: string
   status: 200
 }
 
-export type deleteUsersDeleteResponse401 = {
+export type deleteApiUserDeleteResponse401 = {
   data: string
   status: 401
 }
 
-export type deleteUsersDeleteResponse500 = {
+export type deleteApiUserDeleteResponse500 = {
   data: string
   status: 500
 }
 
-export type deleteUsersDeleteResponseSuccess = (deleteUsersDeleteResponse200) & {
+export type deleteApiUserDeleteResponseSuccess = (deleteApiUserDeleteResponse200) & {
   headers: Headers;
 };
-export type deleteUsersDeleteResponseError = (deleteUsersDeleteResponse401 | deleteUsersDeleteResponse500) & {
+export type deleteApiUserDeleteResponseError = (deleteApiUserDeleteResponse401 | deleteApiUserDeleteResponse500) & {
   headers: Headers;
 };
 
-export type deleteUsersDeleteResponse = (deleteUsersDeleteResponseSuccess | deleteUsersDeleteResponseError)
+export type deleteApiUserDeleteResponse = (deleteApiUserDeleteResponseSuccess | deleteApiUserDeleteResponseError)
 
-export const getDeleteUsersDeleteUrl = () => {
-
-
+export const getDeleteApiUserDeleteUrl = () => {
 
 
-  return `http://localhost:3000/api/users/delete`
+
+
+  return `http://localhost:3000/api/api/user/delete`
 }
 
-export const deleteUsersDelete = async ( options?: RequestInit): Promise<deleteUsersDeleteResponse> => {
+export const deleteApiUserDelete = async ( options?: RequestInit): Promise<deleteApiUserDeleteResponse> => {
 
-  const res = await fetch(getDeleteUsersDeleteUrl(),
+  const res = await fetch(getDeleteApiUserDeleteUrl(),
   {
     ...options,
     method: 'DELETE'
@@ -219,8 +230,8 @@ export const deleteUsersDelete = async ( options?: RequestInit): Promise<deleteU
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text();
 
-  const data: deleteUsersDeleteResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as deleteUsersDeleteResponse
+  const data: deleteApiUserDeleteResponse['data'] = body ? JSON.parse(body) : {}
+  return { data, status: res.status, headers: res.headers } as deleteApiUserDeleteResponse
 }
 
 
@@ -229,41 +240,41 @@ export const deleteUsersDelete = async ( options?: RequestInit): Promise<deleteU
  * Returns profile of the currently authenticated user.
  * @summary Get current user
  */
-export type getUsersMeResponse200 = {
+export type getApiUserMeResponse200 = {
   data: UsersUser
   status: 200
 }
 
-export type getUsersMeResponse401 = {
+export type getApiUserMeResponse401 = {
   data: string
   status: 401
 }
 
-export type getUsersMeResponse500 = {
+export type getApiUserMeResponse500 = {
   data: string
   status: 500
 }
 
-export type getUsersMeResponseSuccess = (getUsersMeResponse200) & {
+export type getApiUserMeResponseSuccess = (getApiUserMeResponse200) & {
   headers: Headers;
 };
-export type getUsersMeResponseError = (getUsersMeResponse401 | getUsersMeResponse500) & {
+export type getApiUserMeResponseError = (getApiUserMeResponse401 | getApiUserMeResponse500) & {
   headers: Headers;
 };
 
-export type getUsersMeResponse = (getUsersMeResponseSuccess | getUsersMeResponseError)
+export type getApiUserMeResponse = (getApiUserMeResponseSuccess | getApiUserMeResponseError)
 
-export const getGetUsersMeUrl = () => {
-
-
+export const getGetApiUserMeUrl = () => {
 
 
-  return `http://localhost:3000/api/users/me`
+
+
+  return `http://localhost:3000/api/api/user/me`
 }
 
-export const getUsersMe = async ( options?: RequestInit): Promise<getUsersMeResponse> => {
+export const getApiUserMe = async ( options?: RequestInit): Promise<getApiUserMeResponse> => {
 
-  const res = await fetch(getGetUsersMeUrl(),
+  const res = await fetch(getGetApiUserMeUrl(),
   {
     ...options,
     method: 'GET'
@@ -276,7 +287,7 @@ export const getUsersMe = async ( options?: RequestInit): Promise<getUsersMeResp
 
   const parsedBody = body ? JSON.parse(body) : {}
   const data = UsersUser.parse(parsedBody)
-  return { data, status: res.status, headers: res.headers } as getUsersMeResponse
+  return { data, status: res.status, headers: res.headers } as getApiUserMeResponse
 }
 
 
@@ -285,46 +296,46 @@ export const getUsersMe = async ( options?: RequestInit): Promise<getUsersMeResp
  * Updates selected fields for the currently authenticated user.
  * @summary Update current user
  */
-export type putUsersUpdateResponse200 = {
+export type putApiUserUpdateResponse200 = {
   data: string
   status: 200
 }
 
-export type putUsersUpdateResponse400 = {
+export type putApiUserUpdateResponse400 = {
   data: string
   status: 400
 }
 
-export type putUsersUpdateResponse401 = {
+export type putApiUserUpdateResponse401 = {
   data: string
   status: 401
 }
 
-export type putUsersUpdateResponse500 = {
+export type putApiUserUpdateResponse500 = {
   data: string
   status: 500
 }
 
-export type putUsersUpdateResponseSuccess = (putUsersUpdateResponse200) & {
+export type putApiUserUpdateResponseSuccess = (putApiUserUpdateResponse200) & {
   headers: Headers;
 };
-export type putUsersUpdateResponseError = (putUsersUpdateResponse400 | putUsersUpdateResponse401 | putUsersUpdateResponse500) & {
+export type putApiUserUpdateResponseError = (putApiUserUpdateResponse400 | putApiUserUpdateResponse401 | putApiUserUpdateResponse500) & {
   headers: Headers;
 };
 
-export type putUsersUpdateResponse = (putUsersUpdateResponseSuccess | putUsersUpdateResponseError)
+export type putApiUserUpdateResponse = (putApiUserUpdateResponseSuccess | putApiUserUpdateResponseError)
 
-export const getPutUsersUpdateUrl = () => {
-
-
+export const getPutApiUserUpdateUrl = () => {
 
 
-  return `http://localhost:3000/api/users/update`
+
+
+  return `http://localhost:3000/api/api/user/update`
 }
 
-export const putUsersUpdate = async (usersUpdateUserHandlerInput: UsersUpdateUserHandlerInput, options?: RequestInit): Promise<putUsersUpdateResponse> => {
+export const putApiUserUpdate = async (usersUpdateUserHandlerInput: UsersUpdateUserHandlerInput, options?: RequestInit): Promise<putApiUserUpdateResponse> => {
 
-  const res = await fetch(getPutUsersUpdateUrl(),
+  const res = await fetch(getPutApiUserUpdateUrl(),
   {
     ...options,
     method: 'PUT',
@@ -336,8 +347,213 @@ export const putUsersUpdate = async (usersUpdateUserHandlerInput: UsersUpdateUse
 
   const body = [204, 205, 304].includes(res.status) ? null : await res.text();
 
-  const data: putUsersUpdateResponse['data'] = body ? JSON.parse(body) : {}
-  return { data, status: res.status, headers: res.headers } as putUsersUpdateResponse
+  const data: putApiUserUpdateResponse['data'] = body ? JSON.parse(body) : {}
+  return { data, status: res.status, headers: res.headers } as putApiUserUpdateResponse
+}
+
+
+
+/**
+ * Returns a paginated list of workspaces available to the authenticated user (owner or member).
+ * @summary List workspaces
+ */
+export type getApiWorkspacesResponse200 = {
+  data: WorkspaceListWorkspacesResult
+  status: 200
+}
+
+export type getApiWorkspacesResponse400 = {
+  data: AppErrorsAppError
+  status: 400
+}
+
+export type getApiWorkspacesResponse401 = {
+  data: AppErrorsAppError
+  status: 401
+}
+
+export type getApiWorkspacesResponse403 = {
+  data: AppErrorsAppError
+  status: 403
+}
+
+export type getApiWorkspacesResponse500 = {
+  data: AppErrorsAppError
+  status: 500
+}
+
+export type getApiWorkspacesResponseSuccess = (getApiWorkspacesResponse200) & {
+  headers: Headers;
+};
+export type getApiWorkspacesResponseError = (getApiWorkspacesResponse400 | getApiWorkspacesResponse401 | getApiWorkspacesResponse403 | getApiWorkspacesResponse500) & {
+  headers: Headers;
+};
+
+export type getApiWorkspacesResponse = (getApiWorkspacesResponseSuccess | getApiWorkspacesResponseError)
+
+export const getGetApiWorkspacesUrl = () => {
+
+
+
+
+  return `http://localhost:3000/api/api/workspaces`
+}
+
+export const getApiWorkspaces = async (workspaceRouterListWorkspacesRequest: WorkspaceRouterListWorkspacesRequest, options?: RequestInit): Promise<getApiWorkspacesResponse> => {
+
+  const res = await fetch(getGetApiWorkspacesUrl(),
+  {
+    ...options,
+    method: 'GET',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      workspaceRouterListWorkspacesRequest,)
+  }
+)
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+
+  const parsedBody = body ? JSON.parse(body) : {}
+  const data = WorkspaceListWorkspacesResult.parse(parsedBody)
+  return { data, status: res.status, headers: res.headers } as getApiWorkspacesResponse
+}
+
+
+
+/**
+ * Creates a new workspace with the authenticated user as the owner.
+ * @summary Create a new workspace
+ */
+export type postApiWorkspacesCreateResponse201 = {
+  data: WorkspaceWorkspace
+  status: 201
+}
+
+export type postApiWorkspacesCreateResponse400 = {
+  data: AppErrorsAppError
+  status: 400
+}
+
+export type postApiWorkspacesCreateResponse401 = {
+  data: AppErrorsAppError
+  status: 401
+}
+
+export type postApiWorkspacesCreateResponse500 = {
+  data: AppErrorsAppError
+  status: 500
+}
+
+export type postApiWorkspacesCreateResponseSuccess = (postApiWorkspacesCreateResponse201) & {
+  headers: Headers;
+};
+export type postApiWorkspacesCreateResponseError = (postApiWorkspacesCreateResponse400 | postApiWorkspacesCreateResponse401 | postApiWorkspacesCreateResponse500) & {
+  headers: Headers;
+};
+
+export type postApiWorkspacesCreateResponse = (postApiWorkspacesCreateResponseSuccess | postApiWorkspacesCreateResponseError)
+
+export const getPostApiWorkspacesCreateUrl = () => {
+
+
+
+
+  return `http://localhost:3000/api/api/workspaces/create`
+}
+
+export const postApiWorkspacesCreate = async (workspaceRouterCreateWorkspaceRequest: WorkspaceRouterCreateWorkspaceRequest, options?: RequestInit): Promise<postApiWorkspacesCreateResponse> => {
+
+  const res = await fetch(getPostApiWorkspacesCreateUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json', ...options?.headers },
+    body: JSON.stringify(
+      workspaceRouterCreateWorkspaceRequest,)
+  }
+)
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+
+  const parsedBody = body ? JSON.parse(body) : {}
+  const data = WorkspaceWorkspace.parse(parsedBody)
+  return { data, status: res.status, headers: res.headers } as postApiWorkspacesCreateResponse
+}
+
+
+
+/**
+ * Retrieves a workspace by its ID. User must have read access to the workspace.
+ * @summary Get workspace by ID
+ */
+export type getApiWorkspacesIdResponse200 = {
+  data: WorkspaceWorkspace
+  status: 200
+}
+
+export type getApiWorkspacesIdResponse400 = {
+  data: AppErrorsAppError
+  status: 400
+}
+
+export type getApiWorkspacesIdResponse401 = {
+  data: AppErrorsAppError
+  status: 401
+}
+
+export type getApiWorkspacesIdResponse403 = {
+  data: AppErrorsAppError
+  status: 403
+}
+
+export type getApiWorkspacesIdResponse404 = {
+  data: AppErrorsAppError
+  status: 404
+}
+
+export type getApiWorkspacesIdResponse408 = {
+  data: AppErrorsAppError
+  status: 408
+}
+
+export type getApiWorkspacesIdResponse500 = {
+  data: AppErrorsAppError
+  status: 500
+}
+
+export type getApiWorkspacesIdResponseSuccess = (getApiWorkspacesIdResponse200) & {
+  headers: Headers;
+};
+export type getApiWorkspacesIdResponseError = (getApiWorkspacesIdResponse400 | getApiWorkspacesIdResponse401 | getApiWorkspacesIdResponse403 | getApiWorkspacesIdResponse404 | getApiWorkspacesIdResponse408 | getApiWorkspacesIdResponse500) & {
+  headers: Headers;
+};
+
+export type getApiWorkspacesIdResponse = (getApiWorkspacesIdResponseSuccess | getApiWorkspacesIdResponseError)
+
+export const getGetApiWorkspacesIdUrl = (id: string,) => {
+
+
+
+
+  return `http://localhost:3000/api/api/workspaces/${id}`
+}
+
+export const getApiWorkspacesId = async (id: string, options?: RequestInit): Promise<getApiWorkspacesIdResponse> => {
+
+  const res = await fetch(getGetApiWorkspacesIdUrl(id),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+)
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+
+  const parsedBody = body ? JSON.parse(body) : {}
+  const data = WorkspaceWorkspace.parse(parsedBody)
+  return { data, status: res.status, headers: res.headers } as getApiWorkspacesIdResponse
 }
 
 

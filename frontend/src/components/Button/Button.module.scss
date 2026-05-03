@@ -1,0 +1,31 @@
+@use "@/styles/pxToRem.scss" as mixins;
+@use "@/styles/breakpoints.scss" as breakpoints;
+@use "@/styles/colorsTokens.scss" as colors;
+
+.button {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  height: mixins.pxToRem(44);
+  padding: mixins.pxToRem(8) mixins.pxToRem(16);
+  background: colors.$gradient-button-purple;
+  color: colors.$color-button-primary-text;
+  border: solid mixins.pxToRem(1) colors.$color-border-default;
+  border-radius: mixins.pxToRem(10);
+  font-size: mixins.pxToRem(14);
+  text-transform: uppercase;
+
+  &__disabled {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  &:hover:not(&__disabled) {
+    background: colors.$color-button-primary-hover;
+  }
+
+  &:active:not(&__disabled) {
+    background: colors.$color-button-primary-active;
+  }
+}

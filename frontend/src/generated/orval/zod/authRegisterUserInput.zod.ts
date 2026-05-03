@@ -7,15 +7,18 @@
  */
 import { z as zod } from 'zod';
 
+export const authRegisterUserInputEmailMin = 3;
+
 export const authRegisterUserInputPasswordMin = 8;
 export const authRegisterUserInputPasswordMax = 64;
 
 
+export const authRegisterUserInputPasswordRegExp = new RegExp('^(?=.\*[0-9])(?=.\*[A-Z])(?=.\*[^A-Za-z0-9]).{8,64}$');
+
 export const AuthRegisterUserInput = zod.object({
-  "email": zod.string(),
-  "name": zod.string(),
-  "password": zod.string().min(authRegisterUserInputPasswordMin).max(authRegisterUserInputPasswordMax),
-  "role": zod.enum(['admin', 'user']).optional()
+  "email": zod.email().min(authRegisterUserInputEmailMin),
+  "name": zod.string().optional(),
+  "password": zod.string().min(authRegisterUserInputPasswordMin).max(authRegisterUserInputPasswordMax).regex(authRegisterUserInputPasswordRegExp)
 })
 
 export type AuthRegisterUserInput = zod.input<typeof AuthRegisterUserInput>;

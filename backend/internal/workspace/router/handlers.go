@@ -39,7 +39,7 @@ func (handler *handlers) createWorkspaceHandler(ctx fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusUnauthorized, auth.ErrorUnauthorized)
 	}
 
-	if err := ctx.Bind().Body(&input); err != nil {
+	if err := validation.BindJSONStrict(ctx, &input); err != nil {
 		return fiber.NewError(fiber.StatusBadRequest, auth.ErrorInvalidBody)
 	}
 
@@ -108,7 +108,7 @@ func (handler *handlers) listWorkspacesHandler(ctx fiber.Ctx) error {
 	offset := 0
 
 	if len(ctx.Request().Body()) > 0 {
-		if err := ctx.Bind().Body(&input); err != nil {
+		if err := validation.BindJSONStrict(ctx, &input); err != nil {
 			return fiber.NewError(fiber.StatusBadRequest, auth.ErrorInvalidBody)
 		}
 	}

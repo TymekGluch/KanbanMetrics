@@ -4,7 +4,7 @@
  */
 
 export interface paths {
-    "/auth/login": {
+    "/api/auth/login": {
         parameters: {
             query?: never;
             header?: never;
@@ -55,7 +55,7 @@ export interface paths {
                         [name: string]: unknown;
                     };
                     content: {
-                        "text/plain": string;
+                        "text/plain": components["schemas"]["appErrors.ValidationErrorResponse"];
                     };
                 };
             };
@@ -66,7 +66,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/auth/logout": {
+    "/api/auth/logout": {
         parameters: {
             query?: never;
             header?: never;
@@ -105,7 +105,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/auth/register": {
+    "/api/auth/register": {
         parameters: {
             query?: never;
             header?: never;
@@ -150,6 +150,15 @@ export interface paths {
                         "text/plain": string;
                     };
                 };
+                /** @description Conflict */
+                409: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "text/plain": components["schemas"]["appErrors.ValidationErrorResponse"];
+                    };
+                };
                 /** @description Internal server error */
                 500: {
                     headers: {
@@ -167,7 +176,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/users/delete": {
+    "/api/user/delete": {
         parameters: {
             query?: never;
             header?: never;
@@ -224,7 +233,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/users/me": {
+    "/api/user/me": {
         parameters: {
             query?: never;
             header?: never;
@@ -281,7 +290,7 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
-    "/users/update": {
+    "/api/user/update": {
         parameters: {
             query?: never;
             header?: never;
@@ -352,41 +361,321 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/workspaces": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * List workspaces
+         * @description Returns a paginated list of workspaces available to the authenticated user (owner or member).
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            /** @description Workspace list filters */
+            requestBody?: {
+                content: {
+                    "application/json": components["schemas"]["workspaceRouter.listWorkspacesRequest"];
+                };
+            };
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["workspace.ListWorkspacesResult"];
+                    };
+                };
+                /** @description Bad Request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["appErrors.AppError"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["appErrors.AppError"];
+                    };
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["appErrors.AppError"];
+                    };
+                };
+                /** @description Internal Server Error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["appErrors.AppError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/workspaces/create": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Create a new workspace
+         * @description Creates a new workspace with the authenticated user as the owner.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            /** @description Workspace input */
+            requestBody: {
+                content: {
+                    "application/json": components["schemas"]["workspaceRouter.createWorkspaceRequest"];
+                };
+            };
+            responses: {
+                /** @description Created */
+                201: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["workspace.Workspace"];
+                    };
+                };
+                /** @description Bad Request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["appErrors.AppError"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["appErrors.AppError"];
+                    };
+                };
+                /** @description Internal Server Error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["appErrors.AppError"];
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
+    "/api/workspaces/{id}": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        /**
+         * Get workspace by ID
+         * @description Retrieves a workspace by its ID. User must have read access to the workspace.
+         */
+        get: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path: {
+                    /** @description Workspace ID */
+                    id: string;
+                };
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["workspace.Workspace"];
+                    };
+                };
+                /** @description Bad Request */
+                400: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["appErrors.AppError"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["appErrors.AppError"];
+                    };
+                };
+                /** @description Forbidden */
+                403: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["appErrors.AppError"];
+                    };
+                };
+                /** @description Not Found */
+                404: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["appErrors.AppError"];
+                    };
+                };
+                /** @description Request Timeout */
+                408: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["appErrors.AppError"];
+                    };
+                };
+                /** @description Internal Server Error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["appErrors.AppError"];
+                    };
+                };
+            };
+        };
+        put?: never;
+        post?: never;
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
 }
 export type webhooks = Record<string, never>;
 export interface components {
     schemas: {
+        "appErrors.AppError": Record<string, never>;
+        "appErrors.FieldError": {
+            field?: string;
+            message?: string;
+        };
+        "appErrors.ValidationErrorResponse": {
+            fields?: components["schemas"]["appErrors.FieldError"][];
+            message?: string;
+        };
         "auth.LoginUserInput": {
+            /** Format: email */
             email: string;
             password: string;
         };
         "auth.RegisterUserInput": {
+            /** Format: email */
             email: string;
-            name: string;
+            name?: string;
             password: string;
-            /** @enum {string} */
-            role?: "admin" | "user";
         };
         "users.UpdateUserHandlerInput": {
+            /** Format: email */
             email?: string;
+            is_account_expiration_details_send?: boolean;
             is_active?: boolean;
             is_verified?: boolean;
             last_login_at?: string;
             name?: string;
             password?: string;
             /** @enum {string} */
-            role?: "admin" | "user";
+            role?: "app_admin" | "app_user";
         };
         "users.User": {
             created_at?: string;
+            /** Format: email */
             email?: string;
             id?: number;
+            is_account_expiration_details_send?: boolean;
             is_active?: boolean;
             is_verified?: boolean;
             last_login_at?: string;
             name?: string;
             role?: string;
             updated_at?: string;
+        };
+        "workspace.ListWorkspacesResult": {
+            items?: components["schemas"]["workspace.Workspace"][];
+            limit?: number;
+            offset?: number;
+        };
+        "workspace.Workspace": {
+            created_at?: string;
+            id?: string;
+            name?: string;
+            owner_id?: number;
+            updated_at?: string;
+        };
+        "workspaceRouter.createWorkspaceRequest": {
+            name: string;
+        };
+        "workspaceRouter.listWorkspacesRequest": {
+            limit?: number;
+            offset?: number;
+            only_mine?: boolean;
         };
     };
     responses: never;
