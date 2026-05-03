@@ -9,6 +9,8 @@ import { z as zod } from 'zod';
 
 export const authRegisterUserInputEmailMin = 3;
 
+export const authRegisterUserInputNameMin = 3;
+
 export const authRegisterUserInputPasswordMin = 8;
 export const authRegisterUserInputPasswordMax = 64;
 
@@ -17,7 +19,7 @@ export const authRegisterUserInputPasswordRegExp = new RegExp('^(?=.\*[0-9])(?=.
 
 export const AuthRegisterUserInput = zod.object({
   "email": zod.email().min(authRegisterUserInputEmailMin),
-  "name": zod.string().optional(),
+  "name": zod.string().min(authRegisterUserInputNameMin),
   "password": zod.string().min(authRegisterUserInputPasswordMin).max(authRegisterUserInputPasswordMax).regex(authRegisterUserInputPasswordRegExp)
 })
 

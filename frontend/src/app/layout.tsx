@@ -6,7 +6,8 @@ import { headers } from "next/headers";
 import { QueryProvider } from "./QueryProvider";
 import { ResponsiveProvider } from "@/responsive/Responsive.Provider";
 import { parseUABreakpoint } from "@/responsive/utils/parseUABreakpoint";
-
+import { UserProvider } from "@/providers/UserProvider/UserProvider";
+import { getUserFetch } from "@/api/getUserFetch";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],
@@ -26,12 +27,16 @@ export default async function RootLayout({
   const userAgent = headersList.get("user-agent") ?? "";
   const ssrBreakpoint = parseUABreakpoint(userAgent);
 
+  const user = await getUserFetch(headersList);
+
   return (
     <html lang="en" className={`${inter.variable}`}>
       <body className={inter.className}>
         <QueryProvider>
           <ResponsiveProvider ssrBreakpoint={ssrBreakpoint}>
-            <div className={styles.layout}>{children}</div>
+            <UserProvider user={user}>
+              <div className={styles.layout}>{children}</div>
+            </UserProvider>
           </ResponsiveProvider>
         </QueryProvider>
       </body>

@@ -5,13 +5,21 @@ import {
   type ButtonAsButtonProps,
   type ButtonAsNextLinkProps,
 } from "./Button.types";
+import { BUTTON_VARIANTS } from "./button.constants";
 import { Base } from "../Base/Base";
 import Link from "next/link";
 import clsx from "clsx";
 
 export function AsButtonComponent(props: ButtonAsButtonProps) {
   const { stylesProps, rest } = resolveProps(props);
-  const { children, disabled, ...buttonProps } = rest;
+  const {
+    children,
+    disabled,
+    variant = BUTTON_VARIANTS.PRIMARY,
+    StartIconSlot,
+    EndIconSlot,
+    ...buttonProps
+  } = rest;
 
   return (
     <Base
@@ -19,10 +27,14 @@ export function AsButtonComponent(props: ButtonAsButtonProps) {
       asChild
       className={clsx(styles.button, {
         [styles.button__disabled]: disabled,
+        [styles.button__outlined]: variant === BUTTON_VARIANTS.OUTLINED,
       })}
     >
       <button {...buttonProps} disabled={disabled}>
+        {!!StartIconSlot && <span className={styles.button_icon}>{StartIconSlot}</span>}
+
         {children}
+        {!!EndIconSlot && <span className={styles.button_icon}>{EndIconSlot}</span>}
       </button>
     </Base>
   );
@@ -30,23 +42,42 @@ export function AsButtonComponent(props: ButtonAsButtonProps) {
 
 export function AsAnchorComponent(props: ButtonAsAnchorProps) {
   const { stylesProps, rest } = resolveProps(props);
-  const { children, disabled, ...anchorProps } = rest;
+  const {
+    children,
+    disabled,
+    variant = BUTTON_VARIANTS.PRIMARY,
+    StartIconSlot,
+    EndIconSlot,
+    ...anchorProps
+  } = rest;
   return (
     <Base
       {...stylesProps}
       asChild
       className={clsx(styles.button, {
         [styles.button__disabled]: disabled,
+        [styles.button__outlined]: variant === BUTTON_VARIANTS.OUTLINED,
       })}
     >
-      <a {...anchorProps}>{children}</a>
+      <a {...anchorProps}>
+        {!!StartIconSlot && <span className={styles.button_icon}>{StartIconSlot}</span>}
+        {children}
+        {!!EndIconSlot && <span className={styles.button_icon}>{EndIconSlot}</span>}
+      </a>
     </Base>
   );
 }
 
 export function AsNextLinkComponent(props: ButtonAsNextLinkProps) {
   const { stylesProps, rest } = resolveProps(props);
-  const { children, disabled, ...linkProps } = rest;
+  const {
+    children,
+    disabled,
+    variant = BUTTON_VARIANTS.PRIMARY,
+    StartIconSlot,
+    EndIconSlot,
+    ...linkProps
+  } = rest;
 
   return (
     <Base
@@ -54,9 +85,14 @@ export function AsNextLinkComponent(props: ButtonAsNextLinkProps) {
       asChild
       className={clsx(styles.button, {
         [styles.button__disabled]: disabled,
+        [styles.button__outlined]: variant === BUTTON_VARIANTS.OUTLINED,
       })}
     >
-      <Link {...linkProps}>{children}</Link>
+      <Link {...linkProps}>
+        {!!StartIconSlot && <span className={styles.button_icon}>{StartIconSlot}</span>}
+        {children}
+        {!!EndIconSlot && <span className={styles.button_icon}>{EndIconSlot}</span>}
+      </Link>
     </Base>
   );
 }

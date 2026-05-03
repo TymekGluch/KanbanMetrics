@@ -9,6 +9,8 @@ import { z as zod } from 'zod';
 
 export const postApiAuthRegisterBodyEmailMin = 3;
 
+export const postApiAuthRegisterBodyNameMin = 3;
+
 export const postApiAuthRegisterBodyPasswordMin = 8;
 export const postApiAuthRegisterBodyPasswordMax = 64;
 
@@ -17,7 +19,7 @@ export const postApiAuthRegisterBodyPasswordRegExp = new RegExp('^(?=.\*[0-9])(?
 
 export const PostApiAuthRegisterBody = zod.object({
   "email": zod.email().min(postApiAuthRegisterBodyEmailMin),
-  "name": zod.string().optional(),
+  "name": zod.string().min(postApiAuthRegisterBodyNameMin),
   "password": zod.string().min(postApiAuthRegisterBodyPasswordMin).max(postApiAuthRegisterBodyPasswordMax).regex(postApiAuthRegisterBodyPasswordRegExp)
 })
 

@@ -6,6 +6,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  gap: mixins.pxToRem(4);
   width: fit-content;
   height: mixins.pxToRem(44);
   padding: mixins.pxToRem(8) mixins.pxToRem(16);
@@ -14,7 +15,14 @@
   border: solid mixins.pxToRem(1) colors.$color-border-default;
   border-radius: mixins.pxToRem(10);
   font-size: mixins.pxToRem(14);
-  text-transform: uppercase;
+
+  &_icon {
+    display: flex;
+    align-items: center;
+    flex-shrink: 1;
+    line-height: 1;
+    color: inherit;
+  }
 
   &__disabled {
     opacity: 0.7;
@@ -27,5 +35,19 @@
 
   &:active:not(&__disabled) {
     background: colors.$color-button-primary-active;
+  }
+
+  &__outlined {
+    background: transparent;
+    color: colors.$color-button-secondary-text;
+    border-color: colors.$color-button-secondary-border;
+
+    &:hover:not(.button__disabled) {
+      background: colors.$color-button-secondary-hover;
+    }
+
+    &:active:not(.button__disabled) {
+      background: colors.$color-button-secondary-active;
+    }
   }
 }

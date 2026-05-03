@@ -73,27 +73,6 @@
     }
   }
 
-  &_options {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    align-items: center;
-    gap: mixins.pxToRem(32);
-    width: 100%;
-
-    &::before {
-      content: "";
-      display: block;
-      width: 100%;
-      height: mixins.pxToRem(1);
-      background: colors.$gradient-divider-strong;
-    }
-  }
-
-  &_optionsText {
-    font-size: mixins.pxToRem(14);
-  }
-
   &_image {
     width: 100%;
     max-width: mixins.pxToRem(535);

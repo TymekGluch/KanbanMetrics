@@ -6,6 +6,10 @@ import Form from "@/components/Form";
 import { useAuthForm } from "./useAuthForm";
 import Button from "@/components/Button";
 import styles from "./AuthForm.module.scss";
+import React from "react";
+import { UserContext } from "@/providers/UserProvider/UserProvider";
+import Link from "@/components/Link";
+import { AuthFormSuccessStatus } from "./AuthFormSuccessStatus";
 
 interface AuthFormProps {
   variant: ValueOf<typeof AUTH_FORM_VARIANTS>;
@@ -14,55 +18,73 @@ interface AuthFormProps {
 export function AuthForm(props: AuthFormProps) {
   const { variant } = props;
 
+  const user = React.useContext(UserContext);
   const { form, handleSubmit, isPending, isLoginVariant } = useAuthForm(variant);
-  const fieldErrors = form.formState.errors as Partial<
-    Record<"email" | "password" | "name", { message?: string }>
-  >;
-  const globalErrorMessage = (
-    form.formState.errors.root as { server?: { message?: string } } | undefined
-  )?.server?.message;
+
+  const { errors } = form.formState;
+  const globalErrorMessage = errors.root?.server?.message;
+
+  if (!!user) {
+    return <AuthFormSuccessStatus user={user} isFromLogin={isLoginVariant} />;
+  }
 
   return (
-    <Form onSubmit={handleSubmit} width="100%">
-      <Form.Input
-        {...form.register("email")}
-        error={fieldErrors.email?.message}
-        invalid={Boolean(fieldErrors.email)}
-        isRequired
-        label="Email"
-        autoComplete={isLoginVariant ? "email" : "new-email"}
-        disabled={isPending}
-        width="100%"
-      />
-
-      <Form.Input
-        {...form.register("password")}
-        error={fieldErrors.password?.message}
-        invalid={Boolean(fieldErrors.password)}
-        isRequired
-        label="Password"
-        autoComplete={isLoginVariant ? "current-password" : "new-password"}
-        disabled={isPending}
-        width="100%"
-      />
-
-      {!isLoginVariant && (
+    <div className={styles.authForm}>
+      <Form onSubmit={handleSubmit} width="100%">
         <Form.Input
-          {...form.register("name")}
-          error={fieldErrors.name?.message}
-          invalid={Boolean(fieldErrors.name)}
-          label="Name"
-          autoComplete="name"
+          {...form.register("email")}
+          error={errors.email?.message}
+          invalid={Boolean(errors.email)}
+          isRequired
+          label="Email"
+          autoComplete={isLoginVariant ? "email" : "new-email"}
           disabled={isPending}
           width="100%"
         />
-      )}
 
-      <Button.AsButton type="submit" disabled={isPending} width="100%">
-        Submit
-      </Button.AsButton>
+        <Form.Input
+          {...form.register("password")}
+          error={errors.password?.message}
+          invalid={Boolean(errors.password)}
+          isRequired
+          label="Password"
+          autoComplete={isLoginVariant ? "current-password" : "new-password"}
+          disabled={isPending}
+          width="100%"
+        />
 
-      {globalErrorMessage && <p className={styles.globalError}>{globalErrorMessage}</p>}
-    </Form>
+        {!isLoginVariant && (
+          <Form.Input
+            {...form.register("name")}
+            error={"name" in errors ? errors.name?.message : undefined}
+            invalid={Boolean("name" in errors && errors.name)}
+            label="Name"
+            isRequired
+            autoComplete="name"
+            disabled={isPending}
+            width="100%"
+          />
+        )}
+
+        <Button.AsButton type="submit" disabled={isPending} width="100%">
+          Submit
+        </Button.AsButton>
+
+        {globalErrorMessage && <p className={styles.authForm_globalError}>{globalErrorMessage}</p>}
+      </Form>
+
+      <div className={styles.authForm_options}>
+        <p className={styles.authForm_optionsText}>
+          {isLoginVariant ? "Already have an account?" : "Don't have an account?"}{" "}
+          <Link.AsNextLink
+            href={isLoginVariant ? "/auth/register" : "/auth/login"}
+            isInherits
+            className={styles.authForm_link}
+          >
+            {isLoginVariant ? "Sign up" : "Log in"}
+          </Link.AsNextLink>
+        </p>
+      </div>
+    </div>
   );
 }

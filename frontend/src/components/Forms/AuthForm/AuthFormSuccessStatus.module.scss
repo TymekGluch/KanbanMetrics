@@ -1,0 +1,113 @@
+@use "@/styles/pxToRem.scss" as mixins;
+@use "@/styles/colorsTokens.scss" as colors;
+@use "@/styles/breakpoints.scss" as breakpoints;
+
+.authFormSuccessStatus {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  gap: mixins.pxToRem(32);
+  width: 100%;
+  height: 100%;
+
+  @include breakpoints.lg {
+    padding: mixins.pxToRem(32) 0;
+  }
+
+  &_textContent {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: mixins.pxToRem(32);
+  }
+
+  &_titleMessage {
+    font-size: mixins.pxToRem(24);
+    text-align: center;
+  }
+
+  &_userName {
+    color: colors.$color-text-secondary;
+  }
+
+  &_iconWrapper {
+    position: relative;
+    display: grid;
+    place-items: center;
+    width: mixins.pxToRem(112);
+    height: mixins.pxToRem(112);
+    color: colors.$color-status-success-text;
+
+    &::before,
+    &::after {
+      content: "";
+      position: absolute;
+      inset: 0;
+      background: colors.$color-status-success-blob;
+      pointer-events: none;
+    }
+
+    &::before {
+      border-radius: 58% 42% 63% 37% / 41% 60% 40% 59%;
+      transform: rotate(-8deg);
+    }
+
+    &::after {
+      inset: mixins.pxToRem(8);
+      border-radius: 43% 57% 31% 69% / 63% 38% 62% 37%;
+      transform: rotate(12deg);
+      opacity: 0.75;
+    }
+  }
+
+  &_icon {
+    position: relative;
+    z-index: 1;
+    width: mixins.pxToRem(64);
+    height: mixins.pxToRem(64);
+  }
+
+  &_options {
+    display: flex;
+    flex-direction: column;
+    gap: mixins.pxToRem(32);
+    width: 100%;
+    list-style: none;
+  }
+
+  &_option {
+    width: 100%;
+  }
+
+  &_optionIcon {
+    width: mixins.pxToRem(16);
+    height: mixins.pxToRem(16);
+    color: colors.$color-text-primary;
+  }
+
+  &_optionDivider {
+    position: relative;
+    display: block;
+    width: 100%;
+    height: mixins.pxToRem(1);
+    background: colors.$gradient-divider-strong;
+
+    &::before {
+      position: absolute;
+      top: 50%;
+      left: 50%;
+      content: "or";
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      width: mixins.pxToRem(32);
+      height: mixins.pxToRem(32);
+      border-radius: 50%;
+      background: colors.$color-surface-popover;
+      color: colors.$color-text-primary;
+      font-size: mixins.pxToRem(14);
+      transform: translate(-50%, -50%);
+    }
+  }
+}

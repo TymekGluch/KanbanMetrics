@@ -1,4 +1,4 @@
-import { type ApiError } from "@/api/apiClient";
+import { type ApiError } from "@/utils/api/apiClient";
 import { type FieldPath, type FieldValues, type UseFormSetError } from "react-hook-form";
 
 export type BackendFieldError = {

@@ -53,15 +53,6 @@ export default function Register() {
 
           <div className={styles.authContent_form}>
             <AuthForm variant={AUTH_FORM_VARIANTS.REGISTER} />
-
-            <div className={styles.authContent_options}>
-              <p className={styles.authContent_optionsText}>
-                Already have an account?{" "}
-                <Link.AsNextLink href="/auth/login" isInherits className={styles.authContent_link}>
-                  Log in
-                </Link.AsNextLink>
-              </p>
-            </div>
           </div>
         </div>
         <Media.Client

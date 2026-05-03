@@ -6,7 +6,9 @@ import {
   type BaseSizeProps,
   type BaseTypographyProps,
 } from "@/responsive/responsiveStyleProps.types";
+import { type ValueOf } from "@/types/valueOf";
 import type Link from "next/link";
+import { type BUTTON_VARIANTS } from "./button.constants";
 
 type ButtonSizeProps = Pick<BaseSizeProps, "width" | "minWidth">;
 
@@ -18,6 +20,7 @@ type ButtonStylesProps = ButtonSizeProps &
   BasePositionProps;
 
 interface ButtonCommonProps {
+  variant?: ValueOf<typeof BUTTON_VARIANTS>;
   disabled?: boolean;
   StartIconSlot?: React.ReactNode;
   EndIconSlot?: React.ReactNode;

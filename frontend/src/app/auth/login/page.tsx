@@ -51,19 +51,6 @@ export default function Login() {
 
           <div className={styles.authContent_form}>
             <AuthForm variant={AUTH_FORM_VARIANTS.LOGIN} />
-
-            <div className={styles.authContent_options}>
-              <p className={styles.authContent_optionsText}>
-                Don&apos;t have an account?{" "}
-                <Link.AsNextLink
-                  href="/auth/register"
-                  isInherits
-                  className={styles.authContent_link}
-                >
-                  Sign up
-                </Link.AsNextLink>
-              </p>
-            </div>
           </div>
         </div>
         <Media.Client

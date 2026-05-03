@@ -48,6 +48,7 @@ export const COLORS = {
   STATUS_SUCCESS_TEXT: "var(--color-status-success-text)",
   STATUS_SUCCESS_BG: "var(--color-status-success-bg)",
   STATUS_SUCCESS_BORDER: "var(--color-status-success-border)",
+  STATUS_SUCCESS_BLOB: "var(--color-status-success-blob)",
   STATUS_WARNING_TEXT: "var(--color-status-warning-text)",
   STATUS_WARNING_BG: "var(--color-status-warning-bg)",
   STATUS_WARNING_BORDER: "var(--color-status-warning-border)",

@@ -629,7 +629,7 @@ export interface components {
         "auth.RegisterUserInput": {
             /** Format: email */
             email: string;
-            name?: string;
+            name: string;
             password: string;
         };
         "users.UpdateUserHandlerInput": {
