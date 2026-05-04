@@ -14,9 +14,15 @@ import { Breadcrumbs } from "@/components/Breadcrumbs/Breadcrumbs";
 import { Footer as FooterComponent } from "@/components/Footer/Footer";
 import { PAGE_LAYOUT_CONTENT_ALIGN } from "./PageLayoutDefault.constants";
 import clsx from "clsx";
+import { UserIndicator } from "@/components/UserIndicator/UserIndicator";
 
 export function Navigation(props: PageLayoutDefaultNavigationProps) {
-  const { children, withBreadcrumbs = false, BreadcrumbsSlot = null } = props;
+  const {
+    children,
+    withBreadcrumbs = false,
+    BreadcrumbsSlot = null,
+    withUserIndicator = false,
+  } = props;
 
   return (
     <div className={styles.pageLayoutDefaultNavigation}>
@@ -47,7 +53,9 @@ export function Navigation(props: PageLayoutDefaultNavigationProps) {
             </Media.Server>
           </Link>
 
-          <div className={styles.pageLayoutDefaultNavigation_content}>{children}</div>
+          <div className={styles.pageLayoutDefaultNavigation_content}>
+            {children} {withUserIndicator && <UserIndicator />}
+          </div>
         </div>
       </nav>
 

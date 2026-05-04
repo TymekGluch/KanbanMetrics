@@ -1,0 +1,24 @@
+@use "@/styles/pxToRem.scss" as mixins;
+@use "@/styles/breakpoints.scss" as breakpoints;
+@use "@/styles/colorsTokens.scss" as colors;
+
+.userIndicator {
+  display: flex;
+  align-items: center;
+  gap: mixins.pxToRem(8);
+  list-style: none;
+
+  @include breakpoints.sm {
+    gap: mixins.pxToRem(24);
+  }
+
+  &_smallButton {
+    padding: mixins.pxToRem(6) mixins.pxToRem(12);
+    font-size: mixins.pxToRem(12);
+
+    @include breakpoints.sm {
+      padding: mixins.pxToRem(8) mixins.pxToRem(16);
+      font-size: mixins.pxToRem(14);
+    }
+  }
+}

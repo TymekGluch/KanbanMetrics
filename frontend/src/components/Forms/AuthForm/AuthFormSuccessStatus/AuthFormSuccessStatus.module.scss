@@ -32,35 +32,8 @@
   }
 
   &_iconWrapper {
-    position: relative;
-    display: grid;
-    place-items: center;
-    width: mixins.pxToRem(112);
-    height: mixins.pxToRem(112);
-    color: colors.$color-brand-purple;
-
-    &::before,
-    &::after {
-      content: "";
-      position: absolute;
-      inset: 0;
-      background: colors.$color-focus-ring;
-      pointer-events: none;
-    }
-
-    &::before {
-      border-radius: 58% 42% 63% 37% / 41% 60% 40% 59%;
-      transform: rotate(-8deg);
-
-      opacity: 0.4;
-    }
-
-    &::after {
-      inset: mixins.pxToRem(8);
-      border-radius: 43% 57% 31% 69% / 63% 38% 62% 37%;
-      transform: rotate(12deg);
-      opacity: 0.6;
-    }
+    width: mixins.pxToRem(112) !important;
+    height: mixins.pxToRem(112) !important;
   }
 
   &_icon {

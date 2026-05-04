@@ -19,6 +19,7 @@ export interface InputProps extends InputNativeProps, InputStylesProps {
   invalid?: boolean;
   isError?: boolean;
   isRequired?: boolean;
+  hasPasswordToggle?: boolean;
 }
 
 export interface FieldsetProps extends React.ComponentPropsWithRef<"fieldset">, BaseMarginProps {

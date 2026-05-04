@@ -6,6 +6,7 @@ export type PageLayoutDefaultRootProps = React.PropsWithChildren;
 
 export interface PageLayoutDefaultNavigationProps extends React.PropsWithChildren {
   withBreadcrumbs?: boolean;
+  withUserIndicator?: boolean;
   BreadcrumbsSlot?: React.ReactNode;
 }
 

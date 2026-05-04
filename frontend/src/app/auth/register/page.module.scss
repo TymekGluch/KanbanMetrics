@@ -57,7 +57,6 @@
     padding: mixins.pxToRem(32) mixins.pxToRem(16);
     margin-inline: auto;
     background: colors.$color-surface-popover;
-    opacity: 70%;
     border: solid mixins.pxToRem(1) colors.$color-border-default;
     border-radius: mixins.pxToRem(12);
     box-shadow: mixins.pxToRem(4) mixins.pxToRem(4) mixins.pxToRem(8) mixins.pxToRem(4)

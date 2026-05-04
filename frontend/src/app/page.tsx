@@ -1,4 +1,3 @@
-import { ArrowRightSvg } from "@/assets/ArrowRightSvg";
 import { ChartSvg } from "@/assets/ChartSvg";
 import { CloudSvg } from "@/assets/CloudSvg";
 import { RocketSvg } from "@/assets/RocketSvg";
@@ -14,6 +13,7 @@ import { MEDIA_CONDITION } from "@/components/Media/Media.constants";
 import PageLayoutDefault from "@/components/PageLayout/PageLayoutDefault";
 import { BREAKPOINTS_KEYS } from "@/responsive/responsive.constants";
 import styles from "./page.module.scss";
+import { CreditCardSvg } from "@/assets/CreditCardSvg";
 
 export const metadata = {
   title: "Home Page",
@@ -24,7 +24,7 @@ export const metadata = {
 export default function Home() {
   return (
     <PageLayoutDefault.Root>
-      <PageLayoutDefault.Navigation />
+      <PageLayoutDefault.Navigation withUserIndicator />
 
       <PageLayoutDefault.Content>
         <div className={styles.homeContent}>
@@ -60,27 +60,34 @@ export default function Home() {
                 default: "100%",
                 lg: "fit-content",
               }}
-              EndIconSlot={<ArrowRightSvg className={styles.homeContent_buttonIcon} />}
+              size="large"
             >
               Get started for free
             </Button.AsLink>
+
+            <span className={styles.homeContent_disclaimer}>
+              <CreditCardSvg className={styles.homeContent_disclaimerIcon} />
+              <p>No credit card required.</p>
+            </span>
           </header>
 
           <Media.Client
             variant={MEDIA_CONDITION.BREAKPOINTS}
             condition={{ [BREAKPOINTS_KEYS.lg]: true }}
           >
-            <picture className={styles.homeContent_imageWrapper}>
-              <source srcSet="/loginDark.webp" media="(prefers-color-scheme: dark)" />
-              <img
-                src="/login.webp"
-                alt=""
-                width={535}
-                height={467}
-                className={styles.homeContent_image}
-                loading="lazy"
-              />
-            </picture>
+            <div className={styles.homeContent_imageWrapper}>
+              <picture className={styles.homeContent_imageWrapper}>
+                <source srcSet="/loginDark.webp" media="(prefers-color-scheme: dark)" />
+                <img
+                  src="/login.webp"
+                  alt=""
+                  width={535}
+                  height={467}
+                  className={styles.homeContent_image}
+                  loading="lazy"
+                />
+              </picture>
+            </div>
           </Media.Client>
         </div>
       </PageLayoutDefault.Content>

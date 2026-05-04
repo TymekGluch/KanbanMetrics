@@ -1,8 +1,12 @@
+'use client";';
+
 import clsx from "clsx";
+import React from "react";
 import { resolveProps } from "@/responsive/utils/resolveProps";
 import { Base } from "../Base/Base";
 import { type InputProps, type FormProps, type FieldsetProps } from "./Form.types";
 import styles from "./Form.module.scss";
+import { EyeIcon } from "./EyeIcon/EyeIcon";
 
 export function FormComponent(props: FormProps) {
   const { stylesProps, rest } = resolveProps(props);
@@ -41,10 +45,21 @@ export function InputComponent(props: InputProps) {
     helperText,
     isError,
     isRequired,
+    hasPasswordToggle,
     ...inputProps
   } = rest;
 
+  const [isPasswordVisible, setIsPasswordVisible] = React.useState(false);
+
   const isInvalid = Boolean(invalid || isError);
+  const canTogglePassword = Boolean(
+    hasPasswordToggle && (inputProps.type === "password" || inputProps.type === undefined)
+  );
+  const resolvedInputType = canTogglePassword
+    ? isPasswordVisible
+      ? "text"
+      : "password"
+    : inputProps.type;
   const fieldId = id ?? name;
   const helperTextId = helperText ? `${fieldId}-helper` : undefined;
   const feedback = isInvalid ? (error ?? message) : message;
@@ -67,15 +82,31 @@ export function InputComponent(props: InputProps) {
           </label>
         )}
 
-        <input
-          {...inputProps}
-          className={styles.input_field}
-          id={fieldId}
-          name={name}
-          aria-invalid={isInvalid || undefined}
-          aria-describedby={ariaDescribedBy}
-          aria-errormessage={isInvalid ? feedbackId : undefined}
-        />
+        <div className={styles.input_fieldWrapper}>
+          <input
+            {...inputProps}
+            className={styles.input_field}
+            id={fieldId}
+            name={name}
+            type={resolvedInputType}
+            aria-invalid={isInvalid || undefined}
+            aria-describedby={ariaDescribedBy}
+            aria-errormessage={isInvalid ? feedbackId : undefined}
+          />
+
+          {canTogglePassword && (
+            <button
+              type="button"
+              className={styles.input_toggle}
+              onClick={() => setIsPasswordVisible((current) => !current)}
+              aria-label={isPasswordVisible ? "Hide password" : "Show password"}
+              aria-pressed={isPasswordVisible}
+              disabled={inputProps.disabled}
+            >
+              <EyeIcon isClosed={!isPasswordVisible} />
+            </button>
+          )}
+        </div>
 
         {Boolean(helperText) && (
           <p id={helperTextId} className={styles.input_helperText}>

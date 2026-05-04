@@ -1,6 +1,5 @@
 import { AuthForm } from "@/components/Forms/AuthForm/AuthForm";
 import { AUTH_FORM_VARIANTS } from "@/components/Forms/AuthForm/AuthForm.constants";
-import Link from "@/components/Link";
 import { Media } from "@/components/Media";
 import { MEDIA_CONDITION } from "@/components/Media/Media.constants";
 import PageLayoutDefault from "@/components/PageLayout/PageLayoutDefault";

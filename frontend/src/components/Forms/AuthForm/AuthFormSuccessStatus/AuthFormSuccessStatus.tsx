@@ -3,6 +3,11 @@ import styles from "./AuthFormSuccessStatus.module.scss";
 import { CheckSvg } from "@/assets/CheckSvg";
 import Button, { BUTTON_VARIANTS } from "@/components/Button";
 import { HomeSvg } from "@/assets/HomeSvg";
+import {
+  IRREGULAR_ICON_BADGE_COLORS,
+  IRREGULAR_ICON_BADGE_VARIANTS,
+  IrregularIconBadge,
+} from "@/components/IrregularIconBadge";
 
 interface AuthFormSuccessStatusProps {
   user: GetApiUserMeSuccessResponse;
@@ -15,9 +20,13 @@ export function AuthFormSuccessStatus(props: AuthFormSuccessStatusProps) {
   return (
     <section className={styles.authFormSuccessStatus}>
       <div className={styles.authFormSuccessStatus_textContent}>
-        <div className={styles.authFormSuccessStatus_iconWrapper}>
+        <IrregularIconBadge
+          className={styles.authFormSuccessStatus_iconWrapper}
+          variant={IRREGULAR_ICON_BADGE_VARIANTS.V2}
+          color={IRREGULAR_ICON_BADGE_COLORS.SUCCESS}
+        >
           <CheckSvg className={styles.authFormSuccessStatus_icon} />
-        </div>
+        </IrregularIconBadge>
 
         <h2 className={styles.authFormSuccessStatus_titleMessage}>
           {isFromLogin ? (

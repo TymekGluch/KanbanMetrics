@@ -46,6 +46,11 @@
     font-weight: 600;
   }
 
+  &_fieldWrapper {
+    position: relative;
+    width: 100%;
+  }
+
   &_field {
     width: 100%;
     min-height: mixins.pxToRem(44);
@@ -97,6 +102,42 @@
       -webkit-text-fill-color: colors.$color-input-text;
       transition: background-color 9999s ease-in-out 0s;
     }
+  }
+
+  &_toggle {
+    position: absolute;
+    top: 50%;
+    right: mixins.pxToRem(10);
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: mixins.pxToRem(28);
+    height: mixins.pxToRem(28);
+    border: none;
+    background: transparent;
+    color: colors.$color-text-tertiary;
+    cursor: pointer;
+    border-radius: mixins.pxToRem(6);
+    transform: translateY(-50%);
+
+    &:hover:not(:disabled) {
+      color: colors.$color-text-secondary;
+      background-color: colors.$color-surface-card-hover;
+    }
+
+    &:focus-visible {
+      outline: none;
+      box-shadow: 0 0 0 mixins.pxToRem(1) colors.$color-focus-ring;
+    }
+
+    &:disabled {
+      cursor: not-allowed;
+      color: colors.$color-text-disabled;
+    }
+  }
+
+  &_root:has(&_toggle) &_field {
+    padding-right: mixins.pxToRem(44);
   }
 
   &_helperText {

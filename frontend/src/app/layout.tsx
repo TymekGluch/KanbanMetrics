@@ -3,11 +3,11 @@ import { Inter } from "next/font/google";
 import "./globals.scss";
 import styles from "./layout.module.scss";
 import { headers } from "next/headers";
-import { QueryProvider } from "./QueryProvider";
 import { ResponsiveProvider } from "@/responsive/Responsive.Provider";
 import { parseUABreakpoint } from "@/responsive/utils/parseUABreakpoint";
 import { UserProvider } from "@/providers/UserProvider/UserProvider";
 import { getUserFetch } from "@/api/getUserFetch";
+import { QueryProvider } from "@/providers/QueryProvider/QueryProvider";
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],

@@ -72,6 +72,18 @@
     }
   }
 
+  &_disclaimer {
+    display: inline-flex;
+    align-items: center;
+    gap: mixins.pxToRem(4);
+    font-size: mixins.pxToRem(12);
+    color: colors.$color-text-tertiary;
+    &Icon {
+      width: mixins.pxToRem(12);
+      height: mixins.pxToRem(12);
+    }
+  }
+
   &_imageWrapper {
     display: flex;
     justify-content: center;

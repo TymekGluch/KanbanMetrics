@@ -76,8 +76,33 @@
     width: 100%;
   }
 
+  &_content {
+    flex: 1;
+    display: flex;
+    flex-direction: row-reverse;
+    justify-content: space-between;
+    align-items: center;
+    gap: mixins.pxToRem(16);
+  }
+
   &_logoLink {
     border: none;
+  }
+
+  &_logo {
+    object-fit: contain;
+    width: mixins.pxToRem(160);
+    height: mixins.pxToRem(40);
+
+    @include breakpoints.sm {
+      width: mixins.pxToRem(220);
+      height: mixins.pxToRem(54);
+    }
+
+    @include breakpoints.lg {
+      width: mixins.pxToRem(275);
+      height: mixins.pxToRem(68);
+    }
   }
 
   &_breadcrumbs {

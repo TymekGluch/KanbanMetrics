@@ -9,7 +9,7 @@ import styles from "./AuthForm.module.scss";
 import React from "react";
 import { UserContext } from "@/providers/UserProvider/UserProvider";
 import Link from "@/components/Link";
-import { AuthFormSuccessStatus } from "./AuthFormSuccessStatus";
+import { AuthFormSuccessStatus } from "./AuthFormSuccessStatus/AuthFormSuccessStatus";
 
 interface AuthFormProps {
   variant: ValueOf<typeof AUTH_FORM_VARIANTS>;
@@ -47,6 +47,7 @@ export function AuthForm(props: AuthFormProps) {
           error={errors.password?.message}
           invalid={Boolean(errors.password)}
           isRequired
+          hasPasswordToggle
           label="Password"
           autoComplete={isLoginVariant ? "current-password" : "new-password"}
           disabled={isPending}
@@ -79,6 +80,7 @@ export function AuthForm(props: AuthFormProps) {
           <Link.AsNextLink
             href={isLoginVariant ? "/auth/register" : "/auth/login"}
             isInherits
+            disabled={isPending}
             className={styles.authForm_link}
           >
             {isLoginVariant ? "Sign up" : "Log in"}

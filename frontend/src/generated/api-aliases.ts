@@ -51,7 +51,6 @@ export type PutApiUserUpdateResponse400 = ApiPaths["/api/user/update"]["put"]["r
 export type PutApiUserUpdateResponse401 = ApiPaths["/api/user/update"]["put"]["responses"][401]["content"]["text/plain"];
 export type PutApiUserUpdateResponse500 = ApiPaths["/api/user/update"]["put"]["responses"][500]["content"]["text/plain"];
 
-export type GetApiWorkspacesRequestBody = ApiPaths["/api/workspaces"]["get"]["requestBody"]["content"]["application/json"];
 export type GetApiWorkspacesResponse200 = ApiPaths["/api/workspaces"]["get"]["responses"][200]["content"]["application/json"];
 export type GetApiWorkspacesSuccessResponse = GetApiWorkspacesResponse200;
 export type GetApiWorkspacesResponse400 = ApiPaths["/api/workspaces"]["get"]["responses"][400]["content"]["application/json"];

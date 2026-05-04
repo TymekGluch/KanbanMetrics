@@ -6,7 +6,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
-  gap: mixins.pxToRem(4);
+  gap: mixins.pxToRem(6);
   width: fit-content;
   height: mixins.pxToRem(44);
   padding: mixins.pxToRem(8) mixins.pxToRem(16);
@@ -15,6 +15,20 @@
   border: solid mixins.pxToRem(1) colors.$color-border-default;
   border-radius: mixins.pxToRem(10);
   font-size: mixins.pxToRem(14);
+  line-height: 1.2;
+
+  &__size_default {
+    height: mixins.pxToRem(44);
+    padding: mixins.pxToRem(8) mixins.pxToRem(16);
+    font-size: mixins.pxToRem(14);
+  }
+
+  &__size_large {
+    height: mixins.pxToRem(52);
+    padding: mixins.pxToRem(10) mixins.pxToRem(20);
+    font-size: mixins.pxToRem(16);
+    font-weight: 600;
+  }
 
   &_icon {
     display: flex;

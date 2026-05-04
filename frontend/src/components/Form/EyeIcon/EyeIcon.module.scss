@@ -1,0 +1,6 @@
+@use "@/styles/pxToRem.scss" as mixins;
+
+.toggleIcon {
+  width: mixins.pxToRem(18);
+  height: mixins.pxToRem(18);
+}
