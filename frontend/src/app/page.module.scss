@@ -224,6 +224,7 @@
 
     @include breakpoints.md {
       grid-template-columns: repeat(3, 1fr);
+      margin: auto;
     }
 
     &Item {
@@ -249,5 +250,8 @@
     font-size: mixins.pxToRem(12);
     color: colors.$color-status-info-text;
     text-align: center;
+    max-inline-size: 60ch;
+    text-wrap: balance;
+    margin: auto;
   }
 }
