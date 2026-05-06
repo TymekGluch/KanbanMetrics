@@ -29,5 +29,12 @@ export function useLogoutMutationFetch() {
 
       router.refresh();
     },
+    onError: async () => {
+      const isProduction = process.env.NODE_ENV === "production";
+
+      if (!isProduction) {
+        console.warn("Logout failed, refreshing to update the state just in case...");
+      }
+    },
   });
 }

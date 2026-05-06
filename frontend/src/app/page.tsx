@@ -1,8 +1,8 @@
 import { ChartSvg } from "@/assets/ChartSvg";
 import { CloudSvg } from "@/assets/CloudSvg";
+import { CreditCardSvg } from "@/assets/CreditCardSvg";
 import { RocketSvg } from "@/assets/RocketSvg";
 import { TableSvg } from "@/assets/TableSvg";
-import Button from "@/components/Button";
 import {
   IRREGULAR_ICON_BADGE_COLORS,
   IRREGULAR_ICON_BADGE_VARIANTS,
@@ -12,8 +12,8 @@ import { Media } from "@/components/Media";
 import { MEDIA_CONDITION } from "@/components/Media/Media.constants";
 import PageLayoutDefault from "@/components/PageLayout/PageLayoutDefault";
 import { BREAKPOINTS_KEYS } from "@/responsive/responsive.constants";
+import { HeroButton } from "./(components)/HeroButton";
 import styles from "./page.module.scss";
-import { CreditCardSvg } from "@/assets/CreditCardSvg";
 
 export const metadata = {
   title: "Home Page",
@@ -54,16 +54,7 @@ export default function Home() {
               }
             />
 
-            <Button.AsLink
-              href="/auth/register"
-              width={{
-                default: "100%",
-                lg: "fit-content",
-              }}
-              size="large"
-            >
-              Get started for free
-            </Button.AsLink>
+            <HeroButton />
 
             <span className={styles.homeContent_disclaimer}>
               <CreditCardSvg className={styles.homeContent_disclaimerIcon} />

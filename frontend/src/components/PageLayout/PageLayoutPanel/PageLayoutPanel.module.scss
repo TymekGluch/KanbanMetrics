@@ -1,8 +1,32 @@
-@use "../../../styles/pxToRem";
+@use "@/styles/pxToRem.scss" as mixins;
+@use "@/styles/breakpoints.scss" as breakpoints;
+@use "@/styles/colorsTokens.scss" as colors;
 
-.pageLayoutDefault {
+.pageLayoutPanelRoot {
   display: flex;
   flex-direction: column;
   gap: pxToRem(16);
   padding: pxToRem(16);
+}
+
+.pageLayoutPanelTopNavigationMobile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: pxToRem(8);
+
+  &_logoLink {
+    border: none;
+  }
+
+  &_logo {
+    object-fit: contain;
+    width: mixins.pxToRem(160);
+    height: mixins.pxToRem(40);
+
+    @include breakpoints.sm {
+      width: mixins.pxToRem(220);
+      height: mixins.pxToRem(54);
+    }
+  }
 }

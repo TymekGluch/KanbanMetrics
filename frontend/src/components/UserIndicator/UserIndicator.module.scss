@@ -13,12 +13,12 @@
   }
 
   &_smallButton {
-    padding: mixins.pxToRem(6) mixins.pxToRem(12);
-    font-size: mixins.pxToRem(12);
+    padding: mixins.pxToRem(4) mixins.pxToRem(10) !important;
+    font-size: mixins.pxToRem(12) !important;
 
-    @include breakpoints.sm {
-      padding: mixins.pxToRem(8) mixins.pxToRem(16);
-      font-size: mixins.pxToRem(14);
+    @include breakpoints.rwd(375) {
+      padding: mixins.pxToRem(8) mixins.pxToRem(16) !important;
+      font-size: mixins.pxToRem(14) !important;
     }
   }
 }

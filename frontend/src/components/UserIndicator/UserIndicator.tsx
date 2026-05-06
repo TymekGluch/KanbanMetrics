@@ -28,11 +28,7 @@ export function UserIndicator() {
         </li>
 
         <li>
-          <Button.AsLink
-            className={styles.userIndicator_smallButton}
-            href="/auth/register"
-            variant="outlined"
-          >
+          <Button.AsLink className={styles.userIndicator_smallButton} href="/auth/register">
             Register
           </Button.AsLink>
         </li>
@@ -43,16 +39,16 @@ export function UserIndicator() {
   return (
     <ul className={styles.userIndicator}>
       <li>
-        <Link.AsButton
-          disabled={logoutMutation.isPending}
-          className={styles.userIndicator}
-          onClick={() => logoutMutation.mutate()}
-        >
+        <Link.AsButton disabled={logoutMutation.isPending} onClick={() => logoutMutation.mutate()}>
           Logout
         </Link.AsButton>
       </li>
       <li>
-        <Button.AsLink href="/dashboard" variant="outlined">
+        <Button.AsLink
+          href="/dashboard"
+          variant="outlined"
+          className={styles.userIndicator_smallButton}
+        >
           <Media.Client
             variant={MEDIA_CONDITION.BREAKPOINTS}
             condition={{

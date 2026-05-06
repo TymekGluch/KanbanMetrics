@@ -1,20 +1,20 @@
-import { Media } from "@/components/Media";
-import { MEDIA_CONDITION } from "@/components/Media/Media.constants";
-import Image from "next/image";
-import Link from "next/link";
-import styles from "./PageLayoutDefault.module.scss";
-import {
-  type PageLayoutDefaultRootProps,
-  type PageLayoutDefaultNavigationProps,
-  type PageLayoutDefaultContentProps,
-  type PageLayoutDefaultFilledContentProps,
-} from "./PageLayoutDefault.types";
-import React from "react";
 import { Breadcrumbs } from "@/components/Breadcrumbs/Breadcrumbs";
 import { Footer as FooterComponent } from "@/components/Footer/Footer";
-import { PAGE_LAYOUT_CONTENT_ALIGN } from "./PageLayoutDefault.constants";
-import clsx from "clsx";
+import { Media } from "@/components/Media";
+import { MEDIA_CONDITION } from "@/components/Media/Media.constants";
 import { UserIndicator } from "@/components/UserIndicator/UserIndicator";
+import clsx from "clsx";
+import Image from "next/image";
+import Link from "next/link";
+import React from "react";
+import { PAGE_LAYOUT_CONTENT_ALIGN } from "./PageLayoutDefault.constants";
+import styles from "./PageLayoutDefault.module.scss";
+import {
+  type PageLayoutDefaultContentProps,
+  type PageLayoutDefaultFilledContentProps,
+  type PageLayoutDefaultNavigationProps,
+  type PageLayoutDefaultRootProps,
+} from "./PageLayoutDefault.types";
 
 export function Navigation(props: PageLayoutDefaultNavigationProps) {
   const {

@@ -87,6 +87,8 @@
   &_imageWrapper {
     display: flex;
     justify-content: center;
+    aspect-ratio: 535 / 467;
+    width: 100%;
 
     @include breakpoints.lg {
       justify-content: end;

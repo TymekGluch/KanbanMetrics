@@ -19,10 +19,10 @@ interface ResponsiveProviderProps {
   children: React.ReactNode;
 }
 
-export function ResponsiveProvider({ ssrBreakpoint, children }: ResponsiveProviderProps) {
+export function ResponsiveProvider(props: ResponsiveProviderProps) {
+  const { ssrBreakpoint, children } = props;
+
   return (
-    <ResponsiveContext.Provider value={{ ssrBreakpoint }}>
-      {children}
-    </ResponsiveContext.Provider>
+    <ResponsiveContext.Provider value={{ ssrBreakpoint }}>{children}</ResponsiveContext.Provider>
   );
 }
