@@ -8,7 +8,7 @@
   gap: mixins.pxToRem(8);
   list-style: none;
 
-  @include breakpoints.sm {
+  @include breakpoints.rwd(375) {
     gap: mixins.pxToRem(24);
   }
 

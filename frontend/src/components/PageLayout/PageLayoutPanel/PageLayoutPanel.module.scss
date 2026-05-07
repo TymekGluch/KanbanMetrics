@@ -5,16 +5,31 @@
 .pageLayoutPanelRoot {
   display: flex;
   flex-direction: column;
-  gap: pxToRem(16);
-  padding: pxToRem(16);
+  gap: mixins.pxToRem(16);
+  padding: mixins.pxToRem(16);
+
+  &_UserButtonContent {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: mixins.pxToRem(4);
+    padding-left: mixins.pxToRem(8);
+  }
+
+  &_UserButtonName {
+    font-size: mixins.pxToRem(14);
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  &_UserButtonEmail {
+    font-size: mixins.pxToRem(12);
+    color: colors.$color-text-tertiary;
+    line-height: 1;
+  }
 }
 
 .pageLayoutPanelTopNavigationMobile {
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  gap: pxToRem(8);
-
   &_logoLink {
     border: none;
   }
@@ -29,4 +44,26 @@
       height: mixins.pxToRem(54);
     }
   }
+}
+
+.pageLayoutPanelRootLink {
+  border: none;
+
+  &_logo {
+    object-fit: contain;
+    width: mixins.pxToRem(160);
+    height: mixins.pxToRem(40);
+
+    @include breakpoints.sm {
+      width: mixins.pxToRem(220);
+      height: mixins.pxToRem(54);
+    }
+  }
+}
+
+.pageLayoutPanelTopNavigationMobile {
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  gap: mixins.pxToRem(8);
 }

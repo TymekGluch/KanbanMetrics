@@ -1,0 +1,104 @@
+@use "@/styles/pxToRem.scss" as mixins;
+
+// Irregular blob avatar — different organic shape from IrregularIconBadge.
+// Background and text color are driven by CSS custom properties set via
+// inline style from the component, enabling arbitrary hex colour theming.
+
+.irregularAvatar {
+  // ─── Customisable tokens (set via inline style) ───────────────────────
+  --avatar-bg-color: transparent;
+  --avatar-text-color: #000000;
+
+  // ─── Blob geometry ────────────────────────────────────────────────────
+  --avatar-blob-radius-main: 38% 62% 56% 44% / 58% 44% 56% 42%;
+  --avatar-blob-before-inset: #{mixins.pxToRem(4)} #{mixins.pxToRem(3)} #{mixins.pxToRem(3)}
+    #{mixins.pxToRem(6)};
+  --avatar-blob-before-radius: 66% 34% 42% 58% / 34% 66% 34% 66%;
+  --avatar-blob-before-rotate: -6deg;
+  --avatar-blob-after-inset: #{mixins.pxToRem(6)} #{mixins.pxToRem(8)} #{mixins.pxToRem(4)}
+    #{mixins.pxToRem(3)};
+  --avatar-blob-after-radius: 44% 56% 34% 66% / 62% 38% 62% 38%;
+  --avatar-blob-after-rotate: 13deg;
+
+  // ─── Layout ───────────────────────────────────────────────────────────
+  --avatar-size: #{mixins.pxToRem(48)};
+
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--avatar-size);
+  height: var(--avatar-size);
+  flex-shrink: 0;
+  isolation: isolate;
+  border-radius: var(--avatar-blob-radius-main);
+  overflow: hidden;
+  background: var(--avatar-bg-color);
+  color: var(--avatar-text-color);
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+  }
+
+  // Inner depth layer — lighter tint of the bg
+  &::before {
+    inset: var(--avatar-blob-before-inset);
+    border-radius: var(--avatar-blob-before-radius);
+    transform: rotate(var(--avatar-blob-before-rotate));
+    background: color-mix(in srgb, var(--avatar-bg-color) 55%, #fff);
+    filter: blur(#{mixins.pxToRem(1)});
+    z-index: 0;
+  }
+
+  // Specular highlight — subtle top-left glow
+  &::after {
+    inset: var(--avatar-blob-after-inset);
+    border-radius: var(--avatar-blob-after-radius);
+    transform: rotate(var(--avatar-blob-after-rotate));
+    background: color-mix(in srgb, var(--avatar-bg-color) 40%, #fff);
+    filter: blur(#{mixins.pxToRem(1.5)});
+    z-index: 0;
+  }
+
+  &_content {
+    position: relative;
+    z-index: 1;
+    display: grid;
+    place-items: center;
+    width: 100%;
+    height: 100%;
+    font-weight: 600;
+    letter-spacing: 0.03em;
+    line-height: 1;
+    user-select: none;
+  }
+
+  &_image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  // ─── Size variants ────────────────────────────────────────────────────
+
+  &__sm {
+    --avatar-size: #{mixins.pxToRem(32)};
+
+    font-size: mixins.pxToRem(11);
+  }
+
+  &__md {
+    --avatar-size: #{mixins.pxToRem(48)};
+
+    font-size: mixins.pxToRem(16);
+  }
+
+  &__lg {
+    --avatar-size: #{mixins.pxToRem(64)};
+
+    font-size: mixins.pxToRem(22);
+  }
+}
