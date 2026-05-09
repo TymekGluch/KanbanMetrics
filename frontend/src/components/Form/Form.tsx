@@ -24,7 +24,7 @@ export function FieldsetComponent(props: FieldsetProps) {
   const { children, LegendSlot } = rest;
 
   return (
-    <Base {...stylesProps} asChild className={styles.fieldset}>
+    <Base {...stylesProps} asChild width="100%" className={styles.fieldset}>
       <fieldset {...rest}>
         {LegendSlot && <legend className={styles.fieldset_legend}>{LegendSlot}</legend>}
         {children}

@@ -1,36 +1,45 @@
-import { useAdvancedMedia } from "@/responsive/hooks/useMedia";
+"use client";
+
 import React from "react";
 import {
   type LayoutContextType,
-  type LayoutProviderProps,
   type LayoutContextValue,
+  type LayoutProviderProps,
 } from "./LayoutContext.types";
-import { inferDefaultSpacesByBreakpoint, isCorrectColumnSpaces } from "./LayoutContext.utils";
+import { pxToRem } from "@/utils/pxToRem";
+import { setPageLayoutPanelSpaces } from "@/actions/pageLayoutPanel";
 
-const defaultSpaces = {
-  navigationSpace: 0,
-  contentSpace: 0,
+export const pageLayoutPanelContextDefaultSpaces = {
+  navigationSpace: pxToRem(80),
+  contentSpace: "auto",
 };
 
-export const PageLayoutPanelContext = React.createContext<LayoutContextType | null>(null);
+export const PageLayoutPanelContext = React.createContext<LayoutContextType>({
+  value: pageLayoutPanelContextDefaultSpaces,
+  setValue: () => {},
+  isRestored: false,
+});
 
 export function PageLayoutPanelProvider(props: LayoutProviderProps) {
-  const { children } = props;
+  const { children, initialValue = pageLayoutPanelContextDefaultSpaces } = props;
 
-  const [layoutSpaces, setLayoutSpaces] = React.useState<LayoutContextValue>(defaultSpaces);
+  const [layoutSpaces, setLayoutSpaces] = React.useState<LayoutContextValue>(initialValue);
 
-  const { matches, currentBreakpoint } = useAdvancedMedia();
-
-  const resolvedSpaces: LayoutContextValue = React.useMemo(() => {
-    if (!isCorrectColumnSpaces(layoutSpaces)) {
-      return inferDefaultSpacesByBreakpoint(matches, currentBreakpoint);
-    }
-
-    return layoutSpaces;
-  }, [layoutSpaces, matches, currentBreakpoint]);
+  const handleSetLayoutSpaces = React.useCallback(
+    (newSpaces: React.SetStateAction<LayoutContextValue>) => {
+      setLayoutSpaces((prev) => {
+        const updated = typeof newSpaces === "function" ? newSpaces(prev) : newSpaces;
+        void setPageLayoutPanelSpaces(updated);
+        return updated;
+      });
+    },
+    []
+  );
 
   return (
-    <PageLayoutPanelContext.Provider value={{ value: resolvedSpaces, setValue: setLayoutSpaces }}>
+    <PageLayoutPanelContext.Provider
+      value={{ value: layoutSpaces, setValue: handleSetLayoutSpaces, isRestored: true }}
+    >
       {children}
     </PageLayoutPanelContext.Provider>
   );

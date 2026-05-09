@@ -1,0 +1,75 @@
+@use "@/styles/pxToRem.scss" as mixins;
+@use "@/styles/breakpoints.scss" as breakpoints;
+@use "@/styles/colorsTokens.scss" as colors;
+
+.rootCommonDrawerContent {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  gap: mixins.pxToRem(16);
+  height: 100%;
+
+  &_hero {
+    display: flex;
+    flex-direction: column;
+    gap: mixins.pxToRem(16);
+    width: 100%;
+  }
+
+  &_breadcrumbsWrapper {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    align-items: center;
+    gap: mixins.pxToRem(16);
+    width: 100%;
+
+    &::before {
+      content: "";
+      display: block;
+      width: 100%;
+      height: mixins.pxToRem(1);
+      background: colors.$gradient-divider-strong;
+    }
+  }
+
+  &_userButtonContent {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: mixins.pxToRem(4);
+    padding-left: mixins.pxToRem(8);
+  }
+
+  &_userButtonName {
+    font-size: mixins.pxToRem(14);
+    font-weight: 600;
+    line-height: 1;
+  }
+
+  &_userButtonEmail {
+    font-size: mixins.pxToRem(12);
+    color: colors.$color-text-tertiary;
+    line-height: 1;
+  }
+
+  &_logoLink {
+    border: none;
+  }
+
+  &_logo {
+    object-fit: contain;
+    width: mixins.pxToRem(160);
+    height: mixins.pxToRem(40);
+
+    @include breakpoints.sm {
+      width: mixins.pxToRem(220);
+      height: mixins.pxToRem(54);
+    }
+  }
+
+  &_logoutIcon {
+    width: mixins.pxToRem(24);
+    height: mixins.pxToRem(24);
+  }
+}

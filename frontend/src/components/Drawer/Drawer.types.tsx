@@ -13,7 +13,5 @@ export interface DrawerButtonComponentProps {
 }
 
 export interface DrawerContentComponentProps extends React.PropsWithChildren {
-  HeroSlot?: React.ReactNode;
-  FooterSlot?: React.ReactNode;
   as?: React.HTMLElementType;
 }

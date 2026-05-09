@@ -1,13 +1,19 @@
 import {
-  ProviderComponent,
+  DetailsContent,
+  HeaderComponent,
+  NavigationContentComponent,
   RootComponent,
   TopNavigationMobileComponent,
 } from "./PageLayoutPanel.client";
+import { ProviderComponentServer } from "./PageLayoutPanel.server";
 
 const PageLayoutPanel = {
-  Provider: ProviderComponent,
+  Provider: ProviderComponentServer,
   Root: RootComponent,
   TopNavigationMobile: TopNavigationMobileComponent,
+  NavigationContent: NavigationContentComponent,
+  Details: DetailsContent,
+  Header: HeaderComponent,
 };
 
 export default PageLayoutPanel;

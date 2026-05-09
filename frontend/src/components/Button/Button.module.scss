@@ -45,10 +45,12 @@
 
   &:hover:not(&__disabled) {
     background: colors.$color-button-primary-hover;
+    cursor: pointer;
   }
 
   &:active:not(&__disabled) {
     background: colors.$color-button-primary-active;
+    cursor: pointer;
   }
 
   &__outlined {

@@ -1,4 +1,5 @@
 import { getUserFetch } from "@/api/getUserFetch";
+import PageLayoutPanel from "@/components/PageLayout/PageLayoutPanel";
 import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import type React from "react";
@@ -13,5 +14,5 @@ export default async function AuthLayout(props: React.PropsWithChildren) {
     redirect("/auth/login");
   }
 
-  return children;
+  return <PageLayoutPanel.Provider>{children}</PageLayoutPanel.Provider>;
 }

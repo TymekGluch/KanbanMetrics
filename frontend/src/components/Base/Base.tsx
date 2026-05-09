@@ -1,5 +1,4 @@
 import React from "react";
-import { BASE_AS } from "./Base.constants";
 import { type BaseAs, type BaseProps } from "./Base.types";
 import { createStyleSheet } from "@/responsive/styles/createStylesHash";
 import clsx from "clsx";
@@ -9,13 +8,7 @@ const getEmittedStyleHashes = React.cache(() => new Set<string>());
 
 export function Base<T extends BaseAs = "div">(props: BaseProps<T>) {
   const { stylesProps, rest } = resolveProps(props);
-  const {
-    children,
-    as: Component = BASE_AS.DIV as T,
-    className,
-    asChild = false,
-    ...restProps
-  } = rest;
+  const { children, as: Component = "div" as T, className, asChild = false, ...restProps } = rest;
 
   const { hash: stylesHash, cssText } = createStyleSheet(stylesProps);
   const hasStyles = Boolean(cssText.length);

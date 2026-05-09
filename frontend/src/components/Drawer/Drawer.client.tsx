@@ -9,6 +9,7 @@ import { Hidden } from "../Hidden/Hidden";
 import styles from "./Drawer.module.scss";
 import Button from "../Button";
 import clsx from "clsx";
+import { RootCommonDrawerContent } from "./components/RootCommonDrawerContent/RootCommonDrawerContent";
 
 export function DrawerProviderComponent(props: React.PropsWithChildren) {
   const { children } = props;
@@ -49,7 +50,7 @@ export function DrawerButtonComponent(props: DrawerButtonComponentProps) {
 }
 
 export function DrawerContentComponent(props: DrawerContentComponentProps) {
-  const { children, HeroSlot = null, FooterSlot = null, as: Component = "div" } = props;
+  const { children, as: Component = "div" } = props;
 
   const { isOpen } = React.useContext(DrawerContext);
 
@@ -59,9 +60,9 @@ export function DrawerContentComponent(props: DrawerContentComponentProps) {
         [styles.drawerContent__isOpen]: isOpen,
       })}
     >
-      <div className={styles.drawerContent_hero}>{HeroSlot}</div>
-      {isOpen && <div className={styles.drawerContent_children}>{children}</div>}
-      {FooterSlot && <div className={styles.drawerContent_footer}>{FooterSlot}</div>}
+      <div className={styles.drawerContent_shell}>
+        <RootCommonDrawerContent>{children}</RootCommonDrawerContent>
+      </div>
     </Component>
   );
 }

@@ -1,0 +1,22 @@
+@use "@/styles/pxToRem.scss" as mixins;
+@use "@/styles/colorsTokens.scss" as colors;
+
+.updateUserForm {
+  &_globalError {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-top: mixins.pxToRem(24);
+    padding: mixins.pxToRem(12) mixins.pxToRem(16);
+    background: colors.$color-status-danger-bg;
+    color: colors.$color-status-danger-text;
+    border: mixins.pxToRem(1) solid colors.$color-status-danger-border;
+    border-radius: mixins.pxToRem(8);
+    font-size: mixins.pxToRem(14);
+    line-height: 1.4;
+
+    &Text {
+      margin: auto;
+    }
+  }
+}

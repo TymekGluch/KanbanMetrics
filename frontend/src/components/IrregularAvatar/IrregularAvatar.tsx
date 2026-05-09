@@ -5,6 +5,7 @@ import { IRREGULAR_AVATAR_SIZES } from "./IrregularAvatar.constants";
 import { type IrregularAvatarProps } from "./IrregularAvatar.types";
 import { getAcronym } from "@/utils/getAcronym";
 import { getAccessibleTextColor } from "@/utils/getAccessibleTextColor";
+import Image from "next/image";
 
 export function IrregularAvatar(props: IrregularAvatarProps) {
   const {
@@ -32,7 +33,7 @@ export function IrregularAvatar(props: IrregularAvatarProps) {
     >
       <div className={clsx(styles.irregularAvatar_content, contentClassName)}>
         {src ? (
-          <img className={styles.irregularAvatar_image} src={src} alt={name} />
+          <Image className={styles.irregularAvatar_image} src={src} alt={name} />
         ) : (
           <span aria-hidden="true">{getAcronym(name)}</span>
         )}

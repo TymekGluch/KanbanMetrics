@@ -1,0 +1,75 @@
+@use "@/styles/pxToRem.scss" as mixins;
+@use "@/styles/breakpoints.scss" as breakpoints;
+@use "@/styles/colorsTokens.scss" as colors;
+
+.pageLayoutPanelSideNavigation {
+  display: flex;
+  flex-direction: column;
+  gap: mixins.pxToRem(8);
+  padding: mixins.pxToRem(16);
+  background: colors.$color-surface-page;
+  border-right: mixins.pxToRem(1) solid colors.$color-divider-strong;
+  overflow-x: clip;
+
+  &_logo {
+    object-fit: cover;
+    height: mixins.pxToRem(54);
+    width: mixins.pxToRem(46);
+    object-position: left;
+    transition: width 0.15s ease-in-out;
+
+    &__isWide {
+      width: mixins.pxToRem(220);
+    }
+  }
+
+  &_avatar {
+    height: mixins.pxToRem(24);
+    width: mixins.pxToRem(24);
+  }
+
+  &_header {
+    display: flex;
+    flex-direction: column;
+    gap: mixins.pxToRem(16);
+
+    &::after {
+      content: "";
+      display: block;
+      width: 100%;
+      height: mixins.pxToRem(1);
+      background: colors.$gradient-divider-strong;
+      margin: mixins.pxToRem(8) 0;
+    }
+  }
+
+  &_button {
+    display: flex;
+    justify-content: space-between !important;
+    gap: mixins.pxToRem(16);
+    width: mixins.pxToRem(46) !important;
+    height: mixins.pxToRem(46) !important;
+    padding: mixins.pxToRem(10) !important;
+    transition:
+      width 0.15s ease-in-out,
+      border-color 0.15s ease-in-out,
+      justify-content 0.15s ease-in-out;
+
+    &__active {
+      width: 100% !important;
+      padding: 0 mixins.pxToRem(10) !important;
+    }
+  }
+
+  &_sidebarSvg {
+    color: colors.$color-text-primary;
+    width: mixins.pxToRem(24);
+    height: mixins.pxToRem(24);
+  }
+
+  &_footer {
+    display: flex;
+    flex-direction: column;
+    gap: mixins.pxToRem(16);
+  }
+}

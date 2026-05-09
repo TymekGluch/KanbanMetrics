@@ -1,0 +1,100 @@
+@use "@/styles/pxToRem.scss" as mixins;
+@use "@/styles/breakpoints.scss" as breakpoints;
+@use "@/styles/colorsTokens.scss" as colors;
+
+.dialogRoot {
+  position: fixed;
+  inset: 0;
+  z-index: 1200;
+  display: grid;
+  place-items: end center;
+  padding: mixins.pxToRem(12);
+
+  @include breakpoints.md {
+    place-items: center;
+    padding: mixins.pxToRem(24);
+  }
+}
+
+.dialogOverlay {
+  position: absolute;
+  inset: 0;
+  background: color-mix(in srgb, colors.$color-overlay-backdrop 82%, #0c1224);
+  backdrop-filter: blur(mixins.pxToRem(2));
+}
+
+.dialogContent {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  gap: mixins.pxToRem(24);
+  width: min(100%, mixins.pxToRem(560));
+  max-height: min(85dvh, mixins.pxToRem(680));
+  overflow: auto;
+  padding: mixins.pxToRem(16);
+  background: colors.$color-surface-popover;
+  color: colors.$color-text-primary;
+  border: mixins.pxToRem(1) solid colors.$color-border-default;
+  border-radius: mixins.pxToRem(14);
+  box-shadow: 0 mixins.pxToRem(18) mixins.pxToRem(46) rgba(12, 18, 36, 0.36);
+  outline: none;
+
+  @include breakpoints.md {
+    gap: mixins.pxToRem(14);
+    padding: mixins.pxToRem(20);
+  }
+
+  &__size_default {
+    width: min(100%, mixins.pxToRem(560));
+  }
+
+  &__size_large {
+    width: min(100%, mixins.pxToRem(760));
+  }
+
+  &__size_full {
+    width: min(100%, mixins.pxToRem(980));
+    height: min(85dvh, mixins.pxToRem(760));
+  }
+}
+
+.dialogHeader {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  gap: mixins.pxToRem(12);
+}
+
+.dialogTitle {
+  margin: 0;
+  font-size: mixins.pxToRem(20);
+  line-height: 1.25;
+  font-weight: 700;
+}
+
+.dialogDescription {
+  margin: mixins.pxToRem(6) 0 0;
+  color: colors.$color-text-secondary;
+  font-size: mixins.pxToRem(14);
+  line-height: 1.45;
+}
+
+.dialogBody {
+  min-height: 0;
+}
+
+.dialogFooter {
+  display: flex;
+  justify-content: flex-end;
+  gap: mixins.pxToRem(10);
+  flex-wrap: wrap;
+}
+
+.dialogTrigger,
+.dialogClose {
+  &:focus-visible {
+    outline: mixins.pxToRem(2) solid colors.$color-focus-ring;
+    outline-offset: mixins.pxToRem(2);
+  }
+}

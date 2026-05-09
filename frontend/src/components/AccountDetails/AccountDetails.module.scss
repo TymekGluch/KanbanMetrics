@@ -1,0 +1,49 @@
+@use "@/styles/pxToRem.scss" as mixins;
+@use "@/styles/breakpoints.scss" as breakpoints;
+@use "@/styles/colorsTokens.scss" as colors;
+
+.accountDetails {
+  display: flex;
+  flex-direction: column;
+  width: 100%;
+  list-style: none;
+
+  &_item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: mixins.pxToRem(16);
+    height: mixins.pxToRem(30);
+  }
+
+  &_strong {
+    color: colors.$color-text-primary;
+    font-size: mixins.pxToRem(14);
+    font-weight: 600;
+  }
+
+  &_value {
+    color: colors.$color-text-secondary;
+    font-size: mixins.pxToRem(14);
+  }
+
+  &_booleanValue {
+    width: mixins.pxToRem(16);
+    height: mixins.pxToRem(16);
+    border-radius: 50%;
+    background: colors.$color-status-success-text;
+
+    &__false {
+      background: colors.$color-status-danger-text;
+    }
+  }
+
+  &_badgeValue {
+    padding: mixins.pxToRem(6);
+    border-radius: mixins.pxToRem(8);
+    border: solid mixins.pxToRem(1) colors.$color-status-info-border;
+    background: colors.$color-status-info-bg;
+    color: colors.$color-status-info-text;
+    font-size: mixins.pxToRem(14);
+  }
+}

@@ -9,6 +9,7 @@ type StyleAliasProps = {
   paddingX?: CSSProperties["paddingLeft"];
   paddingY?: CSSProperties["paddingTop"];
   spacing?: CSSProperties["gap"];
+  textWrap?: CSSProperties["textWrap"];
 };
 
 export type ResponsiveStyleProps = WithResponsiveValues<CSSProperties & StyleAliasProps>;
@@ -114,6 +115,7 @@ export type BaseSizeProps = Pick<
   | "width"
   | "minWidth"
   | "maxWidth"
+  | "maxInlineSize"
   | "height"
   | "minHeight"
   | "maxHeight"
@@ -152,6 +154,7 @@ export type BaseTypographyProps = Pick<
   | "textAlign"
   | "textTransform"
   | "textDecoration"
+  | "textWrap"
   | "whiteSpace"
   | "wordBreak"
   | "wordWrap"

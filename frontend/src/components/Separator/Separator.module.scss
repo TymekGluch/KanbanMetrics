@@ -1,0 +1,9 @@
+@use "@/styles/pxToRem.scss" as mixins;
+@use "@/styles/colorsTokens.scss" as colors;
+
+.separator {
+  display: block;
+  width: 100%;
+  height: mixins.pxToRem(1);
+  background: colors.$gradient-divider-strong;
+}

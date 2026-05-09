@@ -1,0 +1,60 @@
+@use "@/styles/pxToRem.scss" as mixins;
+@use "@/styles/breakpoints.scss" as breakpoints;
+@use "@/styles/colorsTokens.scss" as colors;
+
+@mixin card {
+  display: flex;
+  flex-direction: column;
+  gap: mixins.pxToRem(16);
+  width: 100%;
+  height: fit-content;
+  padding: mixins.pxToRem(24);
+  background: colors.$color-surface-card;
+  border: solid mixins.pxToRem(1) colors.$color-border-default;
+  border-radius: mixins.pxToRem(16);
+}
+
+.profilePageContent {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: mixins.pxToRem(24);
+  width: 100%;
+
+  @include breakpoints.lg {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @include breakpoints.xxl {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  &_column {
+    display: flex;
+    flex-direction: column;
+    gap: mixins.pxToRem(24);
+  }
+
+  &_profileInformation {
+    @include card;
+  }
+
+  &_accountDetails {
+    @include card;
+
+    gap: mixins.pxToRem(24);
+  }
+
+  &_dangerZone {
+    @include card;
+
+    background: colors.$color-status-danger-bg;
+    color: colors.$color-status-danger-text;
+    border-color: colors.$color-status-danger-border;
+
+    &Content {
+      display: flex;
+      flex-direction: column;
+      gap: mixins.pxToRem(8);
+    }
+  }
+}
