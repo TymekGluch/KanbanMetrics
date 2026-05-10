@@ -1,6 +1,11 @@
 "use client";
 
+import { PowerSvg } from "@/assets/PowerSvg";
+import { UserOutlinedSvg } from "@/assets/UserOutlinedSvg";
+import Button from "@/components/Button";
 import Drawer from "@/components/Drawer";
+import { Hidden } from "@/components/Hidden/Hidden";
+import { LogoutButton } from "@/components/LogoutButton/LogoutButton";
 import { Media } from "@/components/Media";
 import { MEDIA_CONDITION } from "@/components/Media/Media.constants";
 import { useResponsiveProp } from "@/responsive/hooks/useResponsive";
@@ -10,6 +15,8 @@ import Image from "next/image";
 import Link from "next/link";
 import React from "react";
 import { isSlotChild, markSlotComponent } from "../utils/slotting";
+import { PageLayoutPanelRootWrapperComponent } from "./components/PageLayoutPanelRootWrapperComponent/PageLayoutPanelRootWrapperComponent";
+import { PageLayoutPanelSideNavigationComponent } from "./components/PageLayoutPanelSideNavigationComponent/PageLayoutPanelSideNavigationComponent";
 import { PageLayoutPanelProvider } from "./context";
 import { PAGE_LAYOUT_PANEL_CONTENT_ALIGNMENT } from "./PageLayoutPanel.constants";
 import styles from "./PageLayoutPanel.module.scss";
@@ -18,8 +25,6 @@ import {
   type PageLayoutPanelProviderProps,
   type PageLayoutPanelRootProps,
 } from "./PageLayoutPanel.types";
-import { PageLayoutPanelRootWrapperComponent } from "./components/PageLayoutPanelRootWrapperComponent/PageLayoutPanelRootWrapperComponent";
-import { PageLayoutPanelSideNavigationComponent } from "./components/PageLayoutPanelSideNavigationComponent/PageLayoutPanelSideNavigationComponent";
 
 const NAVIGATION_CONTENT_SLOT = "PageLayoutPanel.NavigationContent";
 const NAVIGATION_CONTENT_EXPORT_NAMES = ["NavigationContentComponent"] as const;
@@ -126,6 +131,14 @@ export function NavigationContentComponent(props: NavigationContentComponentProp
   const { children, alignment = PAGE_LAYOUT_PANEL_CONTENT_ALIGNMENT.CENTER } = props;
 
   const alignmentValue = useResponsiveProp(alignment);
+  const childrenArray = React.Children.toArray(children);
+  const hasOwnListItemsChild = childrenArray.some(
+    (child) => React.isValidElement<{ asListItems?: boolean }>(child) && child.props.asListItems
+  );
+
+  if (hasOwnListItemsChild) {
+    return <ul className={styles.pageLayoutPanelNavigationContent}>{children}</ul>;
+  }
 
   return (
     <ul className={styles.pageLayoutPanelNavigationContent}>
@@ -151,7 +164,42 @@ markSlotComponent(NavigationContentComponent, NAVIGATION_CONTENT_SLOT);
 export function HeaderComponent(props: React.PropsWithChildren) {
   const { children } = props;
 
-  return <header className={styles.pageLayoutPanelHeader}>{children}</header>;
+  return (
+    <header className={styles.pageLayoutPanelHeader}>
+      <div className={styles.pageLayoutPanelHeader_content}>{children}</div>
+
+      <Media.Client
+        variant={MEDIA_CONDITION.BREAKPOINTS}
+        condition={{
+          [BREAKPOINTS_KEYS.md]: true,
+        }}
+      >
+        <Media.Client
+          variant={MEDIA_CONDITION.BREAKPOINTS}
+          condition={{
+            [BREAKPOINTS_KEYS.xxl]: true,
+          }}
+          Fallback={
+            <nav className={styles.pageLayoutPanelHeader_navigation}>
+              <Button.AsLink
+                href="/dashboard/profile"
+                className={styles.pageLayoutPanelHeader_button}
+                variant="outlined"
+              >
+                <UserOutlinedSvg className={styles.pageLayoutPanelHeader_icon} />
+                <Hidden>Go to your Profile</Hidden>
+              </Button.AsLink>
+
+              <LogoutButton className={styles.pageLayoutPanelHeader_button} variant="outlined">
+                <PowerSvg className={styles.pageLayoutPanelHeader_icon} />
+                <Hidden>Logout</Hidden>
+              </LogoutButton>
+            </nav>
+          }
+        />
+      </Media.Client>
+    </header>
+  );
 }
 
 export function DetailsContent(props: React.PropsWithChildren) {

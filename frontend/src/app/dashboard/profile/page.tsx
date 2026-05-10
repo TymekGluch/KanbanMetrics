@@ -7,6 +7,8 @@ import styles from "./page.module.scss";
 import { Separator } from "@/components/Separator/Separator";
 import { DeleteAccountButton } from "@/components/DeleteAccountButton";
 import { AccountDetails } from "@/components/AccountDetails/AccountDetails";
+import { AccountSecurity } from "@/components/AccountSecurity/AccountSecurity";
+import { PanelNavigation } from "@/components/PanelNavigation/PanelNavigation";
 
 export const metadata = {
   title: "Profile",
@@ -19,33 +21,53 @@ export default function ProfilePage() {
     <PageLayoutPanel.Provider>
       <PageLayoutPanel.Root>
         <PageLayoutPanel.TopNavigationMobile />
-        <PageLayoutPanel.NavigationContent />
+        <PageLayoutPanel.NavigationContent>
+          <PanelNavigation asListItems />
+        </PageLayoutPanel.NavigationContent>
         <PageLayoutPanel.Header>
           <Base as="h1" fontSize={pxToRem(24)}>
             Your Profile
           </Base>
-          <Base
-            as="p"
-            fontSize={pxToRem(12)}
-            color={COLORS.TEXT_SECONDARY}
-            textAlign={{
-              default: "center",
-              lg: "left",
-            }}
-            textWrap="balance"
-          >
+          <Base as="p" fontSize={pxToRem(12)} color={COLORS.TEXT_SECONDARY} textWrap="balance">
             Welcome to your profile! Here you can view and edit your personal information.
           </Base>
         </PageLayoutPanel.Header>
         <PageLayoutPanel.Details>
           <div className={styles.profilePageContent}>
-            <section className={styles.profilePageContent_profileInformation}>
-              <Base as="h2" fontSize={pxToRem(16)}>
-                Profile Information
-              </Base>
+            <div className={styles.profilePageContent_column}>
+              <section className={styles.profilePageContent_profileInformation}>
+                <Base as="h2" fontSize={pxToRem(16)}>
+                  Profile Information
+                </Base>
 
-              <UpdateUserForm />
-            </section>
+                <UpdateUserForm.Root>
+                  <UpdateUserForm.UserDetails />
+                </UpdateUserForm.Root>
+              </section>
+
+              <section className={styles.profilePageContent_accountSecurity}>
+                <AccountSecurity
+                  HeaderSlot={
+                    <div className={styles.profilePageContent_sectionHeader}>
+                      <Base as="h2" fontSize={pxToRem(16)}>
+                        Account Security
+                      </Base>
+
+                      <Base
+                        as="p"
+                        fontSize={pxToRem(12)}
+                        color={COLORS.TEXT_SECONDARY}
+                        textWrap="balance"
+                        maxInlineSize="60ch"
+                      >
+                        Manage your account security settings, including changing your password and
+                        enabling two-factor authentication.
+                      </Base>
+                    </div>
+                  }
+                />
+              </section>
+            </div>
 
             <div className={styles.profilePageContent_column}>
               <section className={styles.profilePageContent_accountDetails}>

@@ -69,7 +69,41 @@ export class ApiClient {
     if (endpoint.startsWith("http")) {
       return endpoint;
     }
+
     return `${this.config.baseURL}${endpoint.startsWith("/") ? endpoint : `/${endpoint}`}`;
+  }
+
+  private appendQueryParams(endpoint: string, query?: Record<string, unknown>): string {
+    if (!query) {
+      return endpoint;
+    }
+
+    const params = new URLSearchParams();
+
+    Object.entries(query).forEach(([key, value]) => {
+      if (value === undefined || value === null) {
+        return;
+      }
+
+      if (Array.isArray(value)) {
+        value.forEach((item) => {
+          if (item !== undefined && item !== null) {
+            params.append(key, String(item));
+          }
+        });
+        return;
+      }
+
+      params.set(key, String(value));
+    });
+
+    const queryString = params.toString();
+
+    if (!queryString) {
+      return endpoint;
+    }
+
+    return `${endpoint}${endpoint.includes("?") ? "&" : "?"}${queryString}`;
   }
 
   private buildRequestOptions(options: RequestInit): RequestInit {
@@ -130,11 +164,18 @@ export class ApiClient {
     }
   }
 
-  async get<T>(
+  async get<T, B extends Record<string, unknown> | undefined = undefined>(
     endpoint: string,
-    options: Omit<RequestInit, "method"> = {}
+    body?: B,
+    options: Omit<RequestInit, "method" | "body"> = {}
   ): Promise<ApiResponse<T>> {
-    return this.doRequest<T>(endpoint, { ...options, method: "GET" });
+    const endpointWithQuery = this.appendQueryParams(endpoint, body as Record<string, unknown>);
+
+    return this.doRequest<T>(endpointWithQuery, {
+      ...options,
+      method: "GET",
+      body: undefined,
+    });
   }
 
   async post<T, B>(

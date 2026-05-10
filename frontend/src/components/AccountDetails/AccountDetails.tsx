@@ -87,7 +87,9 @@ export function AccountDetails() {
 
       <li className={styles.accountDetails_item}>
         <strong className={styles.accountDetails_strong}>Last login at:</strong>{" "}
-        <span className={styles.accountDetails_value}>{resolveDate(user.last_login_at)}</span>
+        <span className={styles.accountDetails_value}>
+          {resolveDate(user.last_login_at) ?? "Never"}
+        </span>
       </li>
 
       <li>

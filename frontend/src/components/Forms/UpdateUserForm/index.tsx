@@ -1,3 +1,7 @@
-export { UpdateUserForm } from "./UpdateUserForm";
-export { useUpdateUserForm } from "./useUpdateUserForm";
-export type { UpdateUserFormSchemaType } from "./UpdateUserForm.validation";
+import { FormComponent, NewPasswordComponent, UserDetailsComponent } from "./UpdateUserForm";
+
+export const UpdateUserForm = {
+  Root: FormComponent,
+  UserDetails: UserDetailsComponent,
+  NewPassword: NewPasswordComponent,
+};

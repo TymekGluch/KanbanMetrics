@@ -67,7 +67,7 @@ export function RootCommonDrawerContent(props: React.PropsWithChildren) {
             StartIconSlot={
               <IrregularAvatar
                 name={user?.name ?? ""}
-                backgroundColor={COLORS.GRADIENT_BRAND_MAIN}
+                backgroundColor={COLORS.FOCUS_RING}
                 size="sm"
               />
             }

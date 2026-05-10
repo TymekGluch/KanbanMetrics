@@ -1,0 +1,63 @@
+@use "@/styles/pxToRem.scss" as mixins;
+@use "@/styles/colorsTokens.scss" as colors;
+
+.accountSecurity {
+  display: flex;
+  flex-direction: column;
+  gap: mixins.pxToRem(24);
+  list-style: none;
+
+  &_sectionHeader {
+    display: flex;
+    justify-content: space-between;
+    gap: mixins.pxToRem(8);
+    width: 100%;
+  }
+
+  &_icon {
+    color: colors.$color-text-primary;
+    width: mixins.pxToRem(16);
+    height: mixins.pxToRem(16);
+  }
+}
+
+.manageList {
+  display: flex;
+  flex-direction: column;
+  gap: mixins.pxToRem(4);
+  list-style: none;
+
+  &_section {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: mixins.pxToRem(8);
+    width: 100%;
+  }
+
+  &_item {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: mixins.pxToRem(4);
+
+    &Header {
+      display: flex;
+      align-items: center;
+      gap: mixins.pxToRem(8);
+
+      &Text {
+        display: flex;
+        flex-direction: column;
+        gap: mixins.pxToRem(4);
+      }
+    }
+  }
+
+  &_icon {
+    color: colors.$color-text-secondary;
+    min-width: mixins.pxToRem(24);
+    width: mixins.pxToRem(24);
+    height: mixins.pxToRem(24);
+  }
+}

@@ -15,12 +15,14 @@
 }
 
 .profilePageContent {
-  display: grid;
-  grid-template-columns: 1fr;
+  display: flex;
+  flex-direction: column;
   gap: mixins.pxToRem(24);
   width: 100%;
 
   @include breakpoints.lg {
+    display: grid;
+
     grid-template-columns: 1fr 1fr;
   }
 
@@ -32,6 +34,28 @@
     display: flex;
     flex-direction: column;
     gap: mixins.pxToRem(24);
+
+    &:last-of-type {
+      @include breakpoints.md {
+        padding-bottom: mixins.pxToRem(24);
+      }
+
+      @include breakpoints.lg {
+        padding-bottom: 0;
+      }
+    }
+
+    &:last-of-type {
+      @include breakpoints.xxl {
+        display: contents;
+      }
+    }
+  }
+
+  &_sectionHeader {
+    display: flex;
+    flex-direction: column;
+    gap: mixins.pxToRem(8);
   }
 
   &_profileInformation {
@@ -56,5 +80,9 @@
       flex-direction: column;
       gap: mixins.pxToRem(8);
     }
+  }
+
+  &_accountSecurity {
+    @include card;
   }
 }

@@ -52,9 +52,9 @@
   flex: 1;
   display: flex;
   flex-direction: column;
-  gap: mixins.pxToRem(8);
+  gap: mixins.pxToRem(16);
   width: 100%;
-  padding: mixins.pxToRem(24) 0;
+  padding: mixins.pxToRem(8) 0;
   list-style: none;
   overflow-x: auto;
 
@@ -62,6 +62,10 @@
     display: flex;
     justify-content: center;
     width: 100%;
+
+    @include breakpoints.sm {
+      justify-content: flex-start;
+    }
 
     &__alignStart {
       justify-content: flex-start;
@@ -85,14 +89,47 @@
 
 .pageLayoutPanelHeader {
   display: flex;
-  flex-direction: column;
-  align-items: center;
   gap: mixins.pxToRem(8);
+  align-items: center;
   width: 100%;
+  padding-inline: mixins.pxToRem(24);
 
   @include breakpoints.lg {
+    flex-direction: row;
     align-items: flex-start;
     padding: mixins.pxToRem(24);
+  }
+
+  &_content {
+    display: flex;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: mixins.pxToRem(8);
+    width: 100%;
+  }
+
+  &_navigation {
+    display: flex;
+    align-items: center;
+    gap: mixins.pxToRem(16);
+    height: fit-content;
+  }
+
+  &_button {
+    width: mixins.pxToRem(40) !important;
+    height: mixins.pxToRem(40) !important;
+    padding: 0 !important;
+  }
+
+  &_avatar {
+    width: mixins.pxToRem(40) !important;
+    height: mixins.pxToRem(40) !important;
+  }
+
+  &_icon {
+    width: mixins.pxToRem(24);
+    height: mixins.pxToRem(24);
+    color: colors.$color-text-primary;
   }
 }
 

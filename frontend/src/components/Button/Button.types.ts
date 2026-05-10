@@ -10,6 +10,7 @@ import type { ResponsiveValue } from "@/responsive/responsive.types";
 import { type ValueOf } from "@/types/valueOf";
 import type Link from "next/link";
 import { type BUTTON_SIZES, type BUTTON_VARIANTS } from "./button.constants";
+import type { TooltipPlacement } from "../Tooltip";
 
 type ButtonSizeProps = Pick<BaseSizeProps, "width" | "minWidth">;
 
@@ -26,6 +27,10 @@ interface ButtonCommonProps {
   disabled?: boolean;
   StartIconSlot?: React.ReactNode;
   EndIconSlot?: React.ReactNode;
+  tooltipTitle?: React.ReactNode;
+  tooltipDescription?: React.ReactNode;
+  tooltipPlacement?: TooltipPlacement;
+  tooltipOffset?: number;
 }
 
 export type ButtonAsAnchorProps = React.ComponentPropsWithRef<"a"> &

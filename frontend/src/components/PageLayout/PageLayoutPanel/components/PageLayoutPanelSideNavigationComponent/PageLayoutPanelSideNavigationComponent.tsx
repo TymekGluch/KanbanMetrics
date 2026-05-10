@@ -1,13 +1,16 @@
 "use client";
 
 import { HomeOutlinedSvg } from "@/assets/HomeOutlinedSvg";
+import { PowerSvg } from "@/assets/PowerSvg";
+import { SidebarFilledSvg } from "@/assets/SidebarFilledSvg";
 import { SidebarSvg } from "@/assets/SidebarSvg";
+import { UserOutlinedSvg } from "@/assets/UserOutlinedSvg";
 import Button from "@/components/Button";
 import { Hidden } from "@/components/Hidden/Hidden";
-import { IrregularAvatar } from "@/components/IrregularAvatar";
+import { LogoutButton } from "@/components/LogoutButton/LogoutButton";
 import { Media } from "@/components/Media";
 import { MEDIA_CONDITION } from "@/components/Media/Media.constants";
-import { COLORS } from "@/theme/theme.constants";
+import { BREAKPOINTS_KEYS } from "@/responsive/responsive.constants";
 import { pxToRem } from "@/utils/pxToRem";
 import clsx from "clsx";
 import Image from "next/image";
@@ -16,16 +19,11 @@ import React from "react";
 import { PageLayoutPanelContext } from "../../context";
 import { pageLayoutPanelContextDefaultSpaces } from "../../context/LayoutContext";
 import styles from "./PageLayoutPanelSideNavigationComponent.module.scss";
-import { SidebarFilledSvg } from "@/assets/SidebarFilledSvg";
-import { UserContext } from "@/providers/UserProvider/UserProvider";
-import { LogoutButton } from "@/components/LogoutButton/LogoutButton";
-import { PowerSvg } from "@/assets/PowerSvg";
 
 export function PageLayoutPanelSideNavigationComponent(props: React.PropsWithChildren) {
   const { children } = props;
 
   const { value, setValue } = React.useContext(PageLayoutPanelContext);
-  const user = React.useContext(UserContext);
 
   const isNavigationHidden =
     value.contentSpace === pageLayoutPanelContextDefaultSpaces.contentSpace &&
@@ -53,7 +51,7 @@ export function PageLayoutPanelSideNavigationComponent(props: React.PropsWithChi
   };
 
   return (
-    <div className={styles.pageLayoutPanelSideNavigation}>
+    <nav className={styles.pageLayoutPanelSideNavigation}>
       <div className={styles.pageLayoutPanelSideNavigation_header}>
         <Link href="/">
           <Media.Server
@@ -118,32 +116,36 @@ export function PageLayoutPanelSideNavigationComponent(props: React.PropsWithChi
 
       {children}
 
-      <div className={styles.pageLayoutPanelSideNavigation_footer}>
-        <Button.AsLink
-          href="/dashboard/profile"
-          className={clsx(styles.pageLayoutPanelSideNavigation_button, {
-            [styles.pageLayoutPanelSideNavigation_button__active]: !isNavigationHidden,
-          })}
-          variant="outlined"
-        >
-          <IrregularAvatar
-            className={styles.pageLayoutPanelSideNavigation_avatar}
-            name={user?.name ?? "User"}
-            backgroundColor={COLORS.FOCUS_RING}
-          />
-          {isTextVisible ? <span>Go to your Profile</span> : <Hidden>Go to your Profile</Hidden>}
-        </Button.AsLink>
+      <Media.Client
+        variant={MEDIA_CONDITION.BREAKPOINTS}
+        condition={{
+          [BREAKPOINTS_KEYS.xxl]: true,
+        }}
+      >
+        <div className={styles.pageLayoutPanelSideNavigation_footer}>
+          <Button.AsLink
+            href="/dashboard/profile"
+            className={clsx(styles.pageLayoutPanelSideNavigation_button, {
+              [styles.pageLayoutPanelSideNavigation_button__active]: !isNavigationHidden,
+            })}
+            variant="outlined"
+          >
+            <UserOutlinedSvg className={styles.pageLayoutPanelSideNavigation_sidebarSvg} />
 
-        <LogoutButton
-          className={clsx(styles.pageLayoutPanelSideNavigation_button, {
-            [styles.pageLayoutPanelSideNavigation_button__active]: !isNavigationHidden,
-          })}
-          variant="outlined"
-        >
-          <PowerSvg className={styles.pageLayoutPanelSideNavigation_sidebarSvg} />
-          {isTextVisible ? <span>Logout</span> : <Hidden>Logout</Hidden>}
-        </LogoutButton>
-      </div>
-    </div>
+            {isTextVisible ? <span>Go to your Profile</span> : <Hidden>Go to your Profile</Hidden>}
+          </Button.AsLink>
+
+          <LogoutButton
+            className={clsx(styles.pageLayoutPanelSideNavigation_button, {
+              [styles.pageLayoutPanelSideNavigation_button__active]: !isNavigationHidden,
+            })}
+            variant="outlined"
+          >
+            <PowerSvg className={styles.pageLayoutPanelSideNavigation_sidebarSvg} />
+            {isTextVisible ? <span>Logout</span> : <Hidden>Logout</Hidden>}
+          </LogoutButton>
+        </div>
+      </Media.Client>
+    </nav>
   );
 }

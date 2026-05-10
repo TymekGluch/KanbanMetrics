@@ -10,5 +10,5 @@ export function resolveRole(name?: string) {
 }
 
 export function resolveDate(dateString?: string) {
-  return new Date(dateString || "").toUTCString().replace(" GMT", "");
+  return !!dateString ? new Date(dateString).toUTCString() : "-";
 }

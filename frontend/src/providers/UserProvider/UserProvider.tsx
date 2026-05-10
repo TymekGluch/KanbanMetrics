@@ -6,6 +6,9 @@ import React from "react";
 type User = GetApiUserMeSuccessResponse;
 
 export const UserContext = React.createContext<User | null>(null);
+export const SetUserContext = React.createContext<React.Dispatch<
+  React.SetStateAction<User | null>
+> | null>(null);
 
 interface UserProviderProps extends React.PropsWithChildren {
   user: User | null;
@@ -14,5 +17,15 @@ interface UserProviderProps extends React.PropsWithChildren {
 export function UserProvider(props: UserProviderProps) {
   const { user, children } = props;
 
-  return <UserContext.Provider value={user}>{children}</UserContext.Provider>;
+  const [localUser, setLocalUser] = React.useState<User | null>(user);
+
+  React.useEffect(() => {
+    setLocalUser(user);
+  }, [user]);
+
+  return (
+    <SetUserContext.Provider value={setLocalUser}>
+      <UserContext.Provider value={localUser}>{children}</UserContext.Provider>
+    </SetUserContext.Provider>
+  );
 }

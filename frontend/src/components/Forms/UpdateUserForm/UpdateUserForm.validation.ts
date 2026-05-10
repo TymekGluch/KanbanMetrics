@@ -14,28 +14,31 @@ const emptyStringToUndefined = <TSchema extends z.ZodTypeAny>(schema: TSchema) =
     return value;
   }, schema.optional());
 
-const optionalPasswordSchema = emptyStringToUndefined(
-  z
-    .string()
-    .min(usersUpdateUserHandlerInputPasswordMin, {
-      message: `Password must be at least ${usersUpdateUserHandlerInputPasswordMin} characters long.`,
-    })
-    .max(usersUpdateUserHandlerInputPasswordMax, {
-      message: `Password must be at most ${usersUpdateUserHandlerInputPasswordMax} characters long.`,
-    })
-    .regex(usersUpdateUserHandlerInputPasswordRegExp, {
-      message:
-        "Password must contain at least one uppercase letter, one number and one special character.",
-    })
-);
+export const userDetailsSchema = z.object({
+  name: emptyStringToUndefined(z.string().min(1, "Name is required")),
+  email: emptyStringToUndefined(z.email("Invalid email address")),
+});
 
-export const updateUserFormSchema = z
-  .object({
-    name: emptyStringToUndefined(z.string().min(1, "Name is required")),
-    email: emptyStringToUndefined(z.email("Invalid email address")),
-    password: optionalPasswordSchema,
-    confirmPassword: emptyStringToUndefined(z.string()),
-  })
+export const newPasswordSchema = z.object({
+  password: emptyStringToUndefined(
+    z
+      .string()
+      .min(usersUpdateUserHandlerInputPasswordMin, {
+        message: `Password must be at least ${usersUpdateUserHandlerInputPasswordMin} characters long.`,
+      })
+      .max(usersUpdateUserHandlerInputPasswordMax, {
+        message: `Password must be at most ${usersUpdateUserHandlerInputPasswordMax} characters long.`,
+      })
+      .regex(usersUpdateUserHandlerInputPasswordRegExp, {
+        message:
+          "Password must contain at least one uppercase letter, one number and one special character.",
+      })
+  ),
+  confirmPassword: emptyStringToUndefined(z.string()),
+});
+
+export const updateUserFormSchema = userDetailsSchema
+  .and(newPasswordSchema)
   .refine(
     (data) => {
       if (data.password && !data.confirmPassword) {
