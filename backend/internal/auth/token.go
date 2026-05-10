@@ -16,7 +16,7 @@ type jwtClaims struct {
 }
 
 func GenerateJwtToken(id uint) (string, error) {
-	now := time.Now()
+	now := time.Now().UTC()
 	token := jwt.NewWithClaims(jwt.SigningMethodHS256, jwt.MapClaims{
 		"user_id": id,
 		"iat":     now.Unix(),

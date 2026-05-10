@@ -32,7 +32,7 @@ func UpdateUser(ctx context.Context, input UpdateUserInput, shouldMarkAsUpdated 
 	var updateTime *time.Time
 
 	if shouldMarkAsUpdated {
-		now := time.Now()
+		now := time.Now().UTC()
 		updateTime = &now
 	}
 

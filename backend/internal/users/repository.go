@@ -25,7 +25,7 @@ func dbInsertUser(ctx context.Context, input dbCreateUserInput) (int, error) {
 
 	var userId int
 
-	err = db.Pool.QueryRow(ctx, string(query), input.Name, input.Email, input.HashedPassword, input.Role, time.Now()).Scan(&userId)
+	err = db.Pool.QueryRow(ctx, string(query), input.Name, input.Email, input.HashedPassword, input.Role, time.Now().UTC()).Scan(&userId)
 	if err != nil {
 		return 0, err
 	}

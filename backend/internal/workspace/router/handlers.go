@@ -7,6 +7,7 @@ import (
 	"KanbanMetrics/internal/users"
 	"KanbanMetrics/internal/validation"
 	"KanbanMetrics/internal/workspace"
+	"strconv"
 
 	"github.com/gofiber/fiber/v3"
 )
@@ -111,6 +112,33 @@ func (handler *handlers) listWorkspacesHandler(ctx fiber.Ctx) error {
 		if err := validation.BindJSONStrict(ctx, &input); err != nil {
 			return fiber.NewError(fiber.StatusBadRequest, auth.ErrorInvalidBody)
 		}
+	}
+
+	if rawLimit := ctx.Query("limit"); rawLimit != "" {
+		parsedLimit, err := strconv.Atoi(rawLimit)
+		if err != nil {
+			return fiber.NewError(fiber.StatusBadRequest, auth.ErrorInvalidBody)
+		}
+
+		input.Limit = &parsedLimit
+	}
+
+	if rawOffset := ctx.Query("offset"); rawOffset != "" {
+		parsedOffset, err := strconv.Atoi(rawOffset)
+		if err != nil {
+			return fiber.NewError(fiber.StatusBadRequest, auth.ErrorInvalidBody)
+		}
+
+		input.Offset = &parsedOffset
+	}
+
+	if rawOnlyMine := ctx.Query("only_mine"); rawOnlyMine != "" {
+		parsedOnlyMine, err := strconv.ParseBool(rawOnlyMine)
+		if err != nil {
+			return fiber.NewError(fiber.StatusBadRequest, auth.ErrorInvalidBody)
+		}
+
+		input.OnlyMine = &parsedOnlyMine
 	}
 
 	if err := handler.validatorService.Struct(input); err != nil {

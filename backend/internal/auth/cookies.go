@@ -28,7 +28,7 @@ func SetAuthCookie(ctx fiber.Ctx, jwtToken string) {
 		Name:     CookieName,
 		Value:    jwtToken,
 		MaxAge:   int(default_auth_cookie_expiration_time / time.Second),
-		Expires:  time.Now().Add(default_auth_cookie_expiration_time),
+		Expires:  time.Now().UTC().Add(default_auth_cookie_expiration_time),
 		Path:     "/",
 		HTTPOnly: true,
 		Secure:   cookieSecureEnabled(),

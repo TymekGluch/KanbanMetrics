@@ -41,7 +41,7 @@ func LoginUser(ctx context.Context, input LoginUserInput) (string, error) {
 		return "", err
 	}
 
-	now := time.Now()
+	now := time.Now().UTC()
 
 	updateUserPayload := users.UpdateUserInput{
 		ID:          user.ID,
