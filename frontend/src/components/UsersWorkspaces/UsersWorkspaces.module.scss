@@ -1,0 +1,74 @@
+@use "@/styles/pxToRem.scss" as mixins;
+@use "@/styles/breakpoints.scss" as breakpoints;
+@use "@/styles/colorsTokens.scss" as colors;
+
+@mixin card {
+  width: 100%;
+  height: 100%;
+  padding: mixins.pxToRem(16);
+  border: solid mixins.pxToRem(1) colors.$color-border-default;
+  border-radius: mixins.pxToRem(8);
+}
+
+.usersWorkspaces {
+  display: flex;
+  flex-direction: column;
+  gap: mixins.pxToRem(16);
+  list-style: none;
+
+  @include breakpoints.sm {
+    display: grid;
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include breakpoints.lg {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include breakpoints.xxl {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  &_listItem {
+    display: flex;
+    flex-direction: column;
+    gap: mixins.pxToRem(8);
+
+    @include card;
+
+    &Content {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: mixins.pxToRem(8);
+    }
+
+    &Identity {
+      display: flex;
+      align-items: center;
+      gap: mixins.pxToRem(10);
+      min-width: 0;
+    }
+
+    &Button {
+      width: mixins.pxToRem(36);
+      height: mixins.pxToRem(36);
+      padding: 0;
+    }
+
+    &Icon {
+      width: mixins.pxToRem(24);
+      height: mixins.pxToRem(24);
+      color: colors.$color-text-primary;
+    }
+  }
+
+  &_empty {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: mixins.pxToRem(24);
+    background: colors.$color-button-secondary-bg;
+    border: dashed mixins.pxToRem(1) colors.$color-text-secondary;
+  }
+}

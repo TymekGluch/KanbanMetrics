@@ -1,0 +1,299 @@
+@use "@/styles/pxToRem.scss" as mixins;
+@use "@/styles/breakpoints.scss" as breakpoints;
+@use "@/styles/colorsTokens.scss" as colors;
+
+.avatar {
+  --avatar-width-base: #{mixins.pxToRem(48)};
+  --avatar-height-base: #{mixins.pxToRem(48)};
+  --avatar-border-radius: 999px;
+  --avatar-font-size: #{mixins.pxToRem(16)};
+  --avatar-main-bg: #{colors.$gradient-blob-purple-1};
+  --avatar-before-bg: #{colors.$gradient-blob-purple-2};
+  --avatar-after-bg: #{colors.$gradient-blob-purple-3};
+  --avatar-content-bg: #{colors.$color-avatar-content-bg};
+  --avatar-content-color: #{colors.$color-avatar-content-text};
+
+  position: relative;
+  display: grid;
+  place-items: center;
+  width: var(--avatar-width-base);
+  height: var(--avatar-height-base);
+  border-radius: var(--avatar-border-radius);
+  overflow: hidden;
+  flex-shrink: 0;
+  background: var(--avatar-main-bg);
+  border: mixins.pxToRem(1.5) solid colors.$color-avatar-border;
+  box-shadow:
+    0 0 0 mixins.pxToRem(2) colors.$color-avatar-shadow-ring,
+    0 mixins.pxToRem(8) mixins.pxToRem(20) colors.$color-avatar-shadow-drop,
+    inset 0 mixins.pxToRem(1) mixins.pxToRem(1) colors.$color-avatar-shadow-inset;
+
+  @include breakpoints.sm {
+    width: var(--avatar-width-sm, var(--avatar-width-base));
+    height: var(--avatar-height-sm, var(--avatar-height-base));
+  }
+
+  @include breakpoints.md {
+    width: var(--avatar-width-md, var(--avatar-width-sm, var(--avatar-width-base)));
+    height: var(--avatar-height-md, var(--avatar-height-sm, var(--avatar-height-base)));
+  }
+
+  @include breakpoints.lg {
+    width: var(
+      --avatar-width-lg,
+      var(--avatar-width-md, var(--avatar-width-sm, var(--avatar-width-base)))
+    );
+    height: var(
+      --avatar-height-lg,
+      var(--avatar-height-md, var(--avatar-height-sm, var(--avatar-height-base)))
+    );
+  }
+
+  &::before,
+  &::after {
+    content: "";
+    position: absolute;
+    pointer-events: none;
+    inset: 0;
+    border-radius: inherit;
+  }
+
+  &::before {
+    background: var(--avatar-before-bg);
+    opacity: 0.82;
+  }
+
+  &::after {
+    background: var(--avatar-after-bg);
+    opacity: 0.64;
+  }
+
+  &_content {
+    position: relative;
+    z-index: 1;
+    width: calc(100% - #{mixins.pxToRem(6)});
+    height: calc(100% - #{mixins.pxToRem(6)});
+    border-radius: inherit;
+    display: grid;
+    place-items: center;
+    overflow: hidden;
+    color: var(--avatar-content-color);
+    font-weight: 700;
+    letter-spacing: 0.02em;
+    font-size: var(--avatar-font-size);
+    line-height: 1;
+    text-transform: uppercase;
+    user-select: none;
+
+    &__contrastingBackground {
+      background: var(--avatar-content-bg);
+    }
+  }
+
+  &_image {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    display: block;
+  }
+
+  &_status {
+    position: absolute;
+    right: mixins.pxToRem(1);
+    bottom: mixins.pxToRem(1);
+    z-index: 2;
+    width: clamp(#{mixins.pxToRem(10)}, 30%, #{mixins.pxToRem(16)});
+    height: clamp(#{mixins.pxToRem(10)}, 30%, #{mixins.pxToRem(16)});
+    border-radius: 999px;
+    border: mixins.pxToRem(1) solid colors.$color-avatar-status-border;
+    background: colors.$gradient-avatar-status-default;
+    box-shadow: 0 0 0 mixins.pxToRem(2) colors.$color-avatar-status-shadow-ring;
+
+    &__default {
+      background: colors.$gradient-avatar-status-default;
+    }
+
+    &__logo {
+      background: colors.$gradient-avatar-status-logo;
+    }
+
+    &__success {
+      background: colors.$gradient-avatar-status-success;
+    }
+
+    &__warning {
+      background: colors.$gradient-avatar-status-warning;
+    }
+
+    &__danger {
+      background: colors.$gradient-avatar-status-danger;
+    }
+
+    &__info {
+      background: colors.$gradient-avatar-status-info;
+    }
+
+    &__violet {
+      background: colors.$gradient-avatar-status-violet;
+    }
+  }
+
+  &__round {
+    --avatar-border-radius: 999px;
+  }
+
+  &__square {
+    --avatar-border-radius: #{mixins.pxToRem(14)};
+  }
+
+  &__sm {
+    --avatar-width-base: #{mixins.pxToRem(36)};
+    --avatar-height-base: #{mixins.pxToRem(36)};
+    --avatar-font-size: #{mixins.pxToRem(13)};
+  }
+
+  &__md {
+    --avatar-width-base: #{mixins.pxToRem(48)};
+    --avatar-height-base: #{mixins.pxToRem(48)};
+    --avatar-font-size: #{mixins.pxToRem(16)};
+  }
+
+  &__lg {
+    --avatar-width-base: #{mixins.pxToRem(64)};
+    --avatar-height-base: #{mixins.pxToRem(64)};
+    --avatar-font-size: #{mixins.pxToRem(20)};
+  }
+
+  &_color {
+    &__default {
+      --avatar-main-bg: #{colors.$gradient-blob-purple-1};
+      --avatar-before-bg: #{colors.$gradient-blob-purple-2};
+      --avatar-after-bg: #{colors.$gradient-blob-purple-3};
+      --avatar-content-bg: #{colors.$color-avatar-content-bg};
+      --avatar-content-color: #{colors.$color-avatar-content-text};
+    }
+
+    &__logo {
+      --avatar-main-bg: radial-gradient(
+        circle at 30% 35%,
+        color-mix(in srgb, #{colors.$color-brand-cyan} 54%, #fff) 0%,
+        color-mix(in srgb, #{colors.$color-brand-cyan} 16%, transparent) 66%,
+        transparent 100%
+      );
+      --avatar-before-bg: radial-gradient(
+        circle at 70% 30%,
+        color-mix(in srgb, #{colors.$color-brand-blue} 50%, #fff) 0%,
+        color-mix(in srgb, #{colors.$color-brand-blue} 18%, transparent) 64%,
+        transparent 100%
+      );
+      --avatar-after-bg: radial-gradient(
+        circle at 35% 60%,
+        color-mix(in srgb, #{colors.$color-brand-purple} 42%, #fff) 0%,
+        color-mix(in srgb, #{colors.$color-brand-purple} 12%, transparent) 62%,
+        transparent 100%
+      );
+      --avatar-content-bg: #{colors.$color-surface-page-elevated};
+      --avatar-content-color: #{colors.$color-brand-cyan-strong};
+    }
+
+    &__success {
+      --avatar-main-bg: radial-gradient(
+        circle at 30% 35%,
+        color-mix(in srgb, #{colors.$color-status-success-text} 56%, #fff) 0%,
+        color-mix(in srgb, #{colors.$color-status-success-text} 17%, transparent) 66%,
+        transparent 100%
+      );
+      --avatar-before-bg: radial-gradient(
+        circle at 70% 30%,
+        color-mix(in srgb, #{colors.$color-status-success-text} 46%, #fff) 0%,
+        color-mix(in srgb, #{colors.$color-status-success-text} 16%, transparent) 64%,
+        transparent 100%
+      );
+      --avatar-after-bg: radial-gradient(
+        circle at 35% 60%,
+        color-mix(in srgb, #{colors.$color-status-success-border} 72%, #fff) 0%,
+        color-mix(in srgb, #{colors.$color-status-success-border} 16%, transparent) 62%,
+        transparent 100%
+      );
+      --avatar-content-bg: #{colors.$color-status-success-bg};
+      --avatar-content-color: #{colors.$color-status-success-text};
+    }
+
+    &__warning {
+      --avatar-main-bg: radial-gradient(
+        circle at 30% 35%,
+        color-mix(in srgb, #{colors.$color-status-warning-text} 56%, #fff) 0%,
+        color-mix(in srgb, #{colors.$color-status-warning-text} 17%, transparent) 66%,
+        transparent 100%
+      );
+      --avatar-before-bg: radial-gradient(
+        circle at 70% 30%,
+        color-mix(in srgb, #{colors.$color-status-warning-text} 46%, #fff) 0%,
+        color-mix(in srgb, #{colors.$color-status-warning-text} 16%, transparent) 64%,
+        transparent 100%
+      );
+      --avatar-after-bg: radial-gradient(
+        circle at 35% 60%,
+        color-mix(in srgb, #{colors.$color-status-warning-border} 72%, #fff) 0%,
+        color-mix(in srgb, #{colors.$color-status-warning-border} 16%, transparent) 62%,
+        transparent 100%
+      );
+      --avatar-content-bg: #{colors.$color-status-warning-bg};
+      --avatar-content-color: #{colors.$color-status-warning-text};
+    }
+
+    &__danger {
+      --avatar-main-bg: radial-gradient(
+        circle at 30% 35%,
+        color-mix(in srgb, #{colors.$color-status-danger-text} 56%, #fff) 0%,
+        color-mix(in srgb, #{colors.$color-status-danger-text} 17%, transparent) 66%,
+        transparent 100%
+      );
+      --avatar-before-bg: radial-gradient(
+        circle at 70% 30%,
+        color-mix(in srgb, #{colors.$color-status-danger-text} 46%, #fff) 0%,
+        color-mix(in srgb, #{colors.$color-status-danger-text} 16%, transparent) 64%,
+        transparent 100%
+      );
+      --avatar-after-bg: radial-gradient(
+        circle at 35% 60%,
+        color-mix(in srgb, #{colors.$color-status-danger-border} 72%, #fff) 0%,
+        color-mix(in srgb, #{colors.$color-status-danger-border} 16%, transparent) 62%,
+        transparent 100%
+      );
+      --avatar-content-bg: #{colors.$color-status-danger-bg};
+      --avatar-content-color: #{colors.$color-status-danger-text};
+    }
+
+    &__info {
+      --avatar-main-bg: radial-gradient(
+        circle at 30% 35%,
+        color-mix(in srgb, #{colors.$color-status-info-text} 56%, #fff) 0%,
+        color-mix(in srgb, #{colors.$color-status-info-text} 17%, transparent) 66%,
+        transparent 100%
+      );
+      --avatar-before-bg: radial-gradient(
+        circle at 70% 30%,
+        color-mix(in srgb, #{colors.$color-status-info-text} 46%, #fff) 0%,
+        color-mix(in srgb, #{colors.$color-status-info-text} 16%, transparent) 64%,
+        transparent 100%
+      );
+      --avatar-after-bg: radial-gradient(
+        circle at 35% 60%,
+        color-mix(in srgb, #{colors.$color-status-info-border} 72%, #fff) 0%,
+        color-mix(in srgb, #{colors.$color-status-info-border} 16%, transparent) 62%,
+        transparent 100%
+      );
+      --avatar-content-bg: #{colors.$color-status-info-bg};
+      --avatar-content-color: #{colors.$color-status-info-text};
+    }
+
+    &__violet {
+      --avatar-main-bg: #{colors.$gradient-blob-purple-1};
+      --avatar-before-bg: #{colors.$gradient-blob-purple-2};
+      --avatar-after-bg: #{colors.$gradient-blob-purple-3};
+      --avatar-content-bg: #{colors.$color-avatar-content-bg};
+      --avatar-content-color: #{colors.$color-avatar-content-text};
+    }
+  }
+}
