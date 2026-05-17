@@ -6,6 +6,7 @@
  * OpenAPI spec version: 1.0
  */
 import {
+  DeleteApiWorkspacesIdDelete200,
   UsersUser,
   WorkspaceListWorkspacesResult,
   WorkspaceWorkspace
@@ -554,6 +555,72 @@ export const getApiWorkspacesId = async (id: string, options?: RequestInit): Pro
   const parsedBody = body ? JSON.parse(body) : {}
   const data = WorkspaceWorkspace.parse(parsedBody)
   return { data, status: res.status, headers: res.headers } as getApiWorkspacesIdResponse
+}
+
+
+
+/**
+ * Deletes a workspace owned by the authenticated user.
+ * @summary Delete a workspace
+ */
+export type deleteApiWorkspacesIdDeleteResponse200 = {
+  data: DeleteApiWorkspacesIdDelete200
+  status: 200
+}
+
+export type deleteApiWorkspacesIdDeleteResponse400 = {
+  data: AppErrorsAppError
+  status: 400
+}
+
+export type deleteApiWorkspacesIdDeleteResponse401 = {
+  data: AppErrorsAppError
+  status: 401
+}
+
+export type deleteApiWorkspacesIdDeleteResponse403 = {
+  data: AppErrorsAppError
+  status: 403
+}
+
+export type deleteApiWorkspacesIdDeleteResponse500 = {
+  data: AppErrorsAppError
+  status: 500
+}
+
+export type deleteApiWorkspacesIdDeleteResponseSuccess = (deleteApiWorkspacesIdDeleteResponse200) & {
+  headers: Headers;
+};
+export type deleteApiWorkspacesIdDeleteResponseError = (deleteApiWorkspacesIdDeleteResponse400 | deleteApiWorkspacesIdDeleteResponse401 | deleteApiWorkspacesIdDeleteResponse403 | deleteApiWorkspacesIdDeleteResponse500) & {
+  headers: Headers;
+};
+
+export type deleteApiWorkspacesIdDeleteResponse = (deleteApiWorkspacesIdDeleteResponseSuccess | deleteApiWorkspacesIdDeleteResponseError)
+
+export const getDeleteApiWorkspacesIdDeleteUrl = (id: string,) => {
+
+
+
+
+  return `http://localhost:3000/api/api/workspaces/${id}/delete`
+}
+
+export const deleteApiWorkspacesIdDelete = async (id: string, options?: RequestInit): Promise<deleteApiWorkspacesIdDeleteResponse> => {
+
+  const res = await fetch(getDeleteApiWorkspacesIdDeleteUrl(id),
+  {
+    ...options,
+    method: 'DELETE'
+
+
+  }
+)
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+
+  const parsedBody = body ? JSON.parse(body) : {}
+  const data = DeleteApiWorkspacesIdDelete200.parse(parsedBody)
+  return { data, status: res.status, headers: res.headers } as deleteApiWorkspacesIdDeleteResponse
 }
 
 

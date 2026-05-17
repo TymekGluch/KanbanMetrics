@@ -4,6 +4,7 @@ import (
 	"KanbanMetrics/db"
 	"context"
 	"embed"
+	"fmt"
 )
 
 //go:embed sql/*.sql
@@ -17,7 +18,14 @@ func dbInsertWorkspace(ctx context.Context, input dbInsertWorkspaceInput) (*Work
 		return nil, err
 	}
 
-	err = db.Pool.QueryRow(ctx, string(query), input.Name, input.OwnerID).Scan(&workspace.ID, &workspace.Name, &workspace.OwnerID, &workspace.CreatedAt, &workspace.UpdatedAt)
+	err = db.Pool.QueryRow(ctx, string(query), input.Name, input.Description, input.OwnerID).Scan(
+		&workspace.ID,
+		&workspace.Name,
+		&workspace.Description,
+		&workspace.OwnerID,
+		&workspace.CreatedAt,
+		&workspace.UpdatedAt,
+	)
 	if err != nil {
 		return nil, err
 	}
@@ -52,6 +60,7 @@ func dbSelectWorkspaceByID(ctx context.Context, workspaceID string) (*Workspace,
 	err = db.Pool.QueryRow(ctx, string(query), workspaceID).Scan(
 		&workspace.ID,
 		&workspace.Name,
+		&workspace.Description,
 		&workspace.OwnerID,
 		&workspace.CreatedAt,
 		&workspace.UpdatedAt,
@@ -101,6 +110,7 @@ func dbSelectMultipleWorkspaces(ctx context.Context, input dbSelectMultipleWorks
 		if err := rows.Scan(
 			&foundWorkspace.ID,
 			&foundWorkspace.Name,
+			&foundWorkspace.Description,
 			&foundWorkspace.OwnerID,
 			&foundWorkspace.CreatedAt,
 			&foundWorkspace.UpdatedAt,
@@ -116,4 +126,23 @@ func dbSelectMultipleWorkspaces(ctx context.Context, input dbSelectMultipleWorks
 	}
 
 	return workspaces, nil
+}
+
+func dbDropWorkspace(ctx context.Context, input dbDropWorkspaceInput) error {
+	query, err := sqlFiles.ReadFile("sql/drop_workspace.sql")
+	if err != nil {
+		return err
+	}
+
+	rows, err := db.Pool.Query(ctx, string(query), input.ID)
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
+
+	if !rows.Next() {
+		return fmt.Errorf("workspace not found")
+	}
+
+	return nil
 }

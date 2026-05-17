@@ -147,6 +147,52 @@
     rgba(191, 133, 255, 0) 100%
   );
 
+  --color-avatar-border: rgba(191, 133, 255, 0.52);
+  --color-avatar-shadow-ring: rgba(12, 18, 48, 0.16);
+  --color-avatar-shadow-drop: rgba(88, 28, 135, 0.18);
+  --color-avatar-shadow-inset: rgba(255, 255, 255, 0.2);
+  --color-avatar-content-bg: rgba(255, 255, 255, 0.16);
+  --color-avatar-content-text: rgba(89, 56, 207, 1);
+  --color-avatar-status-border: rgba(220, 194, 255, 0.9);
+  --gradient-avatar-status-violet: radial-gradient(
+    circle at 32% 34%,
+    rgba(125, 90, 244, 1) 0%,
+    rgba(107, 70, 225, 1) 62%,
+    rgba(91, 61, 201, 1) 100%
+  );
+  --gradient-avatar-status-default: radial-gradient(
+    circle at 32% 34%,
+    rgba(125, 90, 244, 1) 0%,
+    rgba(107, 70, 225, 1) 62%,
+    rgba(91, 61, 201, 1) 100%
+  );
+  --gradient-avatar-status-logo: var(--gradient-brand-main);
+  --gradient-avatar-status-success: radial-gradient(
+    circle at 32% 34%,
+    rgba(16, 185, 129, 1) 0%,
+    rgba(5, 150, 105, 1) 62%,
+    rgba(4, 120, 87, 1) 100%
+  );
+  --gradient-avatar-status-warning: radial-gradient(
+    circle at 32% 34%,
+    rgba(245, 158, 11, 1) 0%,
+    rgba(217, 119, 6, 1) 62%,
+    rgba(180, 83, 9, 1) 100%
+  );
+  --gradient-avatar-status-danger: radial-gradient(
+    circle at 32% 34%,
+    rgba(239, 68, 68, 1) 0%,
+    rgba(220, 38, 38, 1) 62%,
+    rgba(185, 28, 28, 1) 100%
+  );
+  --gradient-avatar-status-info: radial-gradient(
+    circle at 32% 34%,
+    rgba(14, 165, 233, 1) 0%,
+    rgba(2, 132, 199, 1) 62%,
+    rgba(3, 105, 161, 1) 100%
+  );
+  --color-avatar-status-shadow-ring: rgba(255, 255, 255, 0.82);
+
   --color-skeleton-base: #e2e8f0;
   --color-skeleton-shine: #f1f5f9;
 
@@ -294,6 +340,52 @@
       rgba(196, 181, 253, 0.16) 62%,
       rgba(196, 181, 253, 0) 100%
     );
+
+    --color-avatar-border: rgba(196, 181, 253, 0.58);
+    --color-avatar-shadow-ring: rgba(5, 10, 24, 0.34);
+    --color-avatar-shadow-drop: rgba(76, 29, 149, 0.34);
+    --color-avatar-shadow-inset: rgba(255, 255, 255, 0.12);
+    --color-avatar-content-bg: rgba(196, 181, 253, 0.2);
+    --color-avatar-content-text: #ddd6fe;
+    --color-avatar-status-border: rgba(216, 180, 254, 0.92);
+    --gradient-avatar-status-violet: radial-gradient(
+      circle at 32% 34%,
+      rgba(196, 181, 253, 1) 0%,
+      rgba(167, 139, 250, 1) 62%,
+      rgba(139, 92, 246, 1) 100%
+    );
+    --gradient-avatar-status-default: radial-gradient(
+      circle at 32% 34%,
+      rgba(196, 181, 253, 1) 0%,
+      rgba(167, 139, 250, 1) 62%,
+      rgba(139, 92, 246, 1) 100%
+    );
+    --gradient-avatar-status-logo: var(--gradient-brand-main);
+    --gradient-avatar-status-success: radial-gradient(
+      circle at 32% 34%,
+      rgba(52, 211, 153, 1) 0%,
+      rgba(16, 185, 129, 1) 62%,
+      rgba(5, 150, 105, 1) 100%
+    );
+    --gradient-avatar-status-warning: radial-gradient(
+      circle at 32% 34%,
+      rgba(251, 191, 36, 1) 0%,
+      rgba(245, 158, 11, 1) 62%,
+      rgba(217, 119, 6, 1) 100%
+    );
+    --gradient-avatar-status-danger: radial-gradient(
+      circle at 32% 34%,
+      rgba(248, 113, 113, 1) 0%,
+      rgba(239, 68, 68, 1) 62%,
+      rgba(220, 38, 38, 1) 100%
+    );
+    --gradient-avatar-status-info: radial-gradient(
+      circle at 32% 34%,
+      rgba(56, 189, 248, 1) 0%,
+      rgba(14, 165, 233, 1) 62%,
+      rgba(2, 132, 199, 1) 100%
+    );
+    --color-avatar-status-shadow-ring: rgba(11, 16, 32, 0.88);
 
     --color-skeleton-base: #1e293b;
     --color-skeleton-shine: #293548;

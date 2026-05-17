@@ -49,8 +49,9 @@ func (handler *handlers) createWorkspaceHandler(ctx fiber.Ctx) error {
 	}
 
 	newWorkspace, err := workspace.CreateWorkspace(ctx.Context(), workspace.CreateWorkspaceInput{
-		Name:    input.Name,
-		OwnerID: int64(userID),
+		Name:        input.Name,
+		Description: input.Description,
+		OwnerID:     int64(userID),
 	})
 	if err != nil {
 		return appErrors.TranslatePostgresDbError(err).FiberNewError()
@@ -75,9 +76,9 @@ func (handler *handlers) createWorkspaceHandler(ctx fiber.Ctx) error {
 // @Failure 500 {object} appErrors.AppError
 // @Router /api/workspaces/{id} [get]
 func (handler *handlers) getWorkspaceByIdHandler(ctx fiber.Ctx) error {
-	workspaceID := ctx.Params(idParam)
-	if workspaceID == "" {
-		return fiber.NewError(fiber.StatusBadRequest, permission.ErrorMissingWorkspaceID)
+	workspaceID, err := parseAndValidateWorkspaceID(ctx, idParam)
+	if err != nil {
+		return err
 	}
 
 	foundWorkspace, err := workspace.GetWorkspaceByID(ctx.Context(), workspaceID)
@@ -193,4 +194,41 @@ func (handler *handlers) listWorkspacesHandler(ctx fiber.Ctx) error {
 	}
 
 	return ctx.Status(fiber.StatusOK).JSON(result)
+}
+
+// deleteWorkspaceHandler godoc
+// @Summary Delete a workspace
+// @Description Deletes a workspace owned by the authenticated user.
+// @Tags workspaces
+// @Produce json
+// @Security CookieAuth
+// @Param id path string true "Workspace ID"
+// @Success 200 {object} map[string]string
+// @Failure 400 {object} appErrors.AppError
+// @Failure 401 {object} appErrors.AppError
+// @Failure 403 {object} appErrors.AppError
+// @Failure 500 {object} appErrors.AppError
+// @Router /api/workspaces/{id}/delete [delete]
+func (handler *handlers) deleteWorkspaceHandler(ctx fiber.Ctx) error {
+	workspaceID, err := parseAndValidateWorkspaceID(ctx, idParam)
+	if err != nil {
+		return err
+	}
+
+	userId, ok := ctx.Locals(auth.ContextUserIDKey).(uint)
+	if !ok || userId == 0 {
+		return fiber.NewError(fiber.StatusUnauthorized, auth.ErrorUnauthorized)
+	}
+
+	workspaceRole, ok := ctx.Locals(auth.ContextUserWorkspaceRoleKey).(string)
+	if !ok || workspaceRole != workspace.WORKSPACE_OWNER_ROLE {
+		return fiber.NewError(fiber.StatusForbidden, permission.ErrorForbidden)
+	}
+
+	err = workspace.DropWorkspace(ctx.Context(), workspaceID)
+	if err != nil {
+		return appErrors.TranslatePostgresDbError(err).FiberNewError()
+	}
+
+	return ctx.Status(fiber.StatusOK).JSON(fiber.Map{"message": "Workspace deleted successfully"})
 }

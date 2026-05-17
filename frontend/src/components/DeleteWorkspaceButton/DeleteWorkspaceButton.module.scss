@@ -1,0 +1,16 @@
+@use "@/styles/colorsTokens.scss" as colors;
+
+.deleteWorkspaceButton {
+  background: colors.$color-status-danger-text !important;
+  border-color: colors.$color-status-danger-border !important;
+
+  &:hover:not(:disabled) {
+    background: color-mix(in srgb, colors.$color-status-danger-text 86%, white) !important;
+    border-color: color-mix(in srgb, colors.$color-status-danger-border 86%, white) !important;
+  }
+
+  &:active:not(:disabled) {
+    background: color-mix(in srgb, colors.$color-status-danger-text 78%, white) !important;
+    border-color: color-mix(in srgb, colors.$color-status-danger-border 78%, white) !important;
+  }
+}

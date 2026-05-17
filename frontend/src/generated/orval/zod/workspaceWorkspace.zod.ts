@@ -9,6 +9,7 @@ import { z as zod } from 'zod';
 
 export const WorkspaceWorkspace = zod.object({
   "created_at": zod.string().optional(),
+  "description": zod.string().optional(),
   "id": zod.string().optional(),
   "name": zod.string().optional(),
   "owner_id": zod.number().optional(),
