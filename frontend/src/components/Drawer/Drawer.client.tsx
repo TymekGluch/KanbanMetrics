@@ -61,7 +61,7 @@ export function DrawerContentComponent(props: DrawerContentComponentProps) {
       })}
     >
       <div className={styles.drawerContent_shell}>
-        <RootCommonDrawerContent>{children}</RootCommonDrawerContent>
+        {isOpen && <RootCommonDrawerContent>{children}</RootCommonDrawerContent>}
       </div>
     </Component>
   );

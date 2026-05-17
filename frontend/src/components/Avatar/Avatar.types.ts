@@ -5,7 +5,7 @@ import {
   type AVATAR_SIZES,
   type AVATAR_STATUS_COLORS,
 } from "./Avatar.constants";
-import { type ReactNode } from "react";
+import { type ReactElement, type SVGProps } from "react";
 
 type ResponsiveDimensionValue = number | string;
 
@@ -18,7 +18,7 @@ export interface ResponsiveDimension {
 
 export interface AvatarProps {
   name: string;
-  icon?: ReactNode;
+  Icon?: ReactElement<SVGProps<SVGSVGElement>>;
   src?: string;
   alt?: string;
   shape?: ValueOf<typeof AVATAR_SHAPES>;

@@ -1,4 +1,4 @@
-SELECT workspaces.id::text, workspaces.name, workspaces.owner_id, workspaces.created_at, workspaces.updated_at
+SELECT workspaces.id::text, workspaces.name, workspaces.description, workspaces.owner_id, workspaces.created_at, workspaces.updated_at
 FROM workspaces
 WHERE (
 	$1::boolean = TRUE

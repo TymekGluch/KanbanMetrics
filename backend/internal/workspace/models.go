@@ -3,21 +3,24 @@ package workspace
 import "time"
 
 type dbInsertWorkspaceInput struct {
-	Name    string
-	OwnerID int64
+	Name        string
+	Description *string
+	OwnerID     int64
 }
 
 type Workspace struct {
-	ID        string     `json:"id"`
-	Name      string     `json:"name"`
-	OwnerID   int64      `json:"owner_id"`
-	CreatedAt time.Time  `json:"created_at"`
-	UpdatedAt *time.Time `json:"updated_at,omitempty"`
+	ID          string     `json:"id"`
+	Name        string     `json:"name"`
+	Description *string    `json:"description,omitempty"`
+	OwnerID     int64      `json:"owner_id"`
+	CreatedAt   time.Time  `json:"created_at"`
+	UpdatedAt   *time.Time `json:"updated_at,omitempty"`
 }
 
 type CreateWorkspaceInput struct {
-	Name    string `json:"name" validate:"required,min=3,max=400"`
-	OwnerID int64  `json:"owner_id" validate:"required"`
+	Name        string  `json:"name" validate:"required,min=3,max=400"`
+	Description *string `json:"description,omitempty" validate:"max=1000"`
+	OwnerID     int64   `json:"owner_id" validate:"required"`
 }
 
 type ListWorkspacesInput struct {
@@ -40,4 +43,8 @@ type dbSelectMultipleWorkspacesInput struct {
 	FilterOwnerID *int64
 	Limit         int
 	Offset        int
+}
+
+type dbDropWorkspaceInput struct {
+	ID string `json:"ID" validate:"required"`
 }

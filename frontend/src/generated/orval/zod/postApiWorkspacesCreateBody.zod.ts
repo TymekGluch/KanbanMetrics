@@ -7,11 +7,14 @@
  */
 import { z as zod } from 'zod';
 
+export const postApiWorkspacesCreateBodyDescriptionMax = 1000;
+
 export const postApiWorkspacesCreateBodyNameMin = 3;
 export const postApiWorkspacesCreateBodyNameMax = 400;
 
 
 export const PostApiWorkspacesCreateBody = zod.object({
+  "description": zod.string().max(postApiWorkspacesCreateBodyDescriptionMax).optional(),
   "name": zod.string().min(postApiWorkspacesCreateBodyNameMin).max(postApiWorkspacesCreateBodyNameMax)
 })
 

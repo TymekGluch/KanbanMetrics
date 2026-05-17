@@ -43,10 +43,18 @@ function CommonDialogWithForm(props: CommonDialogWithFormProps) {
               error={errors.name?.message}
               invalid={Boolean(errors.name)}
               disabled={isPending}
-              autoComplete="off"
               width="100%"
-              label="Workspace name"
+              label="Name"
               required
+            />
+
+            <Form.Input
+              {...form.register("description")}
+              error={errors.description?.message}
+              invalid={Boolean(errors.description)}
+              disabled={isPending}
+              width="100%"
+              label="Description"
             />
 
             {globalErrorMessage && (

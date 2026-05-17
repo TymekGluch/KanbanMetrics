@@ -4,8 +4,9 @@ import "context"
 
 func CreateWorkspace(ctx context.Context, input CreateWorkspaceInput) (*Workspace, error) {
 	dbInput := dbInsertWorkspaceInput{
-		Name:    input.Name,
-		OwnerID: input.OwnerID,
+		Name:        input.Name,
+		Description: input.Description,
+		OwnerID:     input.OwnerID,
 	}
 
 	return dbInsertWorkspace(ctx, dbInput)
@@ -38,4 +39,12 @@ func GetWorkspaces(ctx context.Context, input ListWorkspacesInput) (*ListWorkspa
 		Limit:  input.Limit,
 		Offset: input.Offset,
 	}, nil
+}
+
+func DropWorkspace(ctx context.Context, workspaceID string) error {
+	dbInput := dbDropWorkspaceInput{
+		ID: workspaceID,
+	}
+
+	return dbDropWorkspace(ctx, dbInput)
 }

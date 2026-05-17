@@ -33,13 +33,28 @@ function toResponsiveDimension(
   return value;
 }
 
+function renderAvatarIcon(icon: AvatarProps["icon"]) {
+  if (!icon || !React.isValidElement(icon)) {
+    return null;
+  }
+
+  return React.cloneElement(icon, {
+    className: clsx(styles.avatar_icon, icon.props.className),
+    color: "currentColor",
+    fill: "currentColor",
+    stroke: "currentColor",
+    "aria-hidden": true,
+    focusable: false,
+  });
+}
+
 export function Avatar(props: AvatarProps) {
   const hasExplicitStatusColor = typeof props.statusColor !== "undefined";
 
   const {
     name,
     src,
-    icon,
+    Icon,
     alt,
     shape = AVATAR_SHAPES.ROUND,
     size = AVATAR_SIZES.MD,
@@ -88,10 +103,10 @@ export function Avatar(props: AvatarProps) {
           showContrastingBackground && styles.avatar_content__contrastingBackground
         )}
       >
-        {src ? (
+        {Icon ? (
+          renderAvatarIcon(Icon)
+        ) : src ? (
           <Image src={src} alt={alt ?? name} className={styles.avatar_image} fill sizes="100vw" />
-        ) : icon ? (
-          icon
         ) : (
           <span aria-hidden="true">{getAcronym(name)}</span>
         )}

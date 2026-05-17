@@ -21,5 +21,18 @@ func RegisterRoutes(app fiber.Router, validatorService *validation.Service) {
 
 	route.Get("/", permissionMiddleware.RequireAny(permission.WorkspaceCreate, permission.WorkspaceRead), handlers.listWorkspacesHandler)
 	route.Post("/create", permissionMiddleware.Require(permission.WorkspaceCreate), handlers.createWorkspaceHandler)
-	route.Get("/:id", permissionMiddleware.LoadWorkspaceRoleOrGlobal(permission.WorkspaceRead, idParam), permissionMiddleware.RequireWorkspace(permission.WorkspaceRead), handlers.getWorkspaceByIdHandler)
+	route.Get(
+		"/:id",
+		ValidateWorkspaceIDParam(idParam),
+		permissionMiddleware.LoadWorkspaceRoleOrGlobal(permission.WorkspaceRead, idParam),
+		permissionMiddleware.RequireWorkspace(permission.WorkspaceRead),
+		handlers.getWorkspaceByIdHandler,
+	)
+	route.Delete(
+		"/:id/delete",
+		ValidateWorkspaceIDParam(idParam),
+		permissionMiddleware.LoadWorkspaceRoleOrGlobal(permission.WorkspaceDelete, idParam),
+		permissionMiddleware.RequireWorkspace(permission.WorkspaceDelete),
+		handlers.deleteWorkspaceHandler,
+	)
 }
