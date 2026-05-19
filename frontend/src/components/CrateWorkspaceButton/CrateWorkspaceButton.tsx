@@ -11,9 +11,9 @@ import {
 import { useCreateWorkspaceForm } from "./useCreateWorkspaceForm";
 import { Base } from "../Base/Base";
 import { COLORS } from "@/theme/theme.constants";
-import { type PanelButtonProps } from "../PanelNavigation/PanelNavigation.types";
-import { PanelButton } from "../PanelNavigation/PanelNavigation";
-import { PANEL_NAVIGATION_BUTTON } from "../PanelNavigation/PanelNavigation.constants";
+import { type PanelButtonProps } from "../PanelNavigation/subComponents/PanelButton/PanelButton.types";
+import { PANEL_NAVIGATION_BUTTON } from "../PanelNavigation/subComponents/PanelButton/PanelButton.constants";
+import { PanelButton } from "../PanelNavigation/subComponents/PanelButton/PanelButton";
 
 function CommonDialogWithForm(props: CommonDialogWithFormProps) {
   const { isOpen, onOpenChange } = props;

@@ -146,3 +146,22 @@ func dbDropWorkspace(ctx context.Context, input dbDropWorkspaceInput) error {
 
 	return nil
 }
+
+func dbUpdateWorkspace(ctx context.Context, input dbUpdateWorkspaceInput) error {
+	query, err := sqlFiles.ReadFile("sql/update_workspace.sql")
+	if err != nil {
+		return err
+	}
+
+	rows, err := db.Pool.Query(ctx, string(query), input.ID, input.Name, input.OwnerID, input.Description, input.UpdatedAt)
+	if err != nil {
+		return err
+	}
+	defer rows.Close()
+
+	if !rows.Next() {
+		return fmt.Errorf("workspace not found")
+	}
+
+	return nil
+}

@@ -44,3 +44,7 @@ export type ButtonAsButtonProps = React.ComponentPropsWithRef<"button"> &
 export type ButtonAsNextLinkProps = React.ComponentPropsWithRef<typeof Link> &
   ButtonStylesProps &
   ButtonCommonProps;
+
+export interface ChildrenComponentWithClassNameProps extends React.PropsWithChildren {
+  className?: React.HTMLAttributes<HTMLElement>["className"];
+}

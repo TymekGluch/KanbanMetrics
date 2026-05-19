@@ -15,3 +15,8 @@ export interface PageLayoutPanelRootProps extends React.PropsWithChildren {
 export interface NavigationContentComponentProps extends React.PropsWithChildren {
   alignment?: ResponsiveValue<ValueOf<typeof PAGE_LAYOUT_PANEL_CONTENT_ALIGNMENT>>;
 }
+
+export interface DetailsContentComponentProps extends React.PropsWithChildren {
+  as?: React.HTMLElementType;
+  className?: React.HtmlHTMLAttributes<HTMLElement>["className"];
+}

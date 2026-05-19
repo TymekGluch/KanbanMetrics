@@ -1,12 +1,12 @@
 import { getWorkspaceByIdFetch } from "@/api/getWorkspaceByIdFetch";
-import { headers } from "next/headers";
-import type { Metadata } from "next";
-import PageLayoutPanel from "@/components/PageLayout/PageLayoutPanel";
 import { Base } from "@/components/Base/Base";
-import { pxToRem } from "@/utils/pxToRem";
-import { COLORS } from "@/theme/theme.constants";
+import PageLayoutPanel from "@/components/PageLayout/PageLayoutPanel";
 import { PanelNavigation } from "@/components/PanelNavigation/PanelNavigation";
-import { DeleteWorkspaceButton } from "@/components/DeleteWorkspaceButton/DeleteWorkspaceButton";
+import { COLORS } from "@/theme/theme.constants";
+import { pxToRem } from "@/utils/pxToRem";
+import type { Metadata } from "next";
+import { headers } from "next/headers";
+import styles from "./page.module.scss";
 
 interface WorkspacePageProps {
   params: Promise<{
@@ -69,13 +69,8 @@ export default async function WorkspacePage(props: WorkspacePageProps) {
           </Base>
         </PageLayoutPanel.Header>
 
-        <PageLayoutPanel.Details>
-          <DeleteWorkspaceButton
-            confirmationTitle={`Are you sure you want to delete the workspace "${workspaceName}"?`}
-            confirmationDescription="This action cannot be undone, and all data associated with this workspace will be permanently deleted."
-          >
-            Delete Workspace
-          </DeleteWorkspaceButton>
+        <PageLayoutPanel.Details className={styles.pageLayoutPanelDetails}>
+          <section></section>
         </PageLayoutPanel.Details>
       </PageLayoutPanel.Root>
     </PageLayoutPanel.Provider>

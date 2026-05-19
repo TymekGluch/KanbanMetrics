@@ -48,3 +48,24 @@ type dbSelectMultipleWorkspacesInput struct {
 type dbDropWorkspaceInput struct {
 	ID string `json:"ID" validate:"required"`
 }
+
+type dbUpdateWorkspaceInput struct {
+	ID          string     `json:"id" validate:"required"`
+	Name        *string    `json:"name,omitempty"`
+	Description *string    `json:"description,omitempty"`
+	OwnerID     *int64     `json:"owner_id,omitempty"`
+	UpdatedAt   *time.Time `json:"updated_at,omitempty"`
+}
+
+type UpdateWorkspaceInput struct {
+	WorkspaceID string     `json:"id" validate:"required"`
+	NewOwnerID  *int64     `json:"owner_id,omitempty"`
+	UpdatedAt   *time.Time `json:"updated_at,omitempty"`
+	Name        *string    `json:"name,omitempty"`
+	Description *string    `json:"description,omitempty"`
+}
+
+type MarkWorkspaceUpdatedInput struct {
+	WorkspaceID string     `json:"id" validate:"required"`
+	UpdatedAt   *time.Time `json:"updated_at,omitempty"`
+}
