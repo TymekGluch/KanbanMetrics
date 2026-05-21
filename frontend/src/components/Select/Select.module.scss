@@ -1,0 +1,130 @@
+@use "@/styles/pxToRem.scss" as mixins;
+@use "@/styles/breakpoints.scss" as breakpoints;
+@use "@/styles/colorsTokens.scss" as colors;
+
+.select {
+  position: relative;
+  width: 100%;
+
+  &_control {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    width: 100%;
+    height: mixins.pxToRem(46);
+    padding: 0 mixins.pxToRem(16);
+    border: 1px solid colors.$color-input-border;
+    border-radius: mixins.pxToRem(8);
+    background: colors.$color-input-bg;
+    color: colors.$color-input-text;
+    font-size: mixins.pxToRem(16);
+    cursor: pointer;
+    outline: none;
+    transition: border-color 0.2s;
+  }
+
+  &_control:focus,
+  &_open {
+    border-color: colors.$color-input-border-focus;
+  }
+
+  &_value {
+    flex: 1;
+    text-align: left;
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+
+  &_placeholder {
+    color: colors.$color-input-placeholder;
+  }
+
+  &_arrow {
+    margin-left: mixins.pxToRem(8);
+    width: 0;
+    height: 0;
+    border-left: mixins.pxToRem(6) solid transparent;
+    border-right: mixins.pxToRem(6) solid transparent;
+    border-top: mixins.pxToRem(6) solid colors.$color-input-placeholder;
+  }
+
+  &_dropdown {
+    position: absolute;
+    left: 0;
+    top: 100%;
+    width: 100%;
+    background: colors.$color-input-bg;
+    border: mixins.pxToRem(1) solid colors.$color-input-border;
+    border-radius: 0 0 mixins.pxToRem(8) mixins.pxToRem(8);
+    box-shadow: 0 mixins.pxToRem(4) mixins.pxToRem(16) rgba(15, 23, 42, 0.1);
+    z-index: 10;
+    margin-top: mixins.pxToRem(2);
+    padding: mixins.pxToRem(8) 0;
+
+    &__overDialog {
+      z-index: 1300;
+    }
+  }
+
+  &_searchWrapper {
+    position: relative;
+    display: flex;
+    align-items: center;
+    width: 100%;
+    margin-bottom: mixins.pxToRem(4);
+  }
+
+  &_searchIcon {
+    position: absolute;
+    left: mixins.pxToRem(12);
+    top: 50%;
+    transform: translateY(-50%);
+    color: colors.$color-input-placeholder;
+    pointer-events: none;
+  }
+
+  &_search {
+    width: 100%;
+    box-sizing: border-box;
+    padding: mixins.pxToRem(8) mixins.pxToRem(12) mixins.pxToRem(8) mixins.pxToRem(36);
+    border: 1px solid colors.$color-input-border;
+    border-radius: mixins.pxToRem(6);
+    background: colors.$color-input-bg;
+    color: colors.$color-input-text;
+    outline: none;
+    font-size: mixins.pxToRem(16);
+    height: mixins.pxToRem(36);
+    margin-bottom: mixins.pxToRem(2);
+    transition: border-color 0.2s;
+  }
+
+  &_list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    max-height: mixins.pxToRem(220);
+    overflow-y: auto;
+  }
+
+  &_option {
+    padding: mixins.pxToRem(8) mixins.pxToRem(16);
+    cursor: pointer;
+    color: colors.$color-input-text;
+    background: none;
+    transition: background 0.15s;
+    &[aria-disabled="true"] {
+      color: colors.$color-input-placeholder;
+      cursor: not-allowed;
+    }
+    &:hover:not([aria-disabled="true"]),
+    &:focus-visible:not([aria-disabled="true"]) {
+      background: colors.$color-row-hover;
+    }
+  }
+
+  &_optionSelected {
+    background: colors.$color-row-selected;
+    font-weight: 500;
+  }
+}

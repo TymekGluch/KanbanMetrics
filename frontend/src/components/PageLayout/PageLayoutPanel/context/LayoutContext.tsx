@@ -18,12 +18,17 @@ export const PageLayoutPanelContext = React.createContext<LayoutContextType>({
   value: pageLayoutPanelContextDefaultSpaces,
   setValue: () => {},
   isRestored: false,
+  isWide: false,
 });
 
 export function PageLayoutPanelProvider(props: LayoutProviderProps) {
   const { children, initialValue = pageLayoutPanelContextDefaultSpaces } = props;
 
   const [layoutSpaces, setLayoutSpaces] = React.useState<LayoutContextValue>(initialValue);
+
+  const isNavigationHidden =
+    layoutSpaces.contentSpace === pageLayoutPanelContextDefaultSpaces.contentSpace &&
+    layoutSpaces.navigationSpace === pageLayoutPanelContextDefaultSpaces.navigationSpace;
 
   const handleSetLayoutSpaces = React.useCallback(
     (newSpaces: React.SetStateAction<LayoutContextValue>) => {
@@ -38,7 +43,12 @@ export function PageLayoutPanelProvider(props: LayoutProviderProps) {
 
   return (
     <PageLayoutPanelContext.Provider
-      value={{ value: layoutSpaces, setValue: handleSetLayoutSpaces, isRestored: true }}
+      value={{
+        value: layoutSpaces,
+        setValue: handleSetLayoutSpaces,
+        isRestored: true,
+        isWide: !isNavigationHidden,
+      }}
     >
       {children}
     </PageLayoutPanelContext.Provider>

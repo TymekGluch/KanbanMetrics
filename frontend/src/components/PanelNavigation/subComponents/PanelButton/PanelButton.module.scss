@@ -14,10 +14,6 @@
     border-color 0.15s ease-in-out,
     justify-content 0.15s ease-in-out;
 
-  &__isOutlined {
-    border: none !important;
-  }
-
   &__active {
     width: 100% !important;
     padding: 0 mixins.pxToRem(10) !important;
