@@ -17,6 +17,7 @@ export function Select(props: CustomSelectWithSearchProps) {
   const [open, setOpen] = React.useState(false);
   const [search, setSearch] = React.useState("");
   const [_, setFocused] = React.useState(false);
+
   const selectRef = React.useRef<HTMLDivElement>(null);
   const buttonRef = React.useRef<HTMLButtonElement>(null);
 
@@ -43,9 +44,9 @@ export function Select(props: CustomSelectWithSearchProps) {
       setFocused(false);
     };
 
-    document.addEventListener("mousedown", handler);
+    document.addEventListener("click", handler);
 
-    return () => document.removeEventListener("mousedown", handler);
+    return () => document.removeEventListener("click", handler);
   }, []);
 
   const selectedOption = options.find((opt) => opt.value === value);
@@ -69,7 +70,7 @@ export function Select(props: CustomSelectWithSearchProps) {
       </button>
       {open &&
         (isOverDialog ? (
-          <DropdownPortal open={open} anchorRef={buttonRef}>
+          <DropdownPortal open={open} anchorRef={buttonRef as React.RefObject<HTMLButtonElement>}>
             <div className={styles.select_dropdown}>
               {withSearch && (
                 <div className={styles.select_searchWrapper}>

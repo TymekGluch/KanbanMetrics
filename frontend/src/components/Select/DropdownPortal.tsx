@@ -21,7 +21,7 @@ export function useDropdownPortal(open: boolean) {
 }
 
 interface DropdownPortalProps extends React.PropsWithChildren {
-  anchorRef: React.RefObject<HTMLElement>;
+  anchorRef: React.RefObject<HTMLButtonElement>;
   open: boolean;
 }
 
@@ -61,7 +61,7 @@ export function DropdownPortal(props: DropdownPortalProps) {
   }
 
   return createPortal(
-    <div ref={dropdownRef} style={style} data-dropdown-portal="true">
+    <div ref={dropdownRef} style={style}>
       {children}
     </div>,
     portalElement

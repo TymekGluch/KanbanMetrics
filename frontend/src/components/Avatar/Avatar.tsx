@@ -1,3 +1,4 @@
+import { type ReactElement, type SVGProps } from "react";
 import clsx from "clsx";
 import Image from "next/image";
 import React from "react";
@@ -33,13 +34,13 @@ function toResponsiveDimension(
   return value;
 }
 
-function renderAvatarIcon(icon: AvatarProps["icon"]) {
-  if (!icon || !React.isValidElement(icon)) {
+function renderAvatarIcon(icon: AvatarProps["Icon"]) {
+  if (!icon || !React.isValidElement<SVGElement>(icon)) {
     return null;
   }
-
+  const iconProps = icon.props as unknown as SVGProps<SVGSVGElement> | undefined;
   return React.cloneElement(icon, {
-    className: clsx(styles.avatar_icon, icon.props.className),
+    className: clsx(styles.avatar_icon, iconProps?.className),
     color: "currentColor",
     fill: "currentColor",
     stroke: "currentColor",
