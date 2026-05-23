@@ -13,7 +13,6 @@ import { BUTTON_SIZES, BUTTON_VARIANTS } from "./button.constants";
 import { Base } from "../Base/Base";
 import Link from "next/link";
 import clsx from "clsx";
-import { Tooltip } from "../Tooltip";
 import React from "react";
 import { usePathname } from "next/navigation";
 
@@ -52,37 +51,32 @@ export function AsButtonComponent(props: ButtonAsButtonProps) {
     StartIconSlot,
     EndIconSlot,
     tooltipTitle,
-    tooltipDescription,
-    tooltipPlacement,
-    tooltipOffset,
     ...buttonProps
   } = rest;
   const size = useResponsiveProp(sizeProp);
 
   return (
-    <Tooltip
+    <Base
+      {...stylesProps}
+      asChild
+      className={getButtonClassName({ disabled, variant, size })}
       title={tooltipTitle}
-      description={tooltipDescription}
-      placement={tooltipPlacement}
-      offset={tooltipOffset}
     >
-      <Base {...stylesProps} asChild className={getButtonClassName({ disabled, variant, size })}>
-        <button {...buttonProps} disabled={disabled}>
-          {!!StartIconSlot && (
-            <ChildrenComponentWithClassName className={styles.button_icon}>
-              {StartIconSlot}
-            </ChildrenComponentWithClassName>
-          )}
+      <button {...buttonProps} disabled={disabled}>
+        {!!StartIconSlot && (
+          <ChildrenComponentWithClassName className={styles.button_icon}>
+            {StartIconSlot}
+          </ChildrenComponentWithClassName>
+        )}
 
-          {children}
-          {!!EndIconSlot && (
-            <ChildrenComponentWithClassName className={styles.button_icon}>
-              {EndIconSlot}
-            </ChildrenComponentWithClassName>
-          )}
-        </button>
-      </Base>
-    </Tooltip>
+        {children}
+        {!!EndIconSlot && (
+          <ChildrenComponentWithClassName className={styles.button_icon}>
+            {EndIconSlot}
+          </ChildrenComponentWithClassName>
+        )}
+      </button>
+    </Base>
   );
 }
 
@@ -96,36 +90,31 @@ export function AsAnchorComponent(props: ButtonAsAnchorProps) {
     StartIconSlot,
     EndIconSlot,
     tooltipTitle,
-    tooltipDescription,
-    tooltipPlacement,
-    tooltipOffset,
     ...anchorProps
   } = rest;
   const size = useResponsiveProp(sizeProp);
 
   return (
-    <Tooltip
+    <Base
+      {...stylesProps}
+      asChild
+      className={getButtonClassName({ disabled, variant, size })}
       title={tooltipTitle}
-      description={tooltipDescription}
-      placement={tooltipPlacement}
-      offset={tooltipOffset}
     >
-      <Base {...stylesProps} asChild className={getButtonClassName({ disabled, variant, size })}>
-        <a {...anchorProps}>
-          {!!StartIconSlot && (
-            <ChildrenComponentWithClassName className={styles.button_icon}>
-              {StartIconSlot}
-            </ChildrenComponentWithClassName>
-          )}
-          {children}
-          {!!EndIconSlot && (
-            <ChildrenComponentWithClassName className={styles.button_icon}>
-              {EndIconSlot}
-            </ChildrenComponentWithClassName>
-          )}
-        </a>
-      </Base>
-    </Tooltip>
+      <a {...anchorProps}>
+        {!!StartIconSlot && (
+          <ChildrenComponentWithClassName className={styles.button_icon}>
+            {StartIconSlot}
+          </ChildrenComponentWithClassName>
+        )}
+        {children}
+        {!!EndIconSlot && (
+          <ChildrenComponentWithClassName className={styles.button_icon}>
+            {EndIconSlot}
+          </ChildrenComponentWithClassName>
+        )}
+      </a>
+    </Base>
   );
 }
 
@@ -139,9 +128,6 @@ export function AsNextLinkComponent(props: ButtonAsNextLinkProps) {
     StartIconSlot,
     EndIconSlot,
     tooltipTitle,
-    tooltipDescription,
-    tooltipPlacement,
-    tooltipOffset,
     ...linkProps
   } = rest;
 
@@ -151,31 +137,25 @@ export function AsNextLinkComponent(props: ButtonAsNextLinkProps) {
   const isCurrentPage = path === linkProps.href;
 
   return (
-    <Tooltip
+    <Base
+      {...stylesProps}
+      asChild
+      className={getButtonClassName({ disabled, variant, size, isCurrentPage })}
       title={tooltipTitle}
-      description={tooltipDescription}
-      placement={tooltipPlacement}
-      offset={tooltipOffset}
     >
-      <Base
-        {...stylesProps}
-        asChild
-        className={getButtonClassName({ disabled, variant, size, isCurrentPage })}
-      >
-        <Link {...linkProps}>
-          {!!StartIconSlot && (
-            <ChildrenComponentWithClassName className={styles.button_icon}>
-              {StartIconSlot}
-            </ChildrenComponentWithClassName>
-          )}
-          {children}
-          {!!EndIconSlot && (
-            <ChildrenComponentWithClassName className={styles.button_icon}>
-              {EndIconSlot}
-            </ChildrenComponentWithClassName>
-          )}
-        </Link>
-      </Base>
-    </Tooltip>
+      <Link {...linkProps}>
+        {!!StartIconSlot && (
+          <ChildrenComponentWithClassName className={styles.button_icon}>
+            {StartIconSlot}
+          </ChildrenComponentWithClassName>
+        )}
+        {children}
+        {!!EndIconSlot && (
+          <ChildrenComponentWithClassName className={styles.button_icon}>
+            {EndIconSlot}
+          </ChildrenComponentWithClassName>
+        )}
+      </Link>
+    </Base>
   );
 }

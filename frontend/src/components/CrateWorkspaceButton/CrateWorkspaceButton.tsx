@@ -122,6 +122,7 @@ export function CrateWorkspacePanelNavigationComponent(props: PanelButtonProps) 
           polymorphicVariant: PANEL_NAVIGATION_BUTTON.BUTTON,
           onClick: handleOpenChange,
           variant: "outlined",
+          title: "Create a new workspace",
         }}
         text={text}
         StartIconSlot={StartIconSlot}

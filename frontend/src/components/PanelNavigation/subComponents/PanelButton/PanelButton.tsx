@@ -32,6 +32,7 @@ export function PanelButton(props: PanelButtonProps) {
 
   const [isOpenTransitionFinished, setIsOpenTransitionFinished] =
     React.useState(!isNavigationHidden);
+
   const previousHiddenRef = React.useRef(isNavigationHidden);
 
   const isTextVisible = !isNavigationHidden && isOpenTransitionFinished;

@@ -1,0 +1,33 @@
+@use "@/styles/pxToRem.scss" as mixins;
+@use "@/styles/breakpoints.scss" as breakpoints;
+@use "@/styles/colorsTokens.scss" as colors;
+
+@mixin card {
+  display: flex;
+  flex-direction: column;
+  gap: mixins.pxToRem(16);
+  width: 100%;
+  height: fit-content;
+  padding: mixins.pxToRem(24);
+  background: colors.$color-surface-card;
+  border: solid mixins.pxToRem(1) colors.$color-border-default;
+  border-radius: mixins.pxToRem(16);
+}
+
+@mixin errorZone {
+  background-color: colors.$color-status-danger-bg;
+  border-color: colors.$color-status-danger-border;
+}
+
+.pageLayoutPanelDetails {
+  display: flex;
+  flex-direction: column;
+  gap: mixins.pxToRem(24);
+  overflow-y: clip;
+
+  @include breakpoints.lg {
+    display: grid;
+    grid-template-rows: auto min-content;
+    padding-bottom: mixins.pxToRem(24);
+  }
+}

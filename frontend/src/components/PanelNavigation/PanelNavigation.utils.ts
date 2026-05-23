@@ -1,4 +1,5 @@
 import { type GetApiWorkspacesSuccessResponse } from "@/generated/api-aliases";
+import id from "zod/v4/locales/id.js";
 
 type Workspaces = GetApiWorkspacesSuccessResponse["items"];
 
@@ -21,4 +22,13 @@ export function sortWorkspaces(workspaces: Workspaces) {
 
     return new Date(nextCreatedAt).getTime() - new Date(prevCreatedAt).getTime();
   });
+}
+
+export function getCurrentWorkspacePaths(id: string = "") {
+  return {
+    currentWorkspace: `/dashboard/workspaces/${id}`,
+    currentWorkspaceSettings: `/dashboard/workspaces/${id}/settings`,
+    currentWorkspaceAnalytics: `/dashboard/workspaces/${id}/analytics`,
+    currentWorkspaceUploadedFiles: `/dashboard/workspaces/${id}/uploads`,
+  };
 }
