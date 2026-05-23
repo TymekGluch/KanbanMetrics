@@ -78,7 +78,10 @@ export function DialogOverlayComponent(props: DialogOverlayProps) {
       className={clsx(styles.dialogOverlay, className)}
       onClick={(event) => {
         onClick?.(event);
-
+        const target = event.target as HTMLElement;
+        if (target.closest('[data-dropdown-portal="true"]')) {
+          return;
+        }
         if (closeOnOverlayClick) {
           setIsOpen(false);
         }

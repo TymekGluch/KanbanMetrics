@@ -31,10 +31,16 @@ export function Select(props: CustomSelectWithSearchProps) {
 
   React.useEffect(() => {
     const handler = (event: MouseEvent) => {
-      if (selectRef.current && !selectRef.current.contains(event.target as Node)) {
-        setOpen(false);
-        setFocused(false);
+      const target = event.target as HTMLElement;
+
+      if (
+        (selectRef.current && selectRef.current.contains(target)) ||
+        target.closest('[data-dropdown-portal="true"]')
+      ) {
+        return;
       }
+      setOpen(false);
+      setFocused(false);
     };
 
     document.addEventListener("mousedown", handler);

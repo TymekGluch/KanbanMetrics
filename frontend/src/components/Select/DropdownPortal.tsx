@@ -61,7 +61,7 @@ export function DropdownPortal(props: DropdownPortalProps) {
   }
 
   return createPortal(
-    <div ref={dropdownRef} style={style}>
+    <div ref={dropdownRef} style={style} data-dropdown-portal="true">
       {children}
     </div>,
     portalElement
