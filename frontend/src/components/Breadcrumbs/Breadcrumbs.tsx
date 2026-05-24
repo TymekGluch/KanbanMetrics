@@ -7,11 +7,16 @@ import { HomeSvg } from "@/assets/HomeSvg";
 import { ChevronRightSvg } from "@/assets/ChevronRightSvg";
 import clsx from "clsx";
 import React from "react";
-
-const hiddenRoutes = ["auth"];
+import { breadcrumbsHiddenRoutes, checkIsLongId } from "./Breadcrumbs.utils";
+import { useTransformIdToWorkspaceName } from "./Breadcrumbs.hooks";
+import { Media } from "../Media";
+import { Hidden } from "../Hidden/Hidden";
+import { MEDIA_CONDITION } from "../Media/Media.constants";
+import { BREAKPOINTS_KEYS } from "@/responsive/responsive.constants";
 
 export function Breadcrumbs() {
   const pathname = usePathname();
+  const { transformIdToWorkspaceName } = useTransformIdToWorkspaceName();
 
   const pathnameChunks = pathname.split("/").filter(Boolean);
   const urls = pathnameChunks.map((_, index, array) => `/${array.slice(0, index + 1).join("/")}`);
@@ -29,7 +34,15 @@ export function Breadcrumbs() {
           [styles.breadcrumbs_link__active]: isHomeActive,
         })}
       >
-        Home Page
+        <Media.Client
+          variant={MEDIA_CONDITION.BREAKPOINTS}
+          condition={{
+            [BREAKPOINTS_KEYS.md]: true,
+          }}
+          Fallback={<Hidden>Home Page</Hidden>}
+        >
+          Home Page
+        </Media.Client>
       </Link.AsNextLink>
 
       {urls.map((url, index) => {
@@ -40,14 +53,38 @@ export function Breadcrumbs() {
           .map((char, index) => (index === 0 ? char.toUpperCase() : char))
           .join("");
 
-        const shouldHideLink = hiddenRoutes.some((hiddenRoute) => url.endsWith(hiddenRoute));
+        const shouldHideLink = breadcrumbsHiddenRoutes.some((hiddenRoute) =>
+          url.endsWith(hiddenRoute)
+        );
+
+        const resolvedLabel = checkIsLongId(label)
+          ? transformIdToWorkspaceName(label)
+          : capitalisedLabel;
 
         return (
           <React.Fragment key={url}>
-            <ChevronRightSvg className={styles.breadcrumbs_separator} />
+            {shouldHideLink ? (
+              <Media.Client
+                variant={MEDIA_CONDITION.BREAKPOINTS}
+                condition={{
+                  [BREAKPOINTS_KEYS.md]: true,
+                }}
+              >
+                <ChevronRightSvg className={styles.breadcrumbs_separator} />
+              </Media.Client>
+            ) : (
+              <ChevronRightSvg className={styles.breadcrumbs_separator} />
+            )}
 
             {shouldHideLink ? (
-              <p className={styles.breadcrumbs_inactiveLink}>{capitalisedLabel}</p>
+              <Media.Client
+                variant={MEDIA_CONDITION.BREAKPOINTS}
+                condition={{
+                  [BREAKPOINTS_KEYS.md]: true,
+                }}
+              >
+                <p className={styles.breadcrumbs_inactiveLink}>{resolvedLabel}</p>
+              </Media.Client>
             ) : (
               <Link.AsNextLink
                 href={url}
@@ -56,7 +93,7 @@ export function Breadcrumbs() {
                   [styles.breadcrumbs_link__active]: isActive,
                 })}
               >
-                {capitalisedLabel}
+                {resolvedLabel}
               </Link.AsNextLink>
             )}
           </React.Fragment>

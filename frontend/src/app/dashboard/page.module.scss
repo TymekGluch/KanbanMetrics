@@ -1,0 +1,49 @@
+@use "@/styles/pxToRem.scss" as mixins;
+@use "@/styles/breakpoints.scss" as breakpoints;
+@use "@/styles/colorsTokens.scss" as colors;
+
+@mixin card {
+  display: flex;
+  flex-direction: column;
+  gap: mixins.pxToRem(24);
+  width: 100%;
+  height: fit-content;
+  padding: mixins.pxToRem(24);
+  background: colors.$color-surface-card;
+  border: solid mixins.pxToRem(1) colors.$color-border-default;
+  border-radius: mixins.pxToRem(16);
+}
+
+.overviewContent {
+  display: flex;
+  flex-direction: column;
+  gap: mixins.pxToRem(24);
+  width: 100%;
+
+  @include breakpoints.lg {
+    display: grid;
+    grid-template-columns: 1fr;
+    grid-template-rows: auto mixins.pxToRem(200);
+  }
+
+  &_workspaces {
+    @include card;
+  }
+
+  &_workspacesHeader {
+    display: flex;
+    justify-content: space-between;
+    gap: mixins.pxToRem(16);
+  }
+
+  &_textContent {
+    display: flex;
+    flex-direction: column;
+    gap: mixins.pxToRem(8);
+  }
+
+  &_icon {
+    width: mixins.pxToRem(24);
+    height: mixins.pxToRem(24);
+  }
+}

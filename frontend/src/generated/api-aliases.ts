@@ -51,7 +51,6 @@ export type PutApiUserUpdateResponse400 = ApiPaths["/api/user/update"]["put"]["r
 export type PutApiUserUpdateResponse401 = ApiPaths["/api/user/update"]["put"]["responses"][401]["content"]["text/plain"];
 export type PutApiUserUpdateResponse500 = ApiPaths["/api/user/update"]["put"]["responses"][500]["content"]["text/plain"];
 
-export type GetApiWorkspacesRequestBody = ApiPaths["/api/workspaces"]["get"]["requestBody"]["content"]["application/json"];
 export type GetApiWorkspacesResponse200 = ApiPaths["/api/workspaces"]["get"]["responses"][200]["content"]["application/json"];
 export type GetApiWorkspacesSuccessResponse = GetApiWorkspacesResponse200;
 export type GetApiWorkspacesResponse400 = ApiPaths["/api/workspaces"]["get"]["responses"][400]["content"]["application/json"];
@@ -67,6 +66,13 @@ export type GetApiWorkspacesIdResponse403 = ApiPaths["/api/workspaces/{id}"]["ge
 export type GetApiWorkspacesIdResponse404 = ApiPaths["/api/workspaces/{id}"]["get"]["responses"][404]["content"]["application/json"];
 export type GetApiWorkspacesIdResponse408 = ApiPaths["/api/workspaces/{id}"]["get"]["responses"][408]["content"]["application/json"];
 export type GetApiWorkspacesIdResponse500 = ApiPaths["/api/workspaces/{id}"]["get"]["responses"][500]["content"]["application/json"];
+
+export type DeleteApiWorkspacesIdDeleteResponse200 = ApiPaths["/api/workspaces/{id}/delete"]["delete"]["responses"][200]["content"]["application/json"];
+export type DeleteApiWorkspacesIdDeleteSuccessResponse = DeleteApiWorkspacesIdDeleteResponse200;
+export type DeleteApiWorkspacesIdDeleteResponse400 = ApiPaths["/api/workspaces/{id}/delete"]["delete"]["responses"][400]["content"]["application/json"];
+export type DeleteApiWorkspacesIdDeleteResponse401 = ApiPaths["/api/workspaces/{id}/delete"]["delete"]["responses"][401]["content"]["application/json"];
+export type DeleteApiWorkspacesIdDeleteResponse403 = ApiPaths["/api/workspaces/{id}/delete"]["delete"]["responses"][403]["content"]["application/json"];
+export type DeleteApiWorkspacesIdDeleteResponse500 = ApiPaths["/api/workspaces/{id}/delete"]["delete"]["responses"][500]["content"]["application/json"];
 
 export type PostApiWorkspacesCreateRequestBody = ApiPaths["/api/workspaces/create"]["post"]["requestBody"]["content"]["application/json"];
 export type PostApiWorkspacesCreateResponse201 = ApiPaths["/api/workspaces/create"]["post"]["responses"][201]["content"]["application/json"];

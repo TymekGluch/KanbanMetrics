@@ -6,11 +6,9 @@ import {
   type PostApiWorkspacesCreateSuccessResponse,
 } from "@/generated/api-aliases";
 import { nextFetchTags } from "@/nextFetchTags";
-import { WorkspacesContext } from "@/providers/WorkspacesProvider/WorkspacesProvider";
 import { ApiClient, type ApiError } from "@/utils/api/apiClient";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
-import React from "react";
 
 const apiClient = new ApiClient({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
@@ -18,9 +16,12 @@ const apiClient = new ApiClient({
 
 export function useCreateWorkspaceMutationFetch() {
   const router = useRouter();
-  const { setWorkspaces } = React.useContext(WorkspacesContext);
 
-  return useMutation<PostApiWorkspacesCreateSuccessResponse, ApiError, PostApiWorkspacesCreateRequestBody>({
+  return useMutation<
+    PostApiWorkspacesCreateSuccessResponse,
+    ApiError,
+    PostApiWorkspacesCreateRequestBody
+  >({
     mutationKey: ["workspaces", "create"],
     mutationFn: async (payload) => {
       const response = await apiClient.post<
@@ -31,8 +32,6 @@ export function useCreateWorkspaceMutationFetch() {
       return response.data;
     },
     onSuccess: async () => {
-      setWorkspaces?.(null);
-
       await refreshServerFetchAction(nextFetchTags.workspaces);
 
       router.refresh();

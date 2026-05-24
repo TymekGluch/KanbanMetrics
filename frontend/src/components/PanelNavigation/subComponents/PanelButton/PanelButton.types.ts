@@ -1,6 +1,6 @@
 import type React from "react";
-import type Button from "../Button";
-import { type PANEL_NAVIGATION_BUTTON } from "./PanelNavigation.constants";
+import type Button from "../../../Button";
+import { type PANEL_NAVIGATION_BUTTON } from "./PanelButton.constants";
 
 export interface ButtonConditionProp extends Omit<
   React.ComponentProps<typeof Button.AsButton>,
@@ -26,4 +26,5 @@ export interface PanelButtonProps extends React.PropsWithChildren {
   polymorphicButtonProps: conditionalProps;
   StartIconSlot: IconType;
   text: string;
+  isOutlined?: boolean;
 }

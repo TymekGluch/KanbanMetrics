@@ -1,0 +1,32 @@
+@use "@/styles/pxToRem.scss" as mixins;
+@use "@/styles/breakpoints.scss" as breakpoints;
+@use "@/styles/colorsTokens.scss" as colors;
+
+.panelButton {
+  display: flex;
+  justify-content: space-between !important;
+  gap: mixins.pxToRem(16);
+  width: mixins.pxToRem(46) !important;
+  height: mixins.pxToRem(46) !important;
+  padding: mixins.pxToRem(10) !important;
+  transition:
+    width 0.15s ease-in-out,
+    border-color 0.15s ease-in-out,
+    justify-content 0.15s ease-in-out;
+
+  &__active {
+    width: 100% !important;
+    padding: 0 mixins.pxToRem(10) !important;
+  }
+
+  &_icon {
+    color: colors.$color-text-primary;
+    width: mixins.pxToRem(24);
+    height: mixins.pxToRem(24);
+  }
+}
+
+.panelLink {
+  min-width: 50%;
+  padding: mixins.pxToRem(8);
+}

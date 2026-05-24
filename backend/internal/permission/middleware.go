@@ -10,6 +10,7 @@ import (
 const (
 	ErrorForbidden          = "Forbidden"
 	ErrorMissingWorkspaceID = "Missing workspace ID"
+	ErrorInvalidWorkspaceID = "Invalid workspace ID"
 )
 
 type Middleware struct {

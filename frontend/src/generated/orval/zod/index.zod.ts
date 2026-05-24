@@ -11,6 +11,7 @@ export * from './appErrorsFieldError.zod';
 export * from './appErrorsValidationErrorResponse.zod';
 export * from './authLoginUserInput.zod';
 export * from './authRegisterUserInput.zod';
+export * from './deleteApiWorkspacesIdDelete200.zod';
 export * from './getApiWorkspacesBody.zod';
 export * from './postApiAuthLoginBody.zod';
 export * from './postApiAuthRegisterBody.zod';

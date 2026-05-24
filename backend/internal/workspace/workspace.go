@@ -1,11 +1,15 @@
 package workspace
 
-import "context"
+import (
+	"context"
+	"time"
+)
 
 func CreateWorkspace(ctx context.Context, input CreateWorkspaceInput) (*Workspace, error) {
 	dbInput := dbInsertWorkspaceInput{
-		Name:    input.Name,
-		OwnerID: input.OwnerID,
+		Name:        input.Name,
+		Description: input.Description,
+		OwnerID:     input.OwnerID,
 	}
 
 	return dbInsertWorkspace(ctx, dbInput)
@@ -38,4 +42,44 @@ func GetWorkspaces(ctx context.Context, input ListWorkspacesInput) (*ListWorkspa
 		Limit:  input.Limit,
 		Offset: input.Offset,
 	}, nil
+}
+
+func DropWorkspace(ctx context.Context, workspaceID string) error {
+	dbInput := dbDropWorkspaceInput{
+		ID: workspaceID,
+	}
+
+	return dbDropWorkspace(ctx, dbInput)
+}
+
+func UpdateWorkspace(ctx context.Context, input UpdateWorkspaceInput) error {
+	dbInput := dbUpdateWorkspaceInput{
+		ID:          input.WorkspaceID,
+		Name:        input.Name,
+		Description: input.Description,
+		OwnerID:     input.NewOwnerID,
+		UpdatedAt:   input.UpdatedAt,
+	}
+
+	return dbUpdateWorkspace(ctx, dbInput)
+}
+
+func TransferWorkspaceOwnership(ctx context.Context, workspaceID string, newOwnerID int64) error {
+	return UpdateWorkspace(ctx, UpdateWorkspaceInput{
+		WorkspaceID: workspaceID,
+		NewOwnerID:  &newOwnerID,
+	})
+}
+
+func MarkWorkspaceUpdated(ctx context.Context, input MarkWorkspaceUpdatedInput) error {
+	if input.UpdatedAt == nil {
+		now := time.Now()
+		input.UpdatedAt = &now
+	}
+
+	dbInput := dbUpdateWorkspaceInput{
+		ID:        input.WorkspaceID,
+		UpdatedAt: input.UpdatedAt,
+	}
+	return dbUpdateWorkspace(ctx, dbInput)
 }

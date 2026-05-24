@@ -11,4 +11,5 @@ export interface LayoutContextType {
   value: LayoutContextValue;
   setValue: React.Dispatch<React.SetStateAction<LayoutContextValue>>;
   isRestored: boolean;
+  isWide: boolean;
 }

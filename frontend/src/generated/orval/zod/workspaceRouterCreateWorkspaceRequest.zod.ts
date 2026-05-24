@@ -7,11 +7,14 @@
  */
 import { z as zod } from 'zod';
 
+export const workspaceRouterCreateWorkspaceRequestDescriptionMax = 1000;
+
 export const workspaceRouterCreateWorkspaceRequestNameMin = 3;
 export const workspaceRouterCreateWorkspaceRequestNameMax = 400;
 
 
 export const WorkspaceRouterCreateWorkspaceRequest = zod.object({
+  "description": zod.string().max(workspaceRouterCreateWorkspaceRequestDescriptionMax).optional(),
   "name": zod.string().min(workspaceRouterCreateWorkspaceRequestNameMin).max(workspaceRouterCreateWorkspaceRequestNameMax)
 })
 

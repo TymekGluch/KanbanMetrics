@@ -10,6 +10,7 @@ import { z as zod } from 'zod';
 export const WorkspaceListWorkspacesResult = zod.object({
   "items": zod.array(zod.object({
   "created_at": zod.string().optional(),
+  "description": zod.string().optional(),
   "id": zod.string().optional(),
   "name": zod.string().optional(),
   "owner_id": zod.number().optional(),

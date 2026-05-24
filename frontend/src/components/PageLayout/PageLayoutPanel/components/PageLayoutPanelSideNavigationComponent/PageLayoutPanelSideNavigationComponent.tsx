@@ -129,9 +129,10 @@ export function PageLayoutPanelSideNavigationComponent(props: React.PropsWithChi
               [styles.pageLayoutPanelSideNavigation_button__active]: !isNavigationHidden,
             })}
             variant="outlined"
+            StartIconSlot={
+              <UserOutlinedSvg className={styles.pageLayoutPanelSideNavigation_sidebarSvg} />
+            }
           >
-            <UserOutlinedSvg className={styles.pageLayoutPanelSideNavigation_sidebarSvg} />
-
             {isTextVisible ? <span>Go to your Profile</span> : <Hidden>Go to your Profile</Hidden>}
           </Button.AsLink>
 
@@ -140,8 +141,8 @@ export function PageLayoutPanelSideNavigationComponent(props: React.PropsWithChi
               [styles.pageLayoutPanelSideNavigation_button__active]: !isNavigationHidden,
             })}
             variant="outlined"
+            StartIconSlot={<PowerSvg className={styles.pageLayoutPanelSideNavigation_sidebarSvg} />}
           >
-            <PowerSvg className={styles.pageLayoutPanelSideNavigation_sidebarSvg} />
             {isTextVisible ? <span>Logout</span> : <Hidden>Logout</Hidden>}
           </LogoutButton>
         </div>

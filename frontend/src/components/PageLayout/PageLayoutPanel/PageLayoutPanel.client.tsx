@@ -21,6 +21,7 @@ import { PageLayoutPanelProvider } from "./context";
 import { PAGE_LAYOUT_PANEL_CONTENT_ALIGNMENT } from "./PageLayoutPanel.constants";
 import styles from "./PageLayoutPanel.module.scss";
 import {
+  type DetailsContentComponentProps,
   type NavigationContentComponentProps,
   type PageLayoutPanelProviderProps,
   type PageLayoutPanelRootProps,
@@ -185,8 +186,8 @@ export function HeaderComponent(props: React.PropsWithChildren) {
                 href="/dashboard/profile"
                 className={styles.pageLayoutPanelHeader_button}
                 variant="outlined"
+                StartIconSlot={<UserOutlinedSvg className={styles.pageLayoutPanelHeader_icon} />}
               >
-                <UserOutlinedSvg className={styles.pageLayoutPanelHeader_icon} />
                 <Hidden>Go to your Profile</Hidden>
               </Button.AsLink>
 
@@ -202,8 +203,12 @@ export function HeaderComponent(props: React.PropsWithChildren) {
   );
 }
 
-export function DetailsContent(props: React.PropsWithChildren) {
-  const { children } = props;
+export function DetailsContent(props: DetailsContentComponentProps) {
+  const { children, as: Component = "div", className } = props;
 
-  return <div className={styles.pageLayoutPanelDetailsContent}>{children}</div>;
+  return (
+    <Component className={clsx(styles.pageLayoutPanelDetailsContent, className)}>
+      {children}
+    </Component>
+  );
 }
