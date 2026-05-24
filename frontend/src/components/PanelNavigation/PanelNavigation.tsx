@@ -1,25 +1,23 @@
 "use client";
 
+import { ChartSvg } from "@/assets/ChartSvg";
+import { CloudArrowUpSvg } from "@/assets/CloadArrowUp";
+import { EyeSvg } from "@/assets/EyeSvg";
 import { PlusSvg } from "@/assets/PlusSvg";
 import { PuzzleSvg } from "@/assets/PuzzleSvg";
+import { SettingsSvg } from "@/assets/SettingsSvg";
 import { WorkspacesContext } from "@/providers/WorkspacesProvider/WorkspacesProvider";
+import { usePathname } from "next/navigation";
 import React from "react";
+import z from "zod";
 import CreateWorkspaceButton from "../CrateWorkspaceButton";
-import { Select } from "../Select/Select";
+import { PageLayoutPanelContext } from "../PageLayout/PageLayoutPanel/context";
 import { type SelectOption } from "../Select/Select.types";
 import styles from "./PanelNavigation.module.scss";
 import { getCurrentWorkspacePaths, sortWorkspaces } from "./PanelNavigation.utils";
+import { NavigationSelect } from "./subComponents/NavigationSelect/NavigationSelect";
 import { PanelButton } from "./subComponents/PanelButton/PanelButton";
 import { PANEL_NAVIGATION_BUTTON } from "./subComponents/PanelButton/PanelButton.constants";
-import { usePathname } from "next/navigation";
-import z, { set } from "zod";
-import { NavigationSelect } from "./subComponents/NavigationSelect/NavigationSelect";
-import { PageLayoutPanelContext } from "../PageLayout/PageLayoutPanel/context";
-import { EyeSvg } from "@/assets/EyeSvg";
-import { SettingsSvg } from "@/assets/SettingsSvg";
-import { ChartSvg } from "@/assets/ChartSvg";
-import { UploadSvg } from "@/assets/UploadSvg";
-import { CloudArrowUpSvg } from "@/assets/CloadArrowUp";
 
 interface PanelNavigationProps {
   asListItems?: boolean;
@@ -31,7 +29,7 @@ interface CommonItemsProps extends React.PropsWithChildren {
   asListItems?: boolean;
 }
 
-function CommonItemWrpper(props: CommonItemsProps) {
+function CommonItemWrapper(props: CommonItemsProps) {
   const { asListItems = false, children } = props;
 
   if (asListItems) {
@@ -46,7 +44,7 @@ function CommonItems(props: PanelNavigationProps) {
 
   return (
     <>
-      <CommonItemWrpper asListItems={asListItems}>
+      <CommonItemWrapper asListItems={asListItems}>
         <PanelButton
           polymorphicButtonProps={{
             polymorphicVariant: PANEL_NAVIGATION_BUTTON.NEXT_LINK,
@@ -57,8 +55,8 @@ function CommonItems(props: PanelNavigationProps) {
           StartIconSlot={<PuzzleSvg />}
           text="Overview"
         />
-      </CommonItemWrpper>
-      <CommonItemWrpper asListItems={asListItems}>
+      </CommonItemWrapper>
+      <CommonItemWrapper asListItems={asListItems}>
         <PanelButton
           polymorphicButtonProps={{
             polymorphicVariant: PANEL_NAVIGATION_BUTTON.NEXT_LINK,
@@ -69,8 +67,8 @@ function CommonItems(props: PanelNavigationProps) {
           StartIconSlot={<EyeSvg />}
           text="Go to workspace"
         />
-      </CommonItemWrpper>
-      <CommonItemWrpper asListItems={asListItems}>
+      </CommonItemWrapper>
+      <CommonItemWrapper asListItems={asListItems}>
         <PanelButton
           polymorphicButtonProps={{
             polymorphicVariant: PANEL_NAVIGATION_BUTTON.NEXT_LINK,
@@ -81,8 +79,8 @@ function CommonItems(props: PanelNavigationProps) {
           StartIconSlot={<SettingsSvg />}
           text="Workspace settings"
         />
-      </CommonItemWrpper>
-      <CommonItemWrpper asListItems={asListItems}>
+      </CommonItemWrapper>
+      <CommonItemWrapper asListItems={asListItems}>
         <PanelButton
           polymorphicButtonProps={{
             polymorphicVariant: PANEL_NAVIGATION_BUTTON.NEXT_LINK,
@@ -93,8 +91,8 @@ function CommonItems(props: PanelNavigationProps) {
           StartIconSlot={<ChartSvg />}
           text="Analytics"
         />
-      </CommonItemWrpper>
-      <CommonItemWrpper asListItems={asListItems}>
+      </CommonItemWrapper>
+      <CommonItemWrapper asListItems={asListItems}>
         <PanelButton
           polymorphicButtonProps={{
             polymorphicVariant: PANEL_NAVIGATION_BUTTON.NEXT_LINK,
@@ -105,7 +103,7 @@ function CommonItems(props: PanelNavigationProps) {
           StartIconSlot={<CloudArrowUpSvg />}
           text="Uploaded Files"
         />
-      </CommonItemWrpper>
+      </CommonItemWrapper>
     </>
   );
 }
@@ -128,8 +126,8 @@ export function PanelNavigation(props: PanelNavigationProps) {
   )?.name;
 
   const [currentWorkspace, setCurrentWorkspace] = React.useState<{
-    name: string;
     id: string;
+    name: string;
   }>(
     resolvedWorkspaceId
       ? { id: resolvedWorkspaceId, name: resolvedWorkspaceNameFromId ?? "" }
