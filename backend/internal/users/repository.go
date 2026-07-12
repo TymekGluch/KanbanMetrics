@@ -152,7 +152,7 @@ func dbSelectAlmostExpiredUsers(ctx context.Context, expirationInterval string, 
 
 	for rows.Next() {
 		var user almostExpiredUser
-		if err := rows.Scan(&user.ID, &user.CreatedAt, &user.IsVerified, &user.Email); err != nil {
+		if err := rows.Scan(&user.ID, &user.CreatedAt, &user.IsVerified, &user.Email, &user.Name); err != nil {
 			return nil, err
 		}
 

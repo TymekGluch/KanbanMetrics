@@ -10,6 +10,10 @@ import (
 	"KanbanMetrics/internal/validation"
 	"context"
 	"log"
+	"os"
+	"time"
+
+	morphyxisMailClient "github.com/TymekGluch/Morphyxis-mail-service/pkg/morphyxis-mail-client"
 
 	"github.com/gofiber/fiber/v3"
 )
@@ -33,10 +37,18 @@ func main() {
 
 	ctx := context.Background()
 
+	morphyxisMailClient, err := morphyxisMailClient.New(morphyxisMailClient.Config{
+		BaseURL: os.Getenv("MAIL_SERVICE_DOMAIN"),
+		Timeout: 10 * time.Second,
+	})
+	if err != nil {
+		log.Fatal(err)
+	}
+
 	worker := scheduler.InitCallbackWorker()
 	defer worker.Stop()
 
-	users.ExpiredUnverifiedUsersCleanupService(ctx, worker)
+	users.ExpiredUnverifiedUsersCleanupService(ctx, worker, &morphyxisMailClient)
 
 	apiDocsService, err := apiDocs.NewService(config.AppURL)
 	if err != nil {

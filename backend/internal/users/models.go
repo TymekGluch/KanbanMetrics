@@ -59,6 +59,7 @@ type almostExpiredUser struct {
 	CreatedAt  time.Time `json:"created_at"`
 	IsVerified bool      `json:"is_verified"`
 	Email      string    `json:"email"`
+	Name       string    `json:"name"`
 }
 
 type getUserLifeCycleConfigInput struct {
