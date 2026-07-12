@@ -4,6 +4,9 @@ import (
 	"KanbanMetrics/internal/scheduler"
 	"context"
 	"fmt"
+	"log"
+
+	morphyxisMailClient "github.com/TymekGluch/Morphyxis-mail-service/pkg/morphyxis-mail-client"
 )
 
 const (
@@ -11,7 +14,7 @@ const (
 	defaultNotificationBeforeDeletionDays = 3
 )
 
-func runCleanupPipeline(ctx context.Context) {
+func runCleanupPipeline(ctx context.Context, mailClient *morphyxisMailClient.MailServiceClient) {
 	config := getUserLifeCycleConfig(getUserLifeCycleConfigInput{
 		deletionAfterDays:              defaultDeletionAfterDays,
 		notificationBeforeDeletionDays: defaultNotificationBeforeDeletionDays,
@@ -23,6 +26,16 @@ func runCleanupPipeline(ctx context.Context) {
 	} else {
 		for _, user := range users {
 			fmt.Printf("Deleted user with email: %s\n, and Id: %d\n", user.Email, user.ID)
+
+			err := (*mailClient).SendDeletedAccountEmail(ctx, morphyxisMailClient.SendDeletedAccountEmailInput{
+				To:      user.Email,
+				Name:    user.Name,
+				Subject: "Account Deletion Notification",
+				Reason:  "Your account has been deleted due to not being verified within the allowed time frame.",
+			})
+			if err != nil {
+				log.Fatal(err)
+			}
 		}
 	}
 
@@ -39,15 +52,26 @@ func runCleanupPipeline(ctx context.Context) {
 			IsAccountExpirationDetailsSend: &isDetailsSend,
 		}, false)
 
-		// TODO: Implement notification sending logic here, e.g. send email to user.Email probably mailer service should be implemented for that
+		fmt.Printf("check")
 
-		fmt.Printf("Should notify user about expiration account details for user with email: %s\n", user.Email)
+		err := (*mailClient).SendAccountConfirmationEmail(ctx, morphyxisMailClient.SendAccountConfirmationEmailInput{
+			To:                  user.Email,
+			Name:                user.Name,
+			Subject:             "Account Expiration Details",
+			VerificationCode:    "213721",
+			AccountDeletionDate: user.CreatedAt.AddDate(0, 0, defaultDeletionAfterDays),
+		})
+		if err != nil {
+			log.Fatal(err)
+		}
+
+		fmt.Printf("User was notified about expiration account details for user with email: %s\n", user.Email)
 	}
 }
 
-func ExpiredUnverifiedUsersCleanupService(ctx context.Context, schedulerDependency *scheduler.Worker) {
+func ExpiredUnverifiedUsersCleanupService(ctx context.Context, schedulerDependency *scheduler.Worker, mailClient *morphyxisMailClient.MailServiceClient) {
 	schedulerDependency.RegisterJob(scheduler.CallbackSchedulerInput{
-		Callback:       func() { runCleanupPipeline(ctx) },
+		Callback:       func() { runCleanupPipeline(ctx, mailClient) },
 		Interval:       scheduler.WORKER_INTERVAL_SIX_HOURS,
 		RunImmediately: true,
 	})

@@ -1,4 +1,4 @@
-SELECT id, created_at, is_verified, email
+SELECT id, created_at, is_verified, email, name
 FROM users
 WHERE is_verified = false
 AND role = 'app_user'
