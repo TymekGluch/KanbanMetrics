@@ -6,6 +6,8 @@
  * OpenAPI spec version: 1.0
  */
 
+export * from './accountActivationAccountActivation.zod';
+export * from './accountActivationAccountActivationInput.zod';
 export * from './appErrorsAppError.zod';
 export * from './appErrorsFieldError.zod';
 export * from './appErrorsValidationErrorResponse.zod';

@@ -6,6 +6,8 @@
  * OpenAPI spec version: 1.0
  */
 import {
+  AccountActivationAccountActivation,
+  AccountActivationAccountActivationInput,
   DeleteApiWorkspacesIdDelete200,
   UsersUser,
   WorkspaceListWorkspacesResult,
@@ -20,6 +22,119 @@ import type {
   WorkspaceRouterCreateWorkspaceRequest,
   WorkspaceRouterListWorkspacesRequest
 } from './zod/index.zod';
+
+
+/**
+ * Activates the account for the currently authenticated user.
+ * @summary Activate user account
+ */
+export type postApiAccountActivationCodeActivateResponse200 = {
+  data: AccountActivationAccountActivationInput
+  status: 200
+}
+
+export type postApiAccountActivationCodeActivateResponse401 = {
+  data: string
+  status: 401
+}
+
+export type postApiAccountActivationCodeActivateResponse500 = {
+  data: string
+  status: 500
+}
+
+export type postApiAccountActivationCodeActivateResponseSuccess = (postApiAccountActivationCodeActivateResponse200) & {
+  headers: Headers;
+};
+export type postApiAccountActivationCodeActivateResponseError = (postApiAccountActivationCodeActivateResponse401 | postApiAccountActivationCodeActivateResponse500) & {
+  headers: Headers;
+};
+
+export type postApiAccountActivationCodeActivateResponse = (postApiAccountActivationCodeActivateResponseSuccess | postApiAccountActivationCodeActivateResponseError)
+
+export const getPostApiAccountActivationCodeActivateUrl = () => {
+
+
+
+
+  return `http://localhost:3000/api/api/account-activation-code/activate`
+}
+
+export const postApiAccountActivationCodeActivate = async (postApiAccountActivationCodeActivateBody: Blob, options?: RequestInit): Promise<postApiAccountActivationCodeActivateResponse> => {
+
+  const res = await fetch(getPostApiAccountActivationCodeActivateUrl(),
+  {
+    ...options,
+    method: 'POST',
+    headers: { 'Content-Type': '*/*', ...options?.headers },
+    body: JSON.stringify(
+      postApiAccountActivationCodeActivateBody,)
+  }
+)
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+
+  const parsedBody = body ? JSON.parse(body) : {}
+  const data = AccountActivationAccountActivationInput.parse(parsedBody)
+  return { data, status: res.status, headers: res.headers } as postApiAccountActivationCodeActivateResponse
+}
+
+
+
+/**
+ * Retrieves the account activation code for the currently authenticated user.
+ * @summary Get account activation code
+ */
+export type getApiAccountActivationCodeGetResponse200 = {
+  data: AccountActivationAccountActivation
+  status: 200
+}
+
+export type getApiAccountActivationCodeGetResponse401 = {
+  data: string
+  status: 401
+}
+
+export type getApiAccountActivationCodeGetResponse500 = {
+  data: string
+  status: 500
+}
+
+export type getApiAccountActivationCodeGetResponseSuccess = (getApiAccountActivationCodeGetResponse200) & {
+  headers: Headers;
+};
+export type getApiAccountActivationCodeGetResponseError = (getApiAccountActivationCodeGetResponse401 | getApiAccountActivationCodeGetResponse500) & {
+  headers: Headers;
+};
+
+export type getApiAccountActivationCodeGetResponse = (getApiAccountActivationCodeGetResponseSuccess | getApiAccountActivationCodeGetResponseError)
+
+export const getGetApiAccountActivationCodeGetUrl = () => {
+
+
+
+
+  return `http://localhost:3000/api/api/account-activation-code/get`
+}
+
+export const getApiAccountActivationCodeGet = async ( options?: RequestInit): Promise<getApiAccountActivationCodeGetResponse> => {
+
+  const res = await fetch(getGetApiAccountActivationCodeGetUrl(),
+  {
+    ...options,
+    method: 'GET'
+
+
+  }
+)
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+
+  const parsedBody = body ? JSON.parse(body) : {}
+  const data = AccountActivationAccountActivation.parse(parsedBody)
+  return { data, status: res.status, headers: res.headers } as getApiAccountActivationCodeGetResponse
+}
+
 
 
 /**
