@@ -1,7 +1,6 @@
-package usersRouter
+package accountActivation
 
 import (
-	"KanbanMetrics/internal/auth"
 	"KanbanMetrics/internal/permission"
 	"KanbanMetrics/internal/validation"
 
@@ -10,13 +9,12 @@ import (
 )
 
 func RegisterRoutes(app fiber.Router, validatorService *validation.Service, mailClient *morphyxisMailClient.MailServiceClient) {
-	route := app.Group("/user", auth.VerifyJwtTokenMiddleware())
+	route := app.Group("/account-activation-code")
 	handlers := newHandlers(validatorService, mailClient)
 
 	authorizer := permission.NewRBACAuthorizer(permission.NewStaticRolePermissionResolver())
 	permissionMiddleware := permission.NewMiddleware(authorizer)
 
-	route.Delete("/delete", permissionMiddleware.Require(permission.UsersDeleteSelf), handlers.deleteUserHandler)
-	route.Put("/update", permissionMiddleware.Require(permission.UsersUpdateSelf), handlers.updateUserHandler)
-	route.Get("/me", permissionMiddleware.Require(permission.UsersReadSelf), handlers.meHandler)
+	route.Get("/get", permissionMiddleware.Require(permission.UsersReadSelf), handlers.getAccountActivationCodeHandler)
+	route.Post("/activate", permissionMiddleware.Require(permission.UsersUpdateSelf), handlers.activateAccountHandler)
 }

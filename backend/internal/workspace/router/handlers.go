@@ -3,8 +3,8 @@ package workspaceRouter
 import (
 	"KanbanMetrics/internal/appErrors"
 	"KanbanMetrics/internal/auth"
+	globalContext "KanbanMetrics/internal/global-context"
 	"KanbanMetrics/internal/permission"
-	"KanbanMetrics/internal/users"
 	"KanbanMetrics/internal/validation"
 	"KanbanMetrics/internal/workspace"
 	"strconv"
@@ -169,7 +169,7 @@ func (handler *handlers) listWorkspacesHandler(ctx fiber.Ctx) error {
 		workspaceRole = ""
 	}
 
-	isAdmin := role == users.APP_ROLE_ADMIN
+	isAdmin := role == globalContext.APP_ROLE_ADMIN
 
 	var filterUserID *int64
 	var filterOwnerID *int64

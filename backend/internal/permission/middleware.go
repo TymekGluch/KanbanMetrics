@@ -1,7 +1,7 @@
 package permission
 
 import (
-	"KanbanMetrics/internal/auth"
+	globalContext "KanbanMetrics/internal/global-context"
 	"KanbanMetrics/internal/workspace"
 
 	"github.com/gofiber/fiber/v3"
@@ -55,9 +55,9 @@ func (middleware *Middleware) RequireAny(permissions ...Permission) fiber.Handle
 
 func (middleware *Middleware) LoadWorkspaceRole(workspaceIDParam string) fiber.Handler {
 	return func(ctx fiber.Ctx) error {
-		userID, ok := ctx.Locals(auth.ContextUserIDKey).(uint)
+		userID, ok := ctx.Locals(globalContext.ContextUserIDKey).(uint)
 		if !ok || userID == 0 {
-			return fiber.NewError(fiber.StatusUnauthorized, auth.ErrorUnauthorized)
+			return fiber.NewError(fiber.StatusUnauthorized, "Unauthorized")
 		}
 
 		workspaceID := ctx.Params(workspaceIDParam)
@@ -70,8 +70,8 @@ func (middleware *Middleware) LoadWorkspaceRole(workspaceIDParam string) fiber.H
 			return fiber.NewError(fiber.StatusForbidden, ErrorForbidden)
 		}
 
-		ctx.Locals(auth.ContextWorkspaceIDKey, workspaceID)
-		ctx.Locals(auth.ContextUserWorkspaceRoleKey, workspaceRole)
+		ctx.Locals(globalContext.ContextWorkspaceIDKey, workspaceID)
+		ctx.Locals(globalContext.ContextUserWorkspaceRoleKey, workspaceRole)
 
 		return ctx.Next()
 	}

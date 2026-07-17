@@ -1,15 +1,16 @@
 package auth
 
 import (
+	globalContext "KanbanMetrics/internal/global-context"
 	"KanbanMetrics/internal/users"
 	"context"
 	"time"
 )
 
-func RegisterUser(ctx context.Context, input RegisterUserInput) (string, error) {
+func RegisterUser(ctx context.Context, input RegisterUserInput) (int, string, error) {
 	var role string
 
-	role = users.APP_ROLE_USER
+	role = globalContext.APP_ROLE_USER
 
 	payload := users.CreateUserInput{
 		Email:    input.Email,
@@ -20,15 +21,15 @@ func RegisterUser(ctx context.Context, input RegisterUserInput) (string, error) 
 
 	id, err := users.CreateUser(ctx, payload)
 	if err != nil {
-		return "", err
+		return 0, "", err
 	}
 
 	token, err := GenerateJwtToken(uint(id))
 	if err != nil {
-		return "", err
+		return 0, "", err
 	}
 
-	return token, nil
+	return id, token, nil
 }
 
 func LoginUser(ctx context.Context, input LoginUserInput) (string, error) {

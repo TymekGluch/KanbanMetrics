@@ -10,13 +10,13 @@ import (
 )
 
 const (
-	defaultDeletionAfterDays              = 12
+	DefaultDeletionAfterDays              = 12
 	defaultNotificationBeforeDeletionDays = 3
 )
 
 func runCleanupPipeline(ctx context.Context, mailClient *morphyxisMailClient.MailServiceClient) {
 	config := getUserLifeCycleConfig(getUserLifeCycleConfigInput{
-		deletionAfterDays:              defaultDeletionAfterDays,
+		deletionAfterDays:              DefaultDeletionAfterDays,
 		notificationBeforeDeletionDays: defaultNotificationBeforeDeletionDays,
 	})
 
@@ -59,7 +59,7 @@ func runCleanupPipeline(ctx context.Context, mailClient *morphyxisMailClient.Mai
 			Name:                user.Name,
 			Subject:             "Account Expiration Details",
 			VerificationCode:    "213721",
-			AccountDeletionDate: user.CreatedAt.AddDate(0, 0, defaultDeletionAfterDays),
+			AccountDeletionDate: user.CreatedAt.AddDate(0, 0, DefaultDeletionAfterDays),
 		})
 		if err != nil {
 			log.Fatal(err)
