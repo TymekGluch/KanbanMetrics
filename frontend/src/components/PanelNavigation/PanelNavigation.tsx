@@ -56,54 +56,59 @@ function CommonItems(props: PanelNavigationProps) {
           text="Overview"
         />
       </CommonItemWrapper>
-      <CommonItemWrapper asListItems={asListItems}>
-        <PanelButton
-          polymorphicButtonProps={{
-            polymorphicVariant: PANEL_NAVIGATION_BUTTON.NEXT_LINK,
-            href: getCurrentWorkspacePaths(currentWorkspace?.id).currentWorkspace,
-            variant: "outlined",
-            title: `Go to workspace: ${currentWorkspace?.name}`,
-          }}
-          StartIconSlot={<EyeSvg />}
-          text="Go to workspace"
-        />
-      </CommonItemWrapper>
-      <CommonItemWrapper asListItems={asListItems}>
-        <PanelButton
-          polymorphicButtonProps={{
-            polymorphicVariant: PANEL_NAVIGATION_BUTTON.NEXT_LINK,
-            href: getCurrentWorkspacePaths(currentWorkspace?.id).currentWorkspaceSettings,
-            variant: "outlined",
-            title: `Workspace settings: ${currentWorkspace?.name}`,
-          }}
-          StartIconSlot={<SettingsSvg />}
-          text="Workspace settings"
-        />
-      </CommonItemWrapper>
-      <CommonItemWrapper asListItems={asListItems}>
-        <PanelButton
-          polymorphicButtonProps={{
-            polymorphicVariant: PANEL_NAVIGATION_BUTTON.NEXT_LINK,
-            href: getCurrentWorkspacePaths(currentWorkspace?.id).currentWorkspaceAnalytics,
-            variant: "outlined",
-            title: `Workspace Analytics: ${currentWorkspace?.name}`,
-          }}
-          StartIconSlot={<ChartSvg />}
-          text="Analytics"
-        />
-      </CommonItemWrapper>
-      <CommonItemWrapper asListItems={asListItems}>
-        <PanelButton
-          polymorphicButtonProps={{
-            polymorphicVariant: PANEL_NAVIGATION_BUTTON.NEXT_LINK,
-            href: getCurrentWorkspacePaths(currentWorkspace?.id).currentWorkspaceUploadedFiles,
-            variant: "outlined",
-            title: `Workspace Uploaded Files: ${currentWorkspace?.name}`,
-          }}
-          StartIconSlot={<CloudArrowUpSvg />}
-          text="Uploaded Files"
-        />
-      </CommonItemWrapper>
+
+      {currentWorkspace && (
+        <>
+          <CommonItemWrapper asListItems={asListItems}>
+            <PanelButton
+              polymorphicButtonProps={{
+                polymorphicVariant: PANEL_NAVIGATION_BUTTON.NEXT_LINK,
+                href: getCurrentWorkspacePaths(currentWorkspace?.id).currentWorkspace,
+                variant: "outlined",
+                title: `Go to workspace: ${currentWorkspace?.name}`,
+              }}
+              StartIconSlot={<EyeSvg />}
+              text="Go to workspace"
+            />
+          </CommonItemWrapper>
+          <CommonItemWrapper asListItems={asListItems}>
+            <PanelButton
+              polymorphicButtonProps={{
+                polymorphicVariant: PANEL_NAVIGATION_BUTTON.NEXT_LINK,
+                href: getCurrentWorkspacePaths(currentWorkspace?.id).currentWorkspaceSettings,
+                variant: "outlined",
+                title: `Workspace settings: ${currentWorkspace?.name}`,
+              }}
+              StartIconSlot={<SettingsSvg />}
+              text="Workspace settings"
+            />
+          </CommonItemWrapper>
+          <CommonItemWrapper asListItems={asListItems}>
+            <PanelButton
+              polymorphicButtonProps={{
+                polymorphicVariant: PANEL_NAVIGATION_BUTTON.NEXT_LINK,
+                href: getCurrentWorkspacePaths(currentWorkspace?.id).currentWorkspaceAnalytics,
+                variant: "outlined",
+                title: `Workspace Analytics: ${currentWorkspace?.name}`,
+              }}
+              StartIconSlot={<ChartSvg />}
+              text="Analytics"
+            />
+          </CommonItemWrapper>
+          <CommonItemWrapper asListItems={asListItems}>
+            <PanelButton
+              polymorphicButtonProps={{
+                polymorphicVariant: PANEL_NAVIGATION_BUTTON.NEXT_LINK,
+                href: getCurrentWorkspacePaths(currentWorkspace?.id).currentWorkspaceUploadedFiles,
+                variant: "outlined",
+                title: `Workspace Uploaded Files: ${currentWorkspace?.name}`,
+              }}
+              StartIconSlot={<CloudArrowUpSvg />}
+              text="Uploaded Files"
+            />
+          </CommonItemWrapper>
+        </>
+      )}
     </>
   );
 }
