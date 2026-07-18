@@ -7,6 +7,7 @@ export type ApiMethod<P extends ApiPathKey> = Exclude<keyof ApiPaths[P], "parame
 export type ApiOperation<P extends ApiPathKey, M extends ApiMethod<P>> = NonNullable<ApiPaths[P][M]>;
 
 export type AccountActivationAccountActivation = ApiSchemas["accountActivation.AccountActivation"];
+export type AccountActivationActivationCodeOutput = ApiSchemas["accountActivation.ActivationCodeOutput"];
 export type AccountActivationAccountActivationInput = ApiSchemas["accountActivation.accountActivationInput"];
 export type AppErrorsAppError = ApiSchemas["appErrors.AppError"];
 export type AppErrorsFieldError = ApiSchemas["appErrors.FieldError"];
@@ -25,6 +26,11 @@ export type PostApiAccountActivationCodeActivateResponse200 = ApiPaths["/api/acc
 export type PostApiAccountActivationCodeActivateSuccessResponse = PostApiAccountActivationCodeActivateResponse200;
 export type PostApiAccountActivationCodeActivateResponse401 = ApiPaths["/api/account-activation-code/activate"]["post"]["responses"][401]["content"]["application/json"];
 export type PostApiAccountActivationCodeActivateResponse500 = ApiPaths["/api/account-activation-code/activate"]["post"]["responses"][500]["content"]["application/json"];
+
+export type PostApiAccountActivationCodeGenerateResponse200 = ApiPaths["/api/account-activation-code/generate"]["post"]["responses"][200]["content"]["application/json"];
+export type PostApiAccountActivationCodeGenerateSuccessResponse = PostApiAccountActivationCodeGenerateResponse200;
+export type PostApiAccountActivationCodeGenerateResponse401 = ApiPaths["/api/account-activation-code/generate"]["post"]["responses"][401]["content"]["application/json"];
+export type PostApiAccountActivationCodeGenerateResponse500 = ApiPaths["/api/account-activation-code/generate"]["post"]["responses"][500]["content"]["application/json"];
 
 export type GetApiAccountActivationCodeGetResponse200 = ApiPaths["/api/account-activation-code/get"]["get"]["responses"][200]["content"]["application/json"];
 export type GetApiAccountActivationCodeGetSuccessResponse = GetApiAccountActivationCodeGetResponse200;

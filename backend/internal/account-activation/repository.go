@@ -14,10 +14,10 @@ type dbInsertAccountActivationCodeInput struct {
 	ID int
 }
 
-func dbInsertAccountActivationCode(ctx context.Context, input dbInsertAccountActivationCodeInput) (string, error) {
+func dbInsertAccountActivationCode(ctx context.Context, input dbInsertAccountActivationCodeInput) (string, time.Time, error) {
 	query, err := sqlFiles.ReadFile("sql/insert_code.sql")
 	if err != nil {
-		return "", err
+		return "", time.Time{}, err
 	}
 
 	var id int
@@ -26,10 +26,10 @@ func dbInsertAccountActivationCode(ctx context.Context, input dbInsertAccountAct
 
 	err = db.Pool.QueryRow(ctx, string(query), input.ID).Scan(&id, &AccountActivationCode, &expirationTime)
 	if err != nil {
-		return "", err
+		return "", time.Time{}, err
 	}
 
-	return AccountActivationCode, nil
+	return AccountActivationCode, expirationTime, nil
 }
 
 type dbSelectAccountActivationCodeByIDOutput struct {
@@ -60,7 +60,7 @@ func dbSelectAccountActivationCodeByID(ctx context.Context, id int) (dbSelectAcc
 }
 
 func dbDropExpiredAccountActivationCodes(ctx context.Context) error {
-	query, err := sqlFiles.ReadFile("sql/delete_expired_codes.sql")
+	query, err := sqlFiles.ReadFile("sql/drop_expired_codes.sql")
 	if err != nil {
 		return err
 	}

@@ -66,6 +66,63 @@ export interface paths {
         patch?: never;
         trace?: never;
     };
+    "/api/account-activation-code/generate": {
+        parameters: {
+            query?: never;
+            header?: never;
+            path?: never;
+            cookie?: never;
+        };
+        get?: never;
+        put?: never;
+        /**
+         * Generate account activation code
+         * @description Generates a new account activation code for the currently authenticated user.
+         */
+        post: {
+            parameters: {
+                query?: never;
+                header?: never;
+                path?: never;
+                cookie?: never;
+            };
+            requestBody?: never;
+            responses: {
+                /** @description OK */
+                200: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": components["schemas"]["accountActivation.ActivationCodeOutput"];
+                    };
+                };
+                /** @description Unauthorized */
+                401: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": string;
+                    };
+                };
+                /** @description Internal server error */
+                500: {
+                    headers: {
+                        [name: string]: unknown;
+                    };
+                    content: {
+                        "application/json": string;
+                    };
+                };
+            };
+        };
+        delete?: never;
+        options?: never;
+        head?: never;
+        patch?: never;
+        trace?: never;
+    };
     "/api/account-activation-code/get": {
         parameters: {
             query?: never;
@@ -813,6 +870,9 @@ export interface components {
     schemas: {
         "accountActivation.AccountActivation": {
             code?: string;
+            expires_at?: string;
+        };
+        "accountActivation.ActivationCodeOutput": {
             expires_at?: string;
         };
         "accountActivation.accountActivationInput": {

@@ -14,6 +14,8 @@ const (
 func runCleanupPipeline(ctx context.Context) {
 	if err := DeleteAllExpiredAccountActivationCodes(ctx); err != nil {
 		log.Warn(WarnDeletingExpiredAccountActivationCodes, " ", err.Error())
+	} else {
+		log.Info("Expired account activation codes cleanup completed successfully.")
 	}
 }
 
@@ -21,6 +23,6 @@ func ExpiredAccountActivationCodesCleanupService(ctx context.Context, schedulerD
 	schedulerDependency.RegisterJob(scheduler.CallbackSchedulerInput{
 		Callback:       func() { runCleanupPipeline(ctx) },
 		Interval:       scheduler.WORKER_INTERVAL_SIX_HOURS,
-		RunImmediately: false,
+		RunImmediately: true,
 	})
 }

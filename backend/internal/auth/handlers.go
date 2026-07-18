@@ -60,7 +60,7 @@ func (handler *Handlers) registerHandler(ctx fiber.Ctx) error {
 		return mappedErr.FiberNewError()
 	}
 
-	verificationCode, err := accountActivation.GenerateAccountActivationCode(ctx.Context(), userID)
+	verificationCode, _, err := accountActivation.GenerateAccountActivationCode(ctx.Context(), userID)
 	if err != nil {
 		log.Println("Error generating activation code:", err)
 	}

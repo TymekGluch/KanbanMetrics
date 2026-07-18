@@ -8,6 +8,7 @@
 
 export * from './accountActivationAccountActivation.zod';
 export * from './accountActivationAccountActivationInput.zod';
+export * from './accountActivationActivationCodeOutput.zod';
 export * from './appErrorsAppError.zod';
 export * from './appErrorsFieldError.zod';
 export * from './appErrorsValidationErrorResponse.zod';

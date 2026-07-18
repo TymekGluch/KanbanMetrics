@@ -20,8 +20,10 @@ const (
 	errorInvalidBody                  = "Invalid request body"
 	errorUnauthorized                 = "Unauthorized"
 	warnRetrievingUserAfterActivation = "Warning retrieving user after activation:"
+	warnSendingAccountVerifiedEmail   = "Warning sending account verified email:"
 
-	successAccountActivated = "KanbanMetrics: Account activated successfully"
+	successAccountActivated      = "KanbanMetrics: Account activated successfully"
+	subjectAccountActivationCode = "KanbanMetrics: New account activation code"
 )
 
 func newHandlers(validatorService *validation.Service, mailClient *morphyxisMailClient.MailServiceClient) *handlers {
@@ -54,6 +56,48 @@ func (handler *handlers) getAccountActivationCodeHandler(ctx fiber.Ctx) error {
 	}
 }
 
+// generateAccountActivationCodeHandler godoc
+// @Summary Generate account activation code
+// @Description Generates a new account activation code for the currently authenticated user.
+// @Tags account-activation
+// @Produce json
+// @Security CookieAuth
+// @Success 200 {object} ActivationCodeOutput
+// @Failure 401 {string} string "Unauthorized"
+// @Failure 500 {string} string "Internal server error"
+// @Router /api/account-activation-code/generate [post]
+func (handler *handlers) generateAccountActivationCodeHandler(ctx fiber.Ctx) error {
+	userID, ok := ctx.Locals(globalContext.ContextUserIDKey).(uint)
+	if !ok || userID == 0 {
+		return fiber.NewError(fiber.StatusUnauthorized, errorUnauthorized)
+	}
+
+	verificationCode, expirationAt, err := GenerateAccountActivationCode(ctx, int(userID))
+	if err != nil {
+		log.Warnf("Error generating activation code: %v", err)
+		return appErrors.TranslatePostgresDbError(err).FiberNewError()
+	}
+
+	user, err := users.GetUserById(ctx, int(userID))
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	if err := (*handler.mailClient).SendAccountConfirmationEmail(ctx, morphyxisMailClient.SendAccountConfirmationEmailInput{
+		To:                  user.Email,
+		Name:                user.Name,
+		VerificationCode:    verificationCode,
+		AccountDeletionDate: expirationAt,
+		Subject:             subjectAccountActivationCode,
+	}); err != nil {
+		log.Warnf(warnSendingAccountVerifiedEmail+" %v", err)
+	}
+
+	return ctx.Status(fiber.StatusOK).JSON(ActivationCodeOutput{
+		ExpiresAt: expirationAt,
+	})
+}
+
 // activateAccountHandler godoc
 // @Summary Activate user account
 // @Description Activates the account for the currently authenticated user.
@@ -81,12 +125,20 @@ func (handler *handlers) activateAccountHandler(ctx fiber.Ctx) error {
 		return appErrors.Send(ctx, err)
 	}
 
-	var isActiveAndVerified = true
+	accountActivationData, err := GetAccountActivationCodeByUserId(ctx, int(userID))
+	if err != nil {
+		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	isValidAndNotExpired, errMessage := isActivationCodeCorrectAndNotExpired(input.Code, accountActivationData.AccountActivationCode, accountActivationData.ExpiresAt)
+	if errMessage != "" {
+		return fiber.NewError(fiber.StatusInternalServerError, errMessage)
+	}
 
 	if err := users.UpdateUser(ctx, users.UpdateUserInput{
 		ID:         int(userID),
-		IsActive:   &isActiveAndVerified,
-		IsVerified: &isActiveAndVerified,
+		IsActive:   &isValidAndNotExpired,
+		IsVerified: &isValidAndNotExpired,
 	}, false); err != nil {
 		return appErrors.TranslatePostgresDbError(err).FiberNewError()
 	}

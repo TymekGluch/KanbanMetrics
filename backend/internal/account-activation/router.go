@@ -17,4 +17,5 @@ func RegisterRoutes(app fiber.Router, validatorService *validation.Service, mail
 
 	route.Get("/get", permissionMiddleware.Require(permission.UsersReadSelf), handlers.getAccountActivationCodeHandler)
 	route.Post("/activate", permissionMiddleware.Require(permission.UsersUpdateSelf), handlers.activateAccountHandler)
+	route.Post("/generate", permissionMiddleware.Require(permission.UsersUpdateSelf), handlers.generateAccountActivationCodeHandler)
 }

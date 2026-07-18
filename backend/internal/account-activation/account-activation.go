@@ -5,18 +5,18 @@ import (
 	"time"
 )
 
-func GetAccountActivationCodeByUserId(ctx context.Context, ID int) (*AccountActivation, error) {
+func GetAccountActivationCodeByUserId(ctx context.Context, ID int) (AccountActivation, error) {
 	result, err := dbSelectAccountActivationCodeByID(ctx, ID)
 	if err != nil {
-		return nil, err
+		return AccountActivation{}, err
 	}
-	return &AccountActivation{
+	return AccountActivation{
 		AccountActivationCode: result.AccountActivationCode,
 		ExpiresAt:             result.ExpirationTime.Format(time.RFC3339),
 	}, nil
 }
 
-func GenerateAccountActivationCode(ctx context.Context, ID int) (string, error) {
+func GenerateAccountActivationCode(ctx context.Context, ID int) (string, time.Time, error) {
 	return dbInsertAccountActivationCode(ctx, dbInsertAccountActivationCodeInput{
 		ID: ID,
 	})

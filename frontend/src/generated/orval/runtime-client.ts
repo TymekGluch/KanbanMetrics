@@ -8,6 +8,7 @@
 import {
   AccountActivationAccountActivation,
   AccountActivationAccountActivationInput,
+  AccountActivationActivationCodeOutput,
   DeleteApiWorkspacesIdDelete200,
   UsersUser,
   WorkspaceListWorkspacesResult,
@@ -77,6 +78,62 @@ export const postApiAccountActivationCodeActivate = async (postApiAccountActivat
   const parsedBody = body ? JSON.parse(body) : {}
   const data = AccountActivationAccountActivationInput.parse(parsedBody)
   return { data, status: res.status, headers: res.headers } as postApiAccountActivationCodeActivateResponse
+}
+
+
+
+/**
+ * Generates a new account activation code for the currently authenticated user.
+ * @summary Generate account activation code
+ */
+export type postApiAccountActivationCodeGenerateResponse200 = {
+  data: AccountActivationActivationCodeOutput
+  status: 200
+}
+
+export type postApiAccountActivationCodeGenerateResponse401 = {
+  data: string
+  status: 401
+}
+
+export type postApiAccountActivationCodeGenerateResponse500 = {
+  data: string
+  status: 500
+}
+
+export type postApiAccountActivationCodeGenerateResponseSuccess = (postApiAccountActivationCodeGenerateResponse200) & {
+  headers: Headers;
+};
+export type postApiAccountActivationCodeGenerateResponseError = (postApiAccountActivationCodeGenerateResponse401 | postApiAccountActivationCodeGenerateResponse500) & {
+  headers: Headers;
+};
+
+export type postApiAccountActivationCodeGenerateResponse = (postApiAccountActivationCodeGenerateResponseSuccess | postApiAccountActivationCodeGenerateResponseError)
+
+export const getPostApiAccountActivationCodeGenerateUrl = () => {
+
+
+
+
+  return `http://localhost:3000/api/api/account-activation-code/generate`
+}
+
+export const postApiAccountActivationCodeGenerate = async ( options?: RequestInit): Promise<postApiAccountActivationCodeGenerateResponse> => {
+
+  const res = await fetch(getPostApiAccountActivationCodeGenerateUrl(),
+  {
+    ...options,
+    method: 'POST'
+
+
+  }
+)
+
+  const body = [204, 205, 304].includes(res.status) ? null : await res.text();
+
+  const parsedBody = body ? JSON.parse(body) : {}
+  const data = AccountActivationActivationCodeOutput.parse(parsedBody)
+  return { data, status: res.status, headers: res.headers } as postApiAccountActivationCodeGenerateResponse
 }
 
 
