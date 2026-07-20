@@ -1,0 +1,70 @@
+@use "@/styles/pxToRem.scss" as mixins;
+@use "@/styles/breakpoints.scss" as breakpoints;
+@use "@/styles/colorsTokens.scss" as colors;
+
+@keyframes iconPulse {
+  0%,
+  100% {
+    opacity: 1;
+    transform: scale(1);
+  }
+  50% {
+    opacity: 0.4;
+    transform: scale(0.88);
+  }
+}
+
+@mixin pulse-icon($color) {
+  color: $color;
+  fill: transparent;
+  animation: iconPulse 2s ease-in-out infinite;
+  transform-origin: center;
+}
+
+@mixin card {
+  display: flex;
+  flex-direction: column;
+  gap: mixins.pxToRem(16);
+  width: 100%;
+  height: fit-content;
+  padding: mixins.pxToRem(24);
+  background: colors.$color-surface-card;
+  border: solid mixins.pxToRem(1) colors.$color-border-default;
+  border-radius: mixins.pxToRem(16);
+}
+
+.accountActivationSection {
+  @include card;
+
+  &_header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    gap: mixins.pxToRem(16);
+  }
+
+  &_warningIcon {
+    width: mixins.pxToRem(24);
+    height: mixins.pxToRem(24);
+
+    @include pulse-icon(colors.$color-status-info-text);
+  }
+
+  &__mediumPriority {
+    background: colors.$color-status-warning-bg;
+    border-color: colors.$color-status-warning-border;
+  }
+
+  &__highPriority {
+    background: colors.$color-status-danger-bg;
+    border-color: colors.$color-status-danger-border;
+  }
+
+  &__mediumPriority &_warningIcon {
+    color: colors.$color-status-warning-text;
+  }
+
+  &__highPriority &_warningIcon {
+    color: colors.$color-status-danger-text;
+  }
+}

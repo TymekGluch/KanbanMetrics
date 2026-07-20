@@ -1,6 +1,8 @@
 package accountActivation
 
-import "time"
+import (
+	"time"
+)
 
 const (
 	errorInvalidActivationCode = "Activation code does not match"

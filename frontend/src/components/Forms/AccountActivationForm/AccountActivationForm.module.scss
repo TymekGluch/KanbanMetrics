@@ -1,0 +1,24 @@
+@use "@/styles/pxToRem.scss" as mixins;
+@use "@/styles/colorsTokens.scss" as colors;
+@use "@/styles/breakpoints.scss" as breakpoints;
+@use "@/styles/errors.scss" as errors;
+
+.accountActivationForm {
+  display: flex;
+  flex-direction: column;
+  gap: mixins.pxToRem(16);
+
+  &_buttonContainer {
+    display: grid;
+    gap: mixins.pxToRem(8);
+    grid-template-columns: 1fr;
+
+    @include breakpoints.md {
+      grid-template-columns: 3fr 2fr;
+    }
+  }
+
+  &_globalError {
+    @include errors.errorMessage;
+  }
+}

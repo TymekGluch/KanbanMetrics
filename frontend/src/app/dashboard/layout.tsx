@@ -1,5 +1,6 @@
 import { getUserFetch } from "@/api/getUserFetch";
 import { getWorkspacesFetch } from "@/api/getWorkspacesFetch";
+import AccountActivation from "@/components/AccountActivationCode";
 import PageLayoutPanel from "@/components/PageLayout/PageLayoutPanel";
 import { WorkspacesProvider } from "@/providers/WorkspacesProvider/WorkspacesProvider";
 import { headers } from "next/headers";
@@ -20,6 +21,7 @@ export default async function AuthLayout(props: React.PropsWithChildren) {
   return (
     <WorkspacesProvider workspaces={workspaces}>
       <PageLayoutPanel.Provider>{children}</PageLayoutPanel.Provider>
+      <AccountActivation.SessionDialog isUserVerified={user.is_verified ?? false} />
     </WorkspacesProvider>
   );
 }

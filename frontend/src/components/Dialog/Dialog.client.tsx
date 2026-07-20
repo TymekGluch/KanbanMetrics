@@ -16,6 +16,7 @@ import {
   type DialogTitleProps,
   type DialogTriggerProps,
 } from "./Dialog.types";
+import Button from "../Button";
 
 export function DialogRootComponent(props: DialogRootProps) {
   const {
@@ -132,8 +133,9 @@ export function DialogCloseComponent(props: DialogCloseProps) {
 
   return (
     <Base {...stylesProps} asChild className={clsx(styles.dialogClose, className)}>
-      <button
+      <Button.AsButton
         {...buttonProps}
+        variant="outlined"
         type={buttonProps.type ?? "button"}
         onClick={(event) => {
           onClick?.(event);
@@ -141,7 +143,7 @@ export function DialogCloseComponent(props: DialogCloseProps) {
         }}
       >
         {children}
-      </button>
+      </Button.AsButton>
     </Base>
   );
 }

@@ -11,6 +11,10 @@ import (
 	"github.com/gofiber/fiber/v3/log"
 )
 
+const (
+	notFoundActivationCodeError = "Account activation code not found for the user"
+)
+
 type handlers struct {
 	validatorService *validation.Service
 	mailClient       *morphyxisMailClient.MailServiceClient
@@ -46,12 +50,18 @@ func newHandlers(validatorService *validation.Service, mailClient *morphyxisMail
 func (handler *handlers) getAccountActivationCodeHandler(ctx fiber.Ctx) error {
 	userID, ok := ctx.Locals(globalContext.ContextUserIDKey).(uint)
 	if !ok || userID == 0 {
+		log.Warnf("Unauthorized access attempt to get account activation code")
+
 		return fiber.NewError(fiber.StatusUnauthorized, errorUnauthorized)
 	}
 
 	if accountActivationCode, err := GetAccountActivationCodeByUserId(ctx, int(userID)); err != nil {
+		log.Warnf("DATABASE: Error retrieving account activation code for user %d: %v", userID, err)
+
 		return appErrors.TranslatePostgresDbError(err).FiberNewError()
 	} else {
+		log.Infof("Successfully retrieved account activation code for user %d", userID)
+
 		return ctx.Status(fiber.StatusOK).JSON(accountActivationCode)
 	}
 }
@@ -107,6 +117,7 @@ func (handler *handlers) generateAccountActivationCodeHandler(ctx fiber.Ctx) err
 // @Param input body accountActivationInput true "Account activation payload"
 // @Success 200 {object} accountActivationInput
 // @Failure 401 {string} string "Unauthorized"
+// @Failure 404 {string} string notFoundActivationCodeError
 // @Failure 500 {string} string "Internal server error"
 // @Router /api/account-activation-code/activate [post]
 func (handler *handlers) activateAccountHandler(ctx fiber.Ctx) error {
@@ -127,7 +138,11 @@ func (handler *handlers) activateAccountHandler(ctx fiber.Ctx) error {
 
 	accountActivationData, err := GetAccountActivationCodeByUserId(ctx, int(userID))
 	if err != nil {
-		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+		if appErrors.TranslatePostgresDbError(err).FiberNewError().Message == appErrors.ErrNotFound {
+			return fiber.NewError(fiber.StatusNotFound, notFoundActivationCodeError)
+		}
+
+		return appErrors.TranslatePostgresDbError(err).FiberNewError()
 	}
 
 	isValidAndNotExpired, errMessage := isActivationCodeCorrectAndNotExpired(input.Code, accountActivationData.AccountActivationCode, accountActivationData.ExpiresAt)

@@ -9,6 +9,10 @@ import { DeleteAccountButton } from "@/components/DeleteAccountButton";
 import { AccountDetails } from "@/components/AccountDetails/AccountDetails";
 import { AccountSecurity } from "@/components/AccountSecurity/AccountSecurity";
 import { PanelNavigation } from "@/components/PanelNavigation/PanelNavigation";
+import AccountActivation from "@/components/AccountActivationCode";
+import { getUserFetch } from "@/api/getUserFetch";
+import { headers } from "next/dist/server/request/headers";
+import { getAccountActivationCodeFetch } from "@/api/getAccountActivationCodeFetch";
 
 export const metadata = {
   title: "Profile",
@@ -16,7 +20,18 @@ export const metadata = {
     "Welcome to your profile! Here you can view and edit your personal information, manage your account settings, and customize your preferences for a personalized experience.",
 };
 
-export default function ProfilePage() {
+export default async function ProfilePage() {
+  const headersList = await headers();
+
+  const [user, activationCode] = await Promise.all([
+    getUserFetch(headersList),
+    getAccountActivationCodeFetch(headersList),
+  ]);
+
+  if (!user) {
+    return null;
+  }
+
   return (
     <PageLayoutPanel.Provider>
       <PageLayoutPanel.Root>
@@ -67,6 +82,12 @@ export default function ProfilePage() {
                   }
                 />
               </section>
+
+              <AccountActivation.Section
+                key={activationCode?.expires_at}
+                user={user}
+                activationCode={activationCode}
+              />
             </div>
 
             <div className={styles.profilePageContent_column}>
