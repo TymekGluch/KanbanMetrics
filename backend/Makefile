@@ -55,6 +55,9 @@ postman-sync: postman-collection
 postman-clean:
 	rm -f $(POSTMAN_COLLECTION_FILE)
 
+.PHONY: check-vulnerabilities
+check-vulnerabilities: govulncheck ./...
+
 .PHONY: help
 help:
 	@echo "Available targets:"

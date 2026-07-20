@@ -115,8 +115,8 @@ export function CrateWorkspacePanelNavigationComponent(props: PanelButtonProps) 
     setIsConfirmOpen(true);
   };
 
-  if (!isConfirmOpen) {
-    return (
+  return (
+    <>
       <PanelButton
         polymorphicButtonProps={{
           polymorphicVariant: PANEL_NAVIGATION_BUTTON.BUTTON,
@@ -127,8 +127,8 @@ export function CrateWorkspacePanelNavigationComponent(props: PanelButtonProps) 
         text={text}
         StartIconSlot={StartIconSlot}
       />
-    );
-  }
 
-  return <CommonDialogWithForm isOpen={isConfirmOpen} onOpenChange={setIsConfirmOpen} />;
+      <CommonDialogWithForm isOpen={isConfirmOpen} onOpenChange={setIsConfirmOpen} />
+    </>
+  );
 }

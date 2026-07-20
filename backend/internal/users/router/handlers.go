@@ -5,16 +5,19 @@ import (
 	"KanbanMetrics/internal/auth"
 	"KanbanMetrics/internal/users"
 	"KanbanMetrics/internal/validation"
+	"log"
 
+	morphyxisMailClient "github.com/TymekGluch/Morphyxis-mail-service/pkg/morphyxis-mail-client"
 	"github.com/gofiber/fiber/v3"
 )
 
 type handlers struct {
 	validatorService *validation.Service
+	mailClient       *morphyxisMailClient.MailServiceClient
 }
 
-func newHandlers(validatorService *validation.Service) *handlers {
-	return &handlers{validatorService: validatorService}
+func newHandlers(validatorService *validation.Service, mailClient *morphyxisMailClient.MailServiceClient) *handlers {
+	return &handlers{validatorService: validatorService, mailClient: mailClient}
 }
 
 // deleteUserHandler godoc
@@ -33,8 +36,22 @@ func (handler *handlers) deleteUserHandler(ctx fiber.Ctx) error {
 		return fiber.NewError(fiber.StatusUnauthorized, auth.ErrorUnauthorized)
 	}
 
+	user, err := users.GetUserById(ctx, int(userID))
+	if err != nil {
+		return appErrors.TranslatePostgresDbError(err).FiberNewError()
+	}
+
 	if err := users.DeleteUser(ctx, int(userID)); err != nil {
 		return appErrors.TranslatePostgresDbError(err).FiberNewError()
+	}
+
+	if err := (*handler.mailClient).SendDeletedAccountEmail(ctx, morphyxisMailClient.SendDeletedAccountEmailInput{
+		To:      user.Email,
+		Name:    user.Name,
+		Subject: "KanbanMetrics: Your account has been deleted",
+		Reason:  "Your account has been deleted successfully due to your request.",
+	}); err != nil {
+		log.Println("Error during sending deleted account email:", err)
 	}
 
 	auth.RemoveAuthCookie(ctx)

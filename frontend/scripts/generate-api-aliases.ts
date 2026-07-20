@@ -117,7 +117,7 @@ function generateRequestBodyAliases(
 
   return contentTypes.map((contentType) => {
     const nameSuffix = isSoleContentType ? "" : buildContentTypeSuffix(contentType);
-    return `export type ${operationName}RequestBody${nameSuffix} = ApiPaths[${JSON.stringify(routePath)}][${JSON.stringify(method)}]["requestBody"]["content"][${JSON.stringify(contentType)}];`;
+    return `export type ${operationName}RequestBody${nameSuffix} = NonNullable<ApiPaths[${JSON.stringify(routePath)}][${JSON.stringify(method)}]["requestBody"]>["content"][${JSON.stringify(contentType)}];`;
   });
 }
 

@@ -1,8 +1,7 @@
 package permission
 
 import (
-	"KanbanMetrics/internal/auth"
-	"KanbanMetrics/internal/users"
+	globalContext "KanbanMetrics/internal/global-context"
 	"KanbanMetrics/internal/workspace"
 	"fmt"
 	"strings"
@@ -42,13 +41,13 @@ type StaticRolePermissionResolver struct {
 func NewStaticRolePermissionResolver() *StaticRolePermissionResolver {
 	return &StaticRolePermissionResolver{
 		permissionsByRole: map[string]map[Permission]struct{}{
-			users.APP_ROLE_USER: {
+			globalContext.APP_ROLE_USER: {
 				UsersReadSelf:   {},
 				UsersUpdateSelf: {},
 				UsersDeleteSelf: {},
 				WorkspaceCreate: {},
 			},
-			users.APP_ROLE_ADMIN: {
+			globalContext.APP_ROLE_ADMIN: {
 				UsersReadSelf:   {},
 				UsersUpdateSelf: {},
 				UsersDeleteSelf: {},
@@ -106,7 +105,7 @@ func (authorizer *RBACAuthorizer) HasPermission(role string, permission Permissi
 }
 
 func ContextUserRole(ctx fiber.Ctx) (string, error) {
-	userRole, ok := ctx.Locals(auth.ContextUserRoleKey).(string)
+	userRole, ok := ctx.Locals(globalContext.ContextUserRoleKey).(string)
 	if !ok || strings.TrimSpace(userRole) == "" {
 		return "", fmt.Errorf("missing user role in request context")
 	}
@@ -115,7 +114,7 @@ func ContextUserRole(ctx fiber.Ctx) (string, error) {
 }
 
 func ContextUserWorkspaceRole(ctx fiber.Ctx) (string, error) {
-	workspaceRole, ok := ctx.Locals(auth.ContextUserWorkspaceRoleKey).(string)
+	workspaceRole, ok := ctx.Locals(globalContext.ContextUserWorkspaceRoleKey).(string)
 	if !ok || strings.TrimSpace(workspaceRole) == "" {
 		return "", fmt.Errorf("missing workspace role in request context")
 	}
@@ -124,7 +123,7 @@ func ContextUserWorkspaceRole(ctx fiber.Ctx) (string, error) {
 }
 
 func ContextWorkspaceID(ctx fiber.Ctx) (string, error) {
-	workspaceID, ok := ctx.Locals(auth.ContextWorkspaceIDKey).(string)
+	workspaceID, ok := ctx.Locals(globalContext.ContextWorkspaceIDKey).(string)
 	if !ok || strings.TrimSpace(workspaceID) == "" {
 		return "", fmt.Errorf("missing workspace id in request context")
 	}

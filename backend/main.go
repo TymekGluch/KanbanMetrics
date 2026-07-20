@@ -2,6 +2,7 @@ package main
 
 import (
 	"KanbanMetrics/db"
+	accountActivation "KanbanMetrics/internal/account-activation"
 	"KanbanMetrics/internal/apiDocs"
 	"KanbanMetrics/internal/appConfig"
 	"KanbanMetrics/internal/router"
@@ -26,7 +27,6 @@ import (
 // @securityDefinitions.apikey CookieAuth
 // @in cookie
 // @name auth_token
-
 func main() {
 	config := appConfig.Load()
 
@@ -49,13 +49,14 @@ func main() {
 	defer worker.Stop()
 
 	users.ExpiredUnverifiedUsersCleanupService(ctx, worker, &morphyxisMailClient)
+	accountActivation.ExpiredAccountActivationCodesCleanupService(ctx, worker)
 
 	apiDocsService, err := apiDocs.NewService(config.AppURL)
 	if err != nil {
 		log.Fatal(err)
 	}
 
-	if err := router.InitializeRouter(app, validatorService, apiDocsService); err != nil {
+	if err := router.InitializeRouter(app, validatorService, apiDocsService, &morphyxisMailClient); err != nil {
 		log.Fatal(err)
 	}
 

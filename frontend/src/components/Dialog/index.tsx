@@ -22,7 +22,7 @@ export type {
   DialogTriggerProps,
 } from "./Dialog.types";
 
-type DialogAliasInterface = {
+interface DialogAliasInterface {
   Body: typeof DialogBodyComponent;
   Close: typeof DialogCloseComponent;
   Content: typeof DialogContentComponent;
@@ -32,7 +32,7 @@ type DialogAliasInterface = {
   Root: typeof DialogRootComponent;
   Title: typeof DialogTitleComponent;
   Trigger: typeof DialogTriggerComponent;
-};
+}
 
 const Dialog: DialogAliasInterface = {
   Root: DialogRootComponent,

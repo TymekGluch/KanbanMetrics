@@ -5,12 +5,13 @@ import (
 	"KanbanMetrics/internal/permission"
 	"KanbanMetrics/internal/validation"
 
+	morphyxisMailClient "github.com/TymekGluch/Morphyxis-mail-service/pkg/morphyxis-mail-client"
 	"github.com/gofiber/fiber/v3"
 )
 
-func RegisterRoutes(app fiber.Router, validatorService *validation.Service) {
+func RegisterRoutes(app fiber.Router, validatorService *validation.Service, mailClient *morphyxisMailClient.MailServiceClient) {
 	route := app.Group("/user", auth.VerifyJwtTokenMiddleware())
-	handlers := newHandlers(validatorService)
+	handlers := newHandlers(validatorService, mailClient)
 
 	authorizer := permission.NewRBACAuthorizer(permission.NewStaticRolePermissionResolver())
 	permissionMiddleware := permission.NewMiddleware(authorizer)

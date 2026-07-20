@@ -1,18 +1,24 @@
 package auth
 
 import (
+	accountActivation "KanbanMetrics/internal/account-activation"
 	"KanbanMetrics/internal/appErrors"
+	"KanbanMetrics/internal/users"
 	"KanbanMetrics/internal/validation"
+	"log"
+	"time"
 
+	morphyxisMailClient "github.com/TymekGluch/Morphyxis-mail-service/pkg/morphyxis-mail-client"
 	"github.com/gofiber/fiber/v3"
 )
 
-type handlers struct {
+type Handlers struct {
 	validatorService *validation.Service
+	mailClient       *morphyxisMailClient.MailServiceClient
 }
 
-func newHandlers(validatorService *validation.Service) *handlers {
-	return &handlers{validatorService: validatorService}
+func newHandlers(validatorService *validation.Service, mailClient *morphyxisMailClient.MailServiceClient) *Handlers {
+	return &Handlers{validatorService: validatorService, mailClient: mailClient}
 }
 
 // registerHandler godoc
@@ -27,7 +33,7 @@ func newHandlers(validatorService *validation.Service) *handlers {
 // @Failure 409 {object} appErrors.ValidationErrorResponse "Conflict"
 // @Failure 500 {string} string "Internal server error"
 // @Router /api/auth/register [post]
-func (handler *handlers) registerHandler(ctx fiber.Ctx) error {
+func (handler *Handlers) registerHandler(ctx fiber.Ctx) error {
 	var input RegisterUserInput
 
 	if err := validation.BindJSONStrict(ctx, &input); err != nil {
@@ -38,7 +44,7 @@ func (handler *handlers) registerHandler(ctx fiber.Ctx) error {
 		return appErrors.Send(ctx, err)
 	}
 
-	token, err := RegisterUser(ctx.Context(), input)
+	userID, token, err := RegisterUser(ctx.Context(), input)
 	if err != nil {
 		mappedErr := appErrors.TranslatePostgresDbError(err)
 
@@ -52,6 +58,21 @@ func (handler *handlers) registerHandler(ctx fiber.Ctx) error {
 		}
 
 		return mappedErr.FiberNewError()
+	}
+
+	verificationCode, _, err := accountActivation.GenerateAccountActivationCode(ctx.Context(), userID)
+	if err != nil {
+		log.Println("Error generating activation code:", err)
+	}
+
+	if err := (*handler.mailClient).SendAccountConfirmationEmail(ctx, morphyxisMailClient.SendAccountConfirmationEmailInput{
+		To:                  input.Email,
+		Name:                input.Name,
+		Subject:             "KanbanMetrics: Your account was created, please confirm it",
+		VerificationCode:    verificationCode,
+		AccountDeletionDate: time.Now().AddDate(0, 0, users.DefaultDeletionAfterDays),
+	}); err != nil {
+		log.Println("Error during sending account confirmation email:", err)
 	}
 
 	SetAuthCookie(ctx, token)
@@ -70,7 +91,7 @@ func (handler *handlers) registerHandler(ctx fiber.Ctx) error {
 // @Failure 400 {string} string "Invalid request"
 // @Failure 401 {object} appErrors.ValidationErrorResponse "Unauthorized"
 // @Router /api/auth/login [post]
-func (handler *handlers) loginHandler(ctx fiber.Ctx) error {
+func (handler *Handlers) loginHandler(ctx fiber.Ctx) error {
 	var input LoginUserInput
 
 	if err := validation.BindJSONStrict(ctx, &input); err != nil {
@@ -103,7 +124,7 @@ func (handler *handlers) loginHandler(ctx fiber.Ctx) error {
 // @Produce plain
 // @Success 200 {string} string "OK"
 // @Router /api/auth/logout [post]
-func (handler *handlers) logoutHandler(ctx fiber.Ctx) error {
+func (handler *Handlers) logoutHandler(ctx fiber.Ctx) error {
 	RemoveAuthCookie(ctx)
 
 	return ctx.SendStatus(fiber.StatusOK)
