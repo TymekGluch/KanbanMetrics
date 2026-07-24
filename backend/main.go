@@ -48,7 +48,7 @@ func main() {
 	worker := scheduler.InitCallbackWorker()
 	defer worker.Stop()
 
-	users.ExpiredUnverifiedUsersCleanupService(ctx, worker, &morphyxisMailClient)
+	users.ExpiredUnverifiedUsersCleanupService(ctx, worker, &morphyxisMailClient, accountActivation.GenerateAccountActivationCode)
 	accountActivation.ExpiredAccountActivationCodesCleanupService(ctx, worker)
 
 	apiDocsService, err := apiDocs.NewService(config.AppURL)

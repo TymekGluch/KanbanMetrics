@@ -45,7 +45,7 @@ export function AuthFormSuccessStatus(props: AuthFormSuccessStatusProps) {
 
       <ul className={styles.authFormSuccessStatus_options}>
         <li className={styles.authFormSuccessStatus_option}>
-          <Button.AsLink href="/dashboard" width="100%">
+          <Button.AsLink prefetch href="/dashboard" width="100%">
             Go to Dashboard
           </Button.AsLink>
         </li>
@@ -54,6 +54,7 @@ export function AuthFormSuccessStatus(props: AuthFormSuccessStatusProps) {
 
         <li className={styles.authFormSuccessStatus_option}>
           <Button.AsLink
+            prefetch
             href="/"
             width="100%"
             variant={BUTTON_VARIANTS.OUTLINED}

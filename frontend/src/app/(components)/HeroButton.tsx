@@ -11,6 +11,7 @@ export function HeroButton() {
 
   return (
     <Button.AsLink
+      prefetch
       href={href}
       width={{
         default: "100%",

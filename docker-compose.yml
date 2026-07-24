@@ -24,6 +24,25 @@ services:
     networks:
       - kanban-net
 
+  redis:
+    image: redis:8.8.0
+    restart: always
+    ports:
+      - 6379:6379
+    networks:
+      - kanban-net
+
+  redis-ui:
+    image: rediscommander/redis-commander:latest
+    ports:
+      - "82:8081"
+    environment:
+      REDIS_HOSTS: local:redis:6379
+    depends_on:
+      - redis
+    networks:
+      - kanban-net
+
 volumes:
   dbData:
 

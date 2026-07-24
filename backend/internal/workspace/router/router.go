@@ -2,6 +2,7 @@ package workspaceRouter
 
 import (
 	"KanbanMetrics/internal/auth"
+	authPermissions "KanbanMetrics/internal/auth/permissions"
 	"KanbanMetrics/internal/permission"
 	"KanbanMetrics/internal/validation"
 
@@ -20,7 +21,7 @@ func RegisterRoutes(app fiber.Router, validatorService *validation.Service) {
 	permissionMiddleware := permission.NewMiddleware(authorizer)
 
 	route.Get("/", permissionMiddleware.RequireAny(permission.WorkspaceCreate, permission.WorkspaceRead), handlers.listWorkspacesHandler)
-	route.Post("/create", permissionMiddleware.Require(permission.WorkspaceCreate), handlers.createWorkspaceHandler)
+	route.Post("/create", permissionMiddleware.Require(permission.WorkspaceCreate), authPermissions.CheckIsUserVerifiedOrCancelRequestMiddleware(), handlers.createWorkspaceHandler)
 	route.Get(
 		"/:id",
 		ValidateWorkspaceIDParam(idParam),
@@ -33,6 +34,7 @@ func RegisterRoutes(app fiber.Router, validatorService *validation.Service) {
 		ValidateWorkspaceIDParam(idParam),
 		permissionMiddleware.LoadWorkspaceRoleOrGlobal(permission.WorkspaceDelete, idParam),
 		permissionMiddleware.RequireWorkspace(permission.WorkspaceDelete),
+		authPermissions.CheckIsUserVerifiedOrCancelRequestMiddleware(),
 		handlers.deleteWorkspaceHandler,
 	)
 }

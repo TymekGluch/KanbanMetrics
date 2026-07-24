@@ -11,7 +11,7 @@ import (
 )
 
 var (
-	defaultHeaders = "Content-Type, Authorization"
+	defaultHeaders = "Content-Type, Authorization, X-Turnstile-Token"
 	defaultMethods = "GET,POST,PUT,PATCH,DELETE,OPTIONS"
 )
 

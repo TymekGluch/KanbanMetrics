@@ -30,13 +30,13 @@ export async function AccountActivationSection(props: AccountActivationSectionPr
 
   const TEXT_COLOR_BY_PRIORITY = {
     [ACCOUNT_ACTIVATION_PRIORITIES.HIGH]: COLORS.STATUS_DANGER_TEXT,
-    [ACCOUNT_ACTIVATION_PRIORITIES.MEDIUM]: COLORS.STATUS_WARNING_TEXT,
+    [ACCOUNT_ACTIVATION_PRIORITIES.MEDIUM]: COLORS.STATUS_INFO_TEXT,
     [ACCOUNT_ACTIVATION_PRIORITIES.LOW]: COLORS.TEXT_PRIMARY,
   };
 
   const SEPARATOR_COLOR_BY_PRIORITY = {
     [ACCOUNT_ACTIVATION_PRIORITIES.HIGH]: COLORS.STATUS_DANGER_BORDER,
-    [ACCOUNT_ACTIVATION_PRIORITIES.MEDIUM]: COLORS.STATUS_WARNING_BORDER,
+    [ACCOUNT_ACTIVATION_PRIORITIES.MEDIUM]: COLORS.STATUS_INFO_BORDER,
     [ACCOUNT_ACTIVATION_PRIORITIES.LOW]: COLORS.DIVIDER_SUBTLE,
   };
 
@@ -93,11 +93,7 @@ export async function AccountActivationSection(props: AccountActivationSectionPr
         as="p"
         fontSize={pxToRem(11)}
         opacity={0.9}
-        color={
-          priority === ACCOUNT_ACTIVATION_PRIORITIES.MEDIUM
-            ? COLORS.STATUS_WARNING_TEXT
-            : COLORS.STATUS_DANGER_TEXT
-        }
+        color={COLORS.STATUS_DANGER_TEXT}
         textWrap="balance"
       >
         after this period, your account will be deleted

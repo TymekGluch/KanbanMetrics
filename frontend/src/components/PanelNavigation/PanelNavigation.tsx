@@ -116,7 +116,7 @@ function CommonItems(props: PanelNavigationProps) {
 export function PanelNavigation(props: PanelNavigationProps) {
   const { asListItems = false } = props;
 
-  const { workspaces } = React.useContext(WorkspacesContext);
+  const { workspaces, currentWorkspace, setCurrentWorkspace } = React.useContext(WorkspacesContext);
   const pathName = usePathname();
   const { isWide } = React.useContext(PageLayoutPanelContext);
 
@@ -129,15 +129,6 @@ export function PanelNavigation(props: PanelNavigationProps) {
   const resolvedWorkspaceNameFromId = workspaces?.items?.find(
     (workspace) => workspace.id === resolvedWorkspaceId
   )?.name;
-
-  const [currentWorkspace, setCurrentWorkspace] = React.useState<{
-    id: string;
-    name: string;
-  }>(
-    resolvedWorkspaceId
-      ? { id: resolvedWorkspaceId, name: resolvedWorkspaceNameFromId ?? "" }
-      : { id: "", name: "" }
-  );
 
   const workspacesItems = sortedWorkspaces ?? [];
 
@@ -180,15 +171,21 @@ export function PanelNavigation(props: PanelNavigationProps) {
           isSideMenuWide={isWide}
           label="Select a workspace"
           options={options}
-          value={currentWorkspace.id}
+          value={currentWorkspace?.id}
           withSearch={options.length > 5}
           onChoose={(option) => {
-            setCurrentWorkspace({ id: option.value, name: option.label });
+            setCurrentWorkspace?.({ id: option.value, name: option.label });
           }}
         />
       </li>
 
-      <CommonItems asListItems={asListItems} currentWorkspace={currentWorkspace} />
+      <CommonItems
+        asListItems={asListItems}
+        currentWorkspace={{
+          id: currentWorkspace?.id ?? resolvedWorkspaceId ?? "",
+          name: currentWorkspace?.name ?? resolvedWorkspaceNameFromId ?? "",
+        }}
+      />
     </>
   );
 }

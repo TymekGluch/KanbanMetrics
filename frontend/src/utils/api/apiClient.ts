@@ -164,6 +164,14 @@ export class ApiClient {
     }
   }
 
+  appendHeaders(headers: Record<string, string>): this {
+    this.config.defaultHeaders = {
+      ...this.config.defaultHeaders,
+      ...headers,
+    };
+    return this;
+  }
+
   async get<T, B extends Record<string, unknown> | undefined = undefined>(
     endpoint: string,
     body?: B,

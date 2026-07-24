@@ -103,6 +103,7 @@ export function PageLayoutPanelSideNavigationComponent(props: React.PropsWithChi
         </Button.AsButton>
 
         <Button.AsLink
+          prefetch
           href="/"
           variant="outlined"
           className={clsx(styles.pageLayoutPanelSideNavigation_button, {
@@ -124,6 +125,7 @@ export function PageLayoutPanelSideNavigationComponent(props: React.PropsWithChi
       >
         <div className={styles.pageLayoutPanelSideNavigation_footer}>
           <Button.AsLink
+            prefetch
             href="/dashboard/profile"
             className={clsx(styles.pageLayoutPanelSideNavigation_button, {
               [styles.pageLayoutPanelSideNavigation_button__active]: !isNavigationHidden,

@@ -63,6 +63,7 @@ export function RootCommonDrawerContent(props: React.PropsWithChildren) {
           {children}
 
           <Button.AsLink
+            prefetch
             href="/dashboard/profile"
             StartIconSlot={
               <IrregularAvatar

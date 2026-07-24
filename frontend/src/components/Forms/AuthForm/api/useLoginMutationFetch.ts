@@ -10,6 +10,10 @@ import { refreshServerFetchAction } from "@/actions/refreshServerFetch";
 import { nextFetchTags } from "@/nextFetchTags";
 import { useRouter } from "next/navigation";
 
+interface Payload extends PostApiAuthLoginRequestBody {
+  turnstileToken: string;
+}
+
 const apiClient = new ApiClient({
   baseURL: process.env.NEXT_PUBLIC_API_BASE_URL,
 }).CompleteCredentialsForRestrictedRoutes();
@@ -17,13 +21,19 @@ const apiClient = new ApiClient({
 export function useLoginMutationFetch() {
   const router = useRouter();
 
-  return useMutation<PostApiAuthLoginSuccessResponse, ApiError, PostApiAuthLoginRequestBody>({
+  return useMutation<PostApiAuthLoginSuccessResponse, ApiError, Payload>({
     mutationKey: ["auth", "login"],
     mutationFn: async (payload) => {
-      const response = await apiClient.post<
-        PostApiAuthLoginSuccessResponse,
-        PostApiAuthLoginRequestBody
-      >("/api/auth/login", payload);
+      const { turnstileToken, ...body } = payload;
+
+      apiClient.appendHeaders({
+        "X-Turnstile-Token": turnstileToken,
+      });
+
+      const response = await apiClient.post<PostApiAuthLoginSuccessResponse, typeof body>(
+        "/api/auth/login",
+        body
+      );
 
       return response.data;
     },

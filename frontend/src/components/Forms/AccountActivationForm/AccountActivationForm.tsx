@@ -9,6 +9,7 @@ import { Base } from "@/components/Base/Base";
 import styles from "./AccountActivationForm.module.scss";
 import { pxToRem } from "@/utils/pxToRem";
 import { COLORS } from "@/theme/theme.constants";
+import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
 
 interface AccountActivationFormProps {
   expirationAt?: Date;
@@ -28,12 +29,22 @@ export function AccountActivationForm(props: AccountActivationFormProps) {
     restTime
   );
 
+  const turnstileRef = React.useRef<TurnstileInstance>(null);
+
+  const resetTurnstile = React.useCallback(() => {
+    turnstileRef.current?.reset();
+  }, []);
+
   const generateNewCodeMutation = useGenerateNewCodeMutationFetch();
 
-  const { form, handleSubmit, isPending } = useAccountActivationForm();
+  const { form, handleSubmit, isPending } = useAccountActivationForm({ onSettled: resetTurnstile });
 
   const globalErrorMessage = form.formState.errors.root?.server?.message;
   const shouldRenderCounter = restTimeInMilliseconds !== null && restTimeInMilliseconds > 0;
+
+  const handleTurnstileVerificationSuccess = (token: string) => {
+    form.setValue("turnstileToken", token);
+  };
 
   React.useEffect(
     function setCounter() {
@@ -66,8 +77,29 @@ export function AccountActivationForm(props: AccountActivationFormProps) {
         {...form.register("code")}
         disabled={isPending || generateNewCodeMutation.isPending}
         invalid={Boolean(form.formState.errors.code)}
+        marginTop={pxToRem(16)}
         label="Activation Code"
         error={form.formState.errors.code?.message}
+      />
+
+      <Turnstile
+        ref={turnstileRef}
+        className={styles.accountActivationForm_turnstile}
+        siteKey={process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY!}
+        onSuccess={handleTurnstileVerificationSuccess}
+        onError={(error) => {
+          form.setError("turnstileToken", {
+            message: error,
+          });
+        }}
+        options={{
+          theme: "light",
+          size: "flexible",
+          refreshExpired: "auto",
+          refreshTimeout: "auto",
+          appearance: "interaction-only",
+          language: "en",
+        }}
       />
 
       <div className={styles.accountActivationForm_buttonContainer}>
@@ -82,8 +114,15 @@ export function AccountActivationForm(props: AccountActivationFormProps) {
           type="button"
           variant="outlined"
           width="100%"
-          disabled={isPending || generateNewCodeMutation.isPending}
-          onClick={() => generateNewCodeMutation.mutate()}
+          disabled={
+            isPending || generateNewCodeMutation.isPending || !!form.formState.errors.turnstileToken
+          }
+          onClick={() =>
+            generateNewCodeMutation.mutate(
+              { turnstileToken: form.getValues("turnstileToken") },
+              { onSettled: resetTurnstile }
+            )
+          }
         >
           Generate New Code
         </Button.AsButton>
@@ -91,6 +130,13 @@ export function AccountActivationForm(props: AccountActivationFormProps) {
 
       {globalErrorMessage && (
         <p className={styles.accountActivationForm_globalError}>{globalErrorMessage}</p>
+      )}
+
+      {form.formState.errors.turnstileToken && (
+        <p className={styles.accountActivationForm_globalError}>
+          reCAPTCHA verification failed. Maybe you are a robot. If you are not a robot, please try
+          again.
+        </p>
       )}
     </form>
   );

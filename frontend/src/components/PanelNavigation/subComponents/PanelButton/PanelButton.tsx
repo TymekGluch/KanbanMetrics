@@ -112,6 +112,7 @@ export function PanelButton(props: PanelButtonProps) {
         >
           <Button.AsLink
             {...nextLinkProps}
+            prefetch
             className={clsx(styles.panelButton, nextLinkProps.className, {
               [styles.panelButton__isOutlined]: isOutlined,
               [styles.panelButton__active]: !isNavigationHidden,

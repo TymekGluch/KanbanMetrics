@@ -40,5 +40,5 @@
   "[css]": {
     "editor.defaultFormatter": "esbenp.prettier-vscode"
   },
-  "cSpell.words": ["Warnf"]
+  "cSpell.words": ["Infof", "Warnf"]
 }

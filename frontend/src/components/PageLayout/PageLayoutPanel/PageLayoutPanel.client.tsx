@@ -183,6 +183,7 @@ export function HeaderComponent(props: React.PropsWithChildren) {
           Fallback={
             <nav className={styles.pageLayoutPanelHeader_navigation}>
               <Button.AsLink
+                prefetch
                 href="/dashboard/profile"
                 className={styles.pageLayoutPanelHeader_button}
                 variant="outlined"

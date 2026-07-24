@@ -26,6 +26,7 @@ export function UserIndicator() {
       <ul className={styles.userIndicator}>
         <li>
           <Button.AsLink
+            prefetch
             className={styles.userIndicator_smallButton}
             href="/auth/login"
             variant="outlined"
@@ -35,7 +36,11 @@ export function UserIndicator() {
         </li>
 
         <li>
-          <Button.AsLink className={styles.userIndicator_smallButton} href="/auth/register">
+          <Button.AsLink
+            prefetch
+            className={styles.userIndicator_smallButton}
+            href="/auth/register"
+          >
             Register
           </Button.AsLink>
         </li>
@@ -86,6 +91,7 @@ export function UserIndicator() {
       </li>
       <li>
         <Button.AsLink
+          prefetch
           href="/dashboard"
           variant="outlined"
           className={styles.userIndicator_smallButton}
