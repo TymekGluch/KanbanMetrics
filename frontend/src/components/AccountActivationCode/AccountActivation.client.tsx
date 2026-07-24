@@ -38,7 +38,7 @@ export function AccountActivationSessionDialog(props: AccountActivationSessionDi
           </Dialog.Header>
 
           <Dialog.Footer>
-            <Button.AsLink href="/dashboard/profile" width="100%" marginTop={pxToRem(24)}>
+            <Button.AsLink prefetch href="/dashboard/profile" width="100%" marginTop={pxToRem(24)}>
               Go to Profile Page
             </Button.AsLink>
           </Dialog.Footer>

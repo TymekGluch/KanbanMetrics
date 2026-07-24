@@ -10,6 +10,7 @@ import React from "react";
 import { UserContext } from "@/providers/UserProvider/UserProvider";
 import Link from "@/components/Link";
 import { AuthFormSuccessStatus } from "./AuthFormSuccessStatus/AuthFormSuccessStatus";
+import { Turnstile, type TurnstileInstance } from "@marsidev/react-turnstile";
 
 interface AuthFormProps {
   variant: ValueOf<typeof AUTH_FORM_VARIANTS>;
@@ -19,10 +20,23 @@ export function AuthForm(props: AuthFormProps) {
   const { variant } = props;
 
   const user = React.useContext(UserContext);
-  const { form, handleSubmit, isPending, isLoginVariant } = useAuthForm(variant);
+
+  const turnstileRef = React.useRef<TurnstileInstance>(null);
+
+  const resetTurnstile = React.useCallback(() => {
+    turnstileRef.current?.reset();
+  }, []);
+
+  const { form, handleSubmit, isPending, isLoginVariant } = useAuthForm(variant, {
+    onSettled: resetTurnstile,
+  });
 
   const { errors } = form.formState;
   const globalErrorMessage = errors.root?.server?.message;
+
+  const handleTurnstileVerificationSuccess = (token: string) => {
+    form.setValue("turnstileToken", token);
+  };
 
   if (!!user) {
     return <AuthFormSuccessStatus user={user} isFromLogin={isLoginVariant} />;
@@ -67,11 +81,38 @@ export function AuthForm(props: AuthFormProps) {
           />
         )}
 
-        <Button.AsButton type="submit" disabled={isPending} width="100%">
+        <Turnstile
+          ref={turnstileRef}
+          className={styles.accountActivationForm_turnstile}
+          siteKey={process.env.NEXT_PUBLIC_CLOUDFLARE_TURNSTILE_SITE_KEY!}
+          onSuccess={handleTurnstileVerificationSuccess}
+          onError={(error) => {
+            form.setError("turnstileToken", {
+              message: error,
+            });
+          }}
+          options={{
+            theme: "light",
+            size: "flexible",
+            refreshExpired: "auto",
+            refreshTimeout: "auto",
+            appearance: "interaction-only",
+            language: "en",
+          }}
+        />
+
+        <Button.AsButton type="submit" disabled={isPending || !!errors.turnstileToken} width="100%">
           Submit
         </Button.AsButton>
 
         {globalErrorMessage && <p className={styles.authForm_globalError}>{globalErrorMessage}</p>}
+
+        {errors.turnstileToken && (
+          <p className={styles.authForm_globalError}>
+            reCAPTCHA verification failed. Maybe you are a robot. If you are not a robot, please try
+            again.
+          </p>
+        )}
       </Form>
 
       <div className={styles.authForm_options}>

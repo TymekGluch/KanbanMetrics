@@ -13,6 +13,7 @@ import (
 
 const (
 	notFoundActivationCodeError = "Account activation code not found for the user"
+	activationCodeExpiredError  = "Activation code has expired or never existed for the user, please generate a new one"
 )
 
 type handlers struct {
@@ -21,8 +22,10 @@ type handlers struct {
 }
 
 const (
-	errorInvalidBody                  = "Invalid request body"
-	errorUnauthorized                 = "Unauthorized"
+	errorInvalidBody     = "Invalid request body"
+	errorUnauthorized    = "Unauthorized"
+	errorCodeAlreadyUsed = "Activation code has already been used"
+
 	warnRetrievingUserAfterActivation = "Warning retrieving user after activation:"
 	warnSendingAccountVerifiedEmail   = "Warning sending account verified email:"
 
@@ -45,6 +48,7 @@ func newHandlers(validatorService *validation.Service, mailClient *morphyxisMail
 // @Security CookieAuth
 // @Success 200 {object} AccountActivation
 // @Failure 401 {string} string "Unauthorized"
+// @Failure 404 {string} string activationCodeExpiredError
 // @Failure 500 {string} string "Internal server error"
 // @Router /api/account-activation-code/get [get]
 func (handler *handlers) getAccountActivationCodeHandler(ctx fiber.Ctx) error {
@@ -56,6 +60,12 @@ func (handler *handlers) getAccountActivationCodeHandler(ctx fiber.Ctx) error {
 	}
 
 	if accountActivationCode, err := GetAccountActivationCodeByUserId(ctx, int(userID)); err != nil {
+		if appErrors.TranslatePostgresDbError(err).FiberNewError().Message == appErrors.ErrNotFound {
+			log.Warnf("Account activation code not found for user %d", userID)
+
+			return fiber.NewError(fiber.StatusNotFound, activationCodeExpiredError)
+		}
+
 		log.Warnf("DATABASE: Error retrieving account activation code for user %d: %v", userID, err)
 
 		return appErrors.TranslatePostgresDbError(err).FiberNewError()
@@ -116,6 +126,7 @@ func (handler *handlers) generateAccountActivationCodeHandler(ctx fiber.Ctx) err
 // @Security CookieAuth
 // @Param input body accountActivationInput true "Account activation payload"
 // @Success 200 {object} accountActivationInput
+// @Failure 400 {string} string "Invalid request body"
 // @Failure 401 {string} string "Unauthorized"
 // @Failure 404 {string} string notFoundActivationCodeError
 // @Failure 500 {string} string "Internal server error"
@@ -143,6 +154,10 @@ func (handler *handlers) activateAccountHandler(ctx fiber.Ctx) error {
 		}
 
 		return appErrors.TranslatePostgresDbError(err).FiberNewError()
+	}
+
+	if accountActivationData.IsUsed {
+		return fiber.NewError(fiber.StatusBadRequest, errorCodeAlreadyUsed)
 	}
 
 	isValidAndNotExpired, errMessage := isActivationCodeCorrectAndNotExpired(input.Code, accountActivationData.AccountActivationCode, accountActivationData.ExpiresAt)

@@ -25,10 +25,12 @@ export const authFormSchema = z.discriminatedUnion("variant", [
   AuthLoginUserInput.extend({
     password: passwordSchema,
     variant: z.literal(AUTH_FORM_VARIANTS.LOGIN),
+    turnstileToken: z.string().min(1, { message: "Turnstile verification is required." }),
   }),
   AuthRegisterUserInput.extend({
     password: passwordSchema,
     variant: z.literal(AUTH_FORM_VARIANTS.REGISTER),
+    turnstileToken: z.string().min(1, { message: "Turnstile verification is required." }),
   }),
 ]);
 

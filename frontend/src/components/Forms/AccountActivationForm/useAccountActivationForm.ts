@@ -12,7 +12,11 @@ const fieldNameMap = {
   global: GLOBAL_SERVER_FIELD,
 } as const;
 
-export function useAccountActivationForm() {
+interface UseAccountActivationFormOptions {
+  onSettled?: () => void;
+}
+
+export function useAccountActivationForm(options?: UseAccountActivationFormOptions) {
   const activationCodeActivateMutation = useActiveAccountFetch();
 
   const form = useForm({
@@ -30,6 +34,8 @@ export function useAccountActivationForm() {
           fieldNameMap,
           setError: form.setError,
         });
+      } finally {
+        options?.onSettled?.();
       }
     }
   );

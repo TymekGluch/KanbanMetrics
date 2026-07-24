@@ -7,8 +7,8 @@ import { headers } from "next/headers";
 import { redirect } from "next/navigation";
 import type React from "react";
 
-export default async function AuthLayout(props: React.PropsWithChildren) {
-  const { children } = props;
+export default async function AuthLayout(props: Promise<React.PropsWithChildren>) {
+  const { children } = await props;
 
   const headersList = await headers();
   const user = await getUserFetch(headersList);

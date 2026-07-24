@@ -23,8 +23,9 @@ func dbInsertAccountActivationCode(ctx context.Context, input dbInsertAccountAct
 	var id int
 	var AccountActivationCode string
 	var expirationTime time.Time
+	var isUsed bool
 
-	err = db.Pool.QueryRow(ctx, string(query), input.ID).Scan(&id, &AccountActivationCode, &expirationTime)
+	err = db.Pool.QueryRow(ctx, string(query), input.ID).Scan(&id, &AccountActivationCode, &expirationTime, &isUsed)
 	if err != nil {
 		return "", time.Time{}, err
 	}
@@ -36,6 +37,7 @@ type dbSelectAccountActivationCodeByIDOutput struct {
 	ID                    int
 	AccountActivationCode string
 	ExpirationTime        time.Time
+	IsUsed                bool
 }
 
 func dbSelectAccountActivationCodeByID(ctx context.Context, id int) (dbSelectAccountActivationCodeByIDOutput, error) {
@@ -46,8 +48,9 @@ func dbSelectAccountActivationCodeByID(ctx context.Context, id int) (dbSelectAcc
 
 	var AccountActivationCode string
 	var expirationTime time.Time
+	var isUsed bool
 
-	err = db.Pool.QueryRow(ctx, string(query), id).Scan(&id, &AccountActivationCode, &expirationTime)
+	err = db.Pool.QueryRow(ctx, string(query), id).Scan(&id, &AccountActivationCode, &expirationTime, &isUsed)
 	if err != nil {
 		return dbSelectAccountActivationCodeByIDOutput{}, err
 	}
@@ -56,6 +59,7 @@ func dbSelectAccountActivationCodeByID(ctx context.Context, id int) (dbSelectAcc
 		ID:                    id,
 		AccountActivationCode: AccountActivationCode,
 		ExpirationTime:        expirationTime,
+		IsUsed:                isUsed,
 	}, nil
 }
 

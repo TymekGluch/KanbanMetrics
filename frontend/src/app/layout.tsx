@@ -7,6 +7,7 @@ import { Inter } from "next/font/google";
 import { headers } from "next/headers";
 import "./globals.scss";
 import styles from "./layout.module.scss";
+
 const inter = Inter({
   variable: "--font-inter",
   subsets: ["latin"],

@@ -6,19 +6,25 @@
 .accountActivationForm {
   display: flex;
   flex-direction: column;
-  gap: mixins.pxToRem(16);
 
   &_buttonContainer {
     display: grid;
     gap: mixins.pxToRem(8);
     grid-template-columns: 1fr;
+    margin-bottom: mixins.pxToRem(8);
 
     @include breakpoints.md {
       grid-template-columns: 3fr 2fr;
     }
   }
 
+  &_turnstile {
+    margin-block: mixins.pxToRem(16);
+  }
+
   &_globalError {
+    margin-block: mixins.pxToRem(8);
+
     @include errors.errorMessage;
   }
 }

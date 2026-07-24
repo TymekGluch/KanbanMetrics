@@ -18,7 +18,11 @@ const fieldNameMap = {
   global: GLOBAL_SERVER_FIELD,
 } as const;
 
-export function useAuthForm(variant: AuthFormVariant) {
+interface UseAuthFormOptions {
+  onSettled?: () => void;
+}
+
+export function useAuthForm(variant: AuthFormVariant, options?: UseAuthFormOptions) {
   const loginMutation = useLoginMutationFetch();
   const registerMutation = useRegisterMutationFetch();
 
@@ -40,6 +44,7 @@ export function useAuthForm(variant: AuthFormVariant) {
         await loginMutation.mutateAsync({
           email: data.email,
           password: data.password,
+          turnstileToken: data.turnstileToken,
         });
 
         return;
@@ -49,6 +54,7 @@ export function useAuthForm(variant: AuthFormVariant) {
         name: data.name,
         email: data.email,
         password: data.password,
+        turnstileToken: data.turnstileToken,
       });
     } catch (error) {
       mapBackendErrorsToForm<AuthFormSchemaType>({
@@ -57,6 +63,8 @@ export function useAuthForm(variant: AuthFormVariant) {
         fieldNameMap,
         setError: form.setError,
       });
+    } finally {
+      options?.onSettled?.();
     }
   });
 

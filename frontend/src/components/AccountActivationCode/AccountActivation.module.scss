@@ -51,8 +51,8 @@
   }
 
   &__mediumPriority {
-    background: colors.$color-status-warning-bg;
-    border-color: colors.$color-status-warning-border;
+    background: colors.$color-status-info-bg;
+    border-color: colors.$color-status-info-border;
   }
 
   &__highPriority {
@@ -61,7 +61,7 @@
   }
 
   &__mediumPriority &_warningIcon {
-    color: colors.$color-status-warning-text;
+    color: colors.$color-status-info-text;
   }
 
   &__highPriority &_warningIcon {

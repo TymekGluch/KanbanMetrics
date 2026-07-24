@@ -5,6 +5,7 @@ import "time"
 type AccountActivation struct {
 	AccountActivationCode string `json:"code"`
 	ExpiresAt             string `json:"expires_at"`
+	IsUsed                bool   `json:"is_used"`
 }
 
 type accountActivationInput struct {

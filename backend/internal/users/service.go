@@ -5,16 +5,19 @@ import (
 	"context"
 	"fmt"
 	"log"
+	"time"
 
 	morphyxisMailClient "github.com/TymekGluch/Morphyxis-mail-service/pkg/morphyxis-mail-client"
 )
+
+type GenerateActivationCodeFunc func(ctx context.Context, userID int) (string, time.Time, error)
 
 const (
 	DefaultDeletionAfterDays              = 12
 	defaultNotificationBeforeDeletionDays = 3
 )
 
-func runCleanupPipeline(ctx context.Context, mailClient *morphyxisMailClient.MailServiceClient) {
+func runCleanupPipeline(ctx context.Context, mailClient *morphyxisMailClient.MailServiceClient, generateActivationCode GenerateActivationCodeFunc) {
 	config := getUserLifeCycleConfig(getUserLifeCycleConfigInput{
 		deletionAfterDays:              DefaultDeletionAfterDays,
 		notificationBeforeDeletionDays: defaultNotificationBeforeDeletionDays,
@@ -52,13 +55,16 @@ func runCleanupPipeline(ctx context.Context, mailClient *morphyxisMailClient.Mai
 			IsAccountExpirationDetailsSend: &isDetailsSend,
 		}, false)
 
-		fmt.Printf("check")
+		code, _, err := generateActivationCode(ctx, user.ID)
+		if err != nil {
+			log.Fatal(err)
+		}
 
-		err := (*mailClient).SendAccountConfirmationEmail(ctx, morphyxisMailClient.SendAccountConfirmationEmailInput{
+		err = (*mailClient).SendAccountConfirmationEmail(ctx, morphyxisMailClient.SendAccountConfirmationEmailInput{
 			To:                  user.Email,
 			Name:                user.Name,
-			Subject:             "Account Expiration Details",
-			VerificationCode:    "213721",
+			Subject:             "KanbanMetrics: Your account will be deleted soon, please confirm your account",
+			VerificationCode:    code,
 			AccountDeletionDate: user.CreatedAt.AddDate(0, 0, DefaultDeletionAfterDays),
 		})
 		if err != nil {
@@ -69,9 +75,9 @@ func runCleanupPipeline(ctx context.Context, mailClient *morphyxisMailClient.Mai
 	}
 }
 
-func ExpiredUnverifiedUsersCleanupService(ctx context.Context, schedulerDependency *scheduler.Worker, mailClient *morphyxisMailClient.MailServiceClient) {
+func ExpiredUnverifiedUsersCleanupService(ctx context.Context, schedulerDependency *scheduler.Worker, mailClient *morphyxisMailClient.MailServiceClient, generateActivationCode GenerateActivationCodeFunc) {
 	schedulerDependency.RegisterJob(scheduler.CallbackSchedulerInput{
-		Callback:       func() { runCleanupPipeline(ctx, mailClient) },
+		Callback:       func() { runCleanupPipeline(ctx, mailClient, generateActivationCode) },
 		Interval:       scheduler.WORKER_INTERVAL_SIX_HOURS,
 		RunImmediately: true,
 	})
