@@ -1,7 +1,6 @@
 "use client";
 
 import { ChartSvg } from "@/assets/ChartSvg";
-import { CloudArrowUpSvg } from "@/assets/CloadArrowUp";
 import { EyeSvg } from "@/assets/EyeSvg";
 import { PlusSvg } from "@/assets/PlusSvg";
 import { PuzzleSvg } from "@/assets/PuzzleSvg";
@@ -18,6 +17,10 @@ import { getCurrentWorkspacePaths, sortWorkspaces } from "./PanelNavigation.util
 import { NavigationSelect } from "./subComponents/NavigationSelect/NavigationSelect";
 import { PanelButton } from "./subComponents/PanelButton/PanelButton";
 import { PANEL_NAVIGATION_BUTTON } from "./subComponents/PanelButton/PanelButton.constants";
+import { Separator } from "../Separator/Separator";
+import { pxToRem } from "@/utils/pxToRem";
+import { useResponsiveProp } from "@/responsive/hooks/useResponsive";
+import { CloudArrowUpSvg } from "@/assets/CloadArrowUp";
 
 interface PanelNavigationProps {
   asListItems?: boolean;
@@ -44,19 +47,6 @@ function CommonItems(props: PanelNavigationProps) {
 
   return (
     <>
-      <CommonItemWrapper asListItems={asListItems}>
-        <PanelButton
-          polymorphicButtonProps={{
-            polymorphicVariant: PANEL_NAVIGATION_BUTTON.NEXT_LINK,
-            href: "/dashboard",
-            variant: "outlined",
-            title: "Overview",
-          }}
-          StartIconSlot={<PuzzleSvg />}
-          text="Overview"
-        />
-      </CommonItemWrapper>
-
       {currentWorkspace && (
         <>
           <CommonItemWrapper asListItems={asListItems}>
@@ -69,18 +59,6 @@ function CommonItems(props: PanelNavigationProps) {
               }}
               StartIconSlot={<EyeSvg />}
               text="Go to workspace"
-            />
-          </CommonItemWrapper>
-          <CommonItemWrapper asListItems={asListItems}>
-            <PanelButton
-              polymorphicButtonProps={{
-                polymorphicVariant: PANEL_NAVIGATION_BUTTON.NEXT_LINK,
-                href: getCurrentWorkspacePaths(currentWorkspace?.id).currentWorkspaceSettings,
-                variant: "outlined",
-                title: `Workspace settings: ${currentWorkspace?.name}`,
-              }}
-              StartIconSlot={<SettingsSvg />}
-              text="Workspace settings"
             />
           </CommonItemWrapper>
           <CommonItemWrapper asListItems={asListItems}>
@@ -107,6 +85,29 @@ function CommonItems(props: PanelNavigationProps) {
               text="Uploaded Files"
             />
           </CommonItemWrapper>
+
+          <CommonItemWrapper asListItems={asListItems}>
+            <Separator
+              marginY={pxToRem(8)}
+              width={{
+                default: "80%",
+                md: "100%",
+              }}
+            />
+          </CommonItemWrapper>
+
+          <CommonItemWrapper asListItems={asListItems}>
+            <PanelButton
+              polymorphicButtonProps={{
+                polymorphicVariant: PANEL_NAVIGATION_BUTTON.NEXT_LINK,
+                href: getCurrentWorkspacePaths(currentWorkspace?.id).currentWorkspaceSettings,
+                variant: "outlined",
+                title: `Workspace settings: ${currentWorkspace?.name}`,
+              }}
+              StartIconSlot={<SettingsSvg />}
+              text="Workspace settings"
+            />
+          </CommonItemWrapper>
         </>
       )}
     </>
@@ -119,6 +120,11 @@ export function PanelNavigation(props: PanelNavigationProps) {
   const { workspaces, currentWorkspace, setCurrentWorkspace } = React.useContext(WorkspacesContext);
   const pathName = usePathname();
   const { isWide } = React.useContext(PageLayoutPanelContext);
+
+  const shouldDisplayWorkspace = useResponsiveProp({
+    default: false,
+    md: true,
+  });
 
   const sortedWorkspaces = sortWorkspaces(workspaces?.items ?? []);
   const resolvedWorkspaceId =
@@ -154,7 +160,30 @@ export function PanelNavigation(props: PanelNavigationProps) {
     return (
       <>
         {asListItems ? (
-          <li className={styles.panelNavigation_item}>{createWorkspaceItem}</li>
+          <>
+            <li className={styles.panelNavigation_item}>
+              <PanelButton
+                polymorphicButtonProps={{
+                  polymorphicVariant: PANEL_NAVIGATION_BUTTON.NEXT_LINK,
+                  href: "/dashboard",
+                  variant: "outlined",
+                  title: "Overview",
+                }}
+                StartIconSlot={<PuzzleSvg />}
+                text="Overview"
+              />
+            </li>
+
+            {shouldDisplayWorkspace && (
+              <>
+                <li className={styles.panelNavigation_item}>
+                  <Separator marginY={pxToRem(8)} />
+                </li>
+
+                <li className={styles.panelNavigation_item}>{createWorkspaceItem}</li>
+              </>
+            )}
+          </>
         ) : (
           createWorkspaceItem
         )}
@@ -167,17 +196,38 @@ export function PanelNavigation(props: PanelNavigationProps) {
   return (
     <>
       <li className={styles.panelNavigation_item}>
-        <NavigationSelect
-          isSideMenuWide={isWide}
-          label="Select a workspace"
-          options={options}
-          value={currentWorkspace?.id}
-          withSearch={options.length > 5}
-          onChoose={(option) => {
-            setCurrentWorkspace?.({ id: option.value, name: option.label });
+        <PanelButton
+          polymorphicButtonProps={{
+            polymorphicVariant: PANEL_NAVIGATION_BUTTON.NEXT_LINK,
+            href: "/dashboard",
+            variant: "outlined",
+            title: "Overview",
           }}
+          StartIconSlot={<PuzzleSvg />}
+          text="Overview"
         />
       </li>
+
+      {shouldDisplayWorkspace && (
+        <>
+          <li className={styles.panelNavigation_item}>
+            <Separator marginY={pxToRem(8)} />
+          </li>
+
+          <li className={styles.panelNavigation_item}>
+            <NavigationSelect
+              isSideMenuWide={isWide}
+              label="Select a workspace"
+              options={options}
+              value={currentWorkspace?.id}
+              withSearch={options.length > 5}
+              onChoose={(option) => {
+                setCurrentWorkspace?.({ id: option.value, name: option.label });
+              }}
+            />
+          </li>
+        </>
+      )}
 
       <CommonItems
         asListItems={asListItems}

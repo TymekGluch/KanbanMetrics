@@ -29,6 +29,9 @@ services:
     restart: always
     ports:
       - 6379:6379
+    command: redis-server --requirepass devpassword
+    volumes:
+      - redisData:/var/lib/redis/data
     networks:
       - kanban-net
 
@@ -37,7 +40,7 @@ services:
     ports:
       - "82:8081"
     environment:
-      REDIS_HOSTS: local:redis:6379
+      REDIS_HOSTS: "local:redis:6379:0:devpassword:kanban"
     depends_on:
       - redis
     networks:
@@ -45,6 +48,7 @@ services:
 
 volumes:
   dbData:
+  redisData:
 
 networks:
   kanban-net:
