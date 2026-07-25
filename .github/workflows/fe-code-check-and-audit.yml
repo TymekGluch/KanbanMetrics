@@ -28,7 +28,7 @@ jobs:
         with:
           version: ${{ env.PNPM_VERSION }}
           cache: pnpm
-          cache-dependency-path: frontend/pnpm-lock.yaml
+          cache_dependency_path: frontend/pnpm-lock.yaml
 
       - name: install and build
         run: |
@@ -48,7 +48,7 @@ jobs:
         with:
           version: ${{ env.PNPM_VERSION }}
           cache: pnpm
-          cache-dependency-path: frontend/pnpm-lock.yaml
+          cache_dependency_path: frontend/pnpm-lock.yaml
 
       - name: run vulnerability audit
         run: pnpm audit --audit-level high
