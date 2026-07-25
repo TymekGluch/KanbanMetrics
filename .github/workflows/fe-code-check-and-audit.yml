@@ -12,7 +12,6 @@ defaults:
     working-directory: frontend
 
 env:
-  NODE_VERSION: "26.5.0"
   PNPM_VERSION: "11.17.0"
 
 jobs:
@@ -27,12 +26,12 @@ jobs:
         uses: pnpm/action-setup@v6
         with:
           version: ${{ env.PNPM_VERSION }}
-          cache: pnpm
+          cache: true
           cache_dependency_path: frontend/pnpm-lock.yaml
 
       - name: install and build
         run: |
-          pnpm ci
+          pnpm install --frozen-lockfile
           pnpm build
 
   audit:
@@ -47,7 +46,7 @@ jobs:
         uses: pnpm/action-setup@v6
         with:
           version: ${{ env.PNPM_VERSION }}
-          cache: pnpm
+          cache: true
           cache_dependency_path: frontend/pnpm-lock.yaml
 
       - name: run vulnerability audit
