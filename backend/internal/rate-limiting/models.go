@@ -6,18 +6,17 @@ import (
 )
 
 type RateLimitConfig struct {
-	ctx            context.Context
-	UserIp         string
-	UserIdentity   *string
-	endpointName   string
-	Limit          *int
-	WindowDuration time.Duration
+	Ctx          context.Context
+	UserIp       string
+	UserIdentity *string
+	EndpointName string
+	Limit        *int
 }
 
 type rateLimitingSchema struct {
-	attemptCount int        `redis:"attempt_count"`
-	isBlocked    bool       `redis:"is_blocked"`
-	blockedUntil *time.Time `redis:"blocked_until"`
+	AttemptCount int        `redis:"attempt_count"`
+	IsBlocked    bool       `redis:"is_blocked"`
+	BlockedUntil *time.Time `redis:"blocked_until"`
 }
 
 type RateLimiter struct {

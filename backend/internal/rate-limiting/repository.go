@@ -3,16 +3,17 @@ package rateLimiting
 import (
 	"KanbanMetrics/db"
 	"context"
+	"time"
 )
 
 var (
-	redisClient = db.Redis
+	monthDuration = 30 * 24 * time.Hour
 )
 
 func getDataByKey(ctx context.Context, key string) (*rateLimitingSchema, error) {
-	var schema *rateLimitingSchema
+	schema := &rateLimitingSchema{}
 
-	err := redisClient.HGetAll(ctx, key).Scan(&schema)
+	err := db.Redis.HGetAll(ctx, key).Scan(schema)
 	if err != nil {
 		return nil, err
 	}
@@ -21,16 +22,18 @@ func getDataByKey(ctx context.Context, key string) (*rateLimitingSchema, error) 
 }
 
 func setDataByKey(ctx context.Context, key string, schema rateLimitingSchema) error {
-	_, err := redisClient.HSet(ctx, key, schema).Result()
+	_, err := db.Redis.HSet(ctx, key, schema).Result()
 	if err != nil {
 		return err
 	}
+
+	db.Redis.Expire(ctx, key, monthDuration)
 
 	return nil
 }
 
 func deleteDataByKey(ctx context.Context, key string) error {
-	_, err := redisClient.Del(ctx, key).Result()
+	_, err := db.Redis.Del(ctx, key).Result()
 	if err != nil {
 		return err
 	}

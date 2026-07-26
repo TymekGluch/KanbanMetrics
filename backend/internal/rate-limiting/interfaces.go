@@ -12,7 +12,7 @@ func (config *RateLimitConfig) buildKey() string {
 		optionalUserIdentity = ""
 	}
 
-	return PrefixKey + ":" + config.endpointName + ":" + config.UserIp + optionalUserIdentity + ":" + config.endpointName
+	return PrefixKey + ":" + config.UserIp + optionalUserIdentity + ":" + config.EndpointName
 }
 
 func (config *RateLimitConfig) buildSchema(schema *rateLimitingSchema) rateLimitingSchema {
@@ -25,18 +25,18 @@ func (config *RateLimitConfig) buildSchema(schema *rateLimitingSchema) rateLimit
 
 	count := startAttemptCount
 	if schema != nil {
-		count = schema.attemptCount
+		count = schema.AttemptCount
 	}
 
 	return rateLimitingSchema{
-		attemptCount: count + 1,
-		isBlocked:    count >= limit,
-		blockedUntil: config.getProgressiveWindowExpirationTime(),
+		AttemptCount: count + 1,
+		IsBlocked:    count >= limit,
+		BlockedUntil: config.getProgressiveWindowExpirationTime(),
 	}
 }
 
 func (config *RateLimitConfig) getProgressiveWindowExpirationTime() *time.Time {
-	schema, _ := getDataByKey(config.ctx, config.buildKey())
+	schema, _ := getDataByKey(config.Ctx, config.buildKey())
 	now := time.Now()
 
 	var limit int
@@ -47,16 +47,22 @@ func (config *RateLimitConfig) getProgressiveWindowExpirationTime() *time.Time {
 	}
 
 	switch {
-	case schema.attemptCount == limit:
+	case schema.AttemptCount == limit:
 		time := now.Add(time.Second * 30)
 		return &time
-	case schema.attemptCount == limit+1:
+	case schema.AttemptCount == limit+1:
 		time := now.Add(time.Minute * 1)
 		return &time
-	case schema.attemptCount == limit+2:
+	case schema.AttemptCount == limit+2:
+		return nil
+	case schema.AttemptCount == limit+3:
 		time := now.Add(time.Minute * 5)
 		return &time
-	case schema.attemptCount >= limit+3:
+	case schema.AttemptCount >= limit+4:
+		if (schema.AttemptCount-(limit+4))%2 == 0 {
+			return nil
+		}
+
 		time := now.Add(time.Minute * 10)
 		return &time
 	default:
