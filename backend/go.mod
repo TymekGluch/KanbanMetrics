@@ -1,6 +1,6 @@
 module KanbanMetrics
 
-go 1.26.3
+go 1.26.5
 
 require (
 	github.com/TymekGluch/Morphyxis-mail-service v0.0.0-20260717163241-d9b1e54c11a2
