@@ -5,9 +5,9 @@ import (
 )
 
 const (
-	errorMissingTurnstileToken            = "missing Turnstile token"
-	errorTurnstileVerificationUnavailable = "Turnstile verification unavailable"
-	errorTurnstileVerificationFailed      = "Turnstile verification failed"
+	errorMissingTurnstileToken            = "missing reCaptcha token"
+	errorTurnstileVerificationUnavailable = "reCaptcha verification unavailable"
+	errorTurnstileVerificationFailed      = "reCaptcha verification failed, maybe you are a bot?"
 )
 
 func (client *Client) VerifyMiddleware(ctx fiber.Ctx) error {

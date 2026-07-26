@@ -3,6 +3,7 @@ package auth
 import (
 	accountActivation "KanbanMetrics/internal/account-activation"
 	"KanbanMetrics/internal/appErrors"
+	rateLimiting "KanbanMetrics/internal/rate-limiting"
 	"KanbanMetrics/internal/users"
 	"KanbanMetrics/internal/validation"
 	"log"
@@ -30,6 +31,7 @@ func newHandlers(validatorService *validation.Service, mailClient *morphyxisMail
 // @Param input body RegisterUserInput true "Register payload"
 // @Success 201 {string} string "Created"
 // @Failure 400 {string} string "Invalid request"
+// @Failure 429 {string} string "Too many requests"
 // @Failure 409 {object} appErrors.ValidationErrorResponse "Conflict"
 // @Failure 500 {string} string "Internal server error"
 // @Router /api/auth/register [post]
@@ -44,11 +46,24 @@ func (handler *Handlers) registerHandler(ctx fiber.Ctx) error {
 		return appErrors.Send(ctx, err)
 	}
 
+	rateLimiting := rateLimiting.Init(rateLimiting.RateLimitConfig{
+		Ctx:          ctx.Context(),
+		UserIp:       ctx.IP(),
+		UserIdentity: &input.Email,
+		EndpointName: "api-auth-register",
+	})
+
+	if !rateLimiting.ShouldAllowRequest() {
+		return ctx.Status(fiber.StatusTooManyRequests).SendString("Too many requests. Please try again later.")
+	}
+
 	userID, token, err := RegisterUser(ctx.Context(), input)
 	if err != nil {
 		mappedErr := appErrors.TranslatePostgresDbError(err)
 
 		if mappedErr.Status() == fiber.StatusConflict && mappedErr.Error() == appErrors.ErrEmailAlreadyInUse {
+			rateLimiting.SaveData()
+
 			return ctx.Status(fiber.StatusConflict).JSON(appErrors.ValidationErrorResponse{
 				Message: appErrors.ErrConflict,
 				Fields: []appErrors.FieldError{
@@ -56,6 +71,8 @@ func (handler *Handlers) registerHandler(ctx fiber.Ctx) error {
 				},
 			})
 		}
+
+		rateLimiting.SaveData()
 
 		return mappedErr.FiberNewError()
 	}
@@ -75,6 +92,8 @@ func (handler *Handlers) registerHandler(ctx fiber.Ctx) error {
 		log.Println("Error during sending account confirmation email:", err)
 	}
 
+	rateLimiting.DeleteDataForIp()
+
 	SetAuthCookie(ctx, token)
 
 	return ctx.SendStatus(fiber.StatusCreated)
@@ -89,6 +108,7 @@ func (handler *Handlers) registerHandler(ctx fiber.Ctx) error {
 // @Param input body LoginUserInput true "Login payload"
 // @Success 200 {string} string "OK"
 // @Failure 400 {string} string "Invalid request"
+// @Failure 429 {string} string "Too many requests"
 // @Failure 401 {object} appErrors.ValidationErrorResponse "Unauthorized"
 // @Router /api/auth/login [post]
 func (handler *Handlers) loginHandler(ctx fiber.Ctx) error {
@@ -102,8 +122,21 @@ func (handler *Handlers) loginHandler(ctx fiber.Ctx) error {
 		return appErrors.Send(ctx, err)
 	}
 
+	rateLimiting := rateLimiting.Init(rateLimiting.RateLimitConfig{
+		Ctx:          ctx.Context(),
+		UserIp:       ctx.IP(),
+		UserIdentity: &input.Email,
+		EndpointName: "api-auth-login",
+	})
+
+	if !rateLimiting.ShouldAllowRequest() {
+		return ctx.Status(fiber.StatusTooManyRequests).SendString("Too many requests. Please try again later.")
+	}
+
 	token, err := LoginUser(ctx.Context(), input)
 	if err != nil {
+		rateLimiting.SaveData()
+
 		return ctx.Status(fiber.StatusUnauthorized).JSON(appErrors.ValidationErrorResponse{
 			Message: ErrorUnauthorized,
 			Fields: []appErrors.FieldError{
@@ -111,6 +144,8 @@ func (handler *Handlers) loginHandler(ctx fiber.Ctx) error {
 			},
 		})
 	}
+
+	rateLimiting.DeleteDataForIp()
 
 	SetAuthCookie(ctx, token)
 

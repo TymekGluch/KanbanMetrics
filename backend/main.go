@@ -31,11 +31,12 @@ func main() {
 	config := appConfig.Load()
 
 	validatorService := validation.InitNewService()
+	ctx := context.Background()
 
 	db.ConnectDb()
-	app := fiber.New()
+	db.ConnectRedis(ctx)
 
-	ctx := context.Background()
+	app := fiber.New()
 
 	morphyxisMailClient, err := morphyxisMailClient.New(morphyxisMailClient.Config{
 		BaseURL: os.Getenv("MAIL_SERVICE_DOMAIN"),

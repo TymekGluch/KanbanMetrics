@@ -3,8 +3,11 @@ package accountActivation
 import (
 	"KanbanMetrics/internal/appErrors"
 	globalContext "KanbanMetrics/internal/global-context"
+	rateLimiting "KanbanMetrics/internal/rate-limiting"
 	"KanbanMetrics/internal/users"
 	"KanbanMetrics/internal/validation"
+	"strconv"
+	"time"
 
 	morphyxisMailClient "github.com/TymekGluch/Morphyxis-mail-service/pkg/morphyxis-mail-client"
 	"github.com/gofiber/fiber/v3"
@@ -84,6 +87,7 @@ func (handler *handlers) getAccountActivationCodeHandler(ctx fiber.Ctx) error {
 // @Security CookieAuth
 // @Success 200 {object} ActivationCodeOutput
 // @Failure 401 {string} string "Unauthorized"
+// @Failure 429 {string} string "Too many requests"
 // @Failure 500 {string} string "Internal server error"
 // @Router /api/account-activation-code/generate [post]
 func (handler *handlers) generateAccountActivationCodeHandler(ctx fiber.Ctx) error {
@@ -92,15 +96,28 @@ func (handler *handlers) generateAccountActivationCodeHandler(ctx fiber.Ctx) err
 		return fiber.NewError(fiber.StatusUnauthorized, errorUnauthorized)
 	}
 
-	verificationCode, expirationAt, err := GenerateAccountActivationCode(ctx, int(userID))
-	if err != nil {
-		log.Warnf("Error generating activation code: %v", err)
-		return appErrors.TranslatePostgresDbError(err).FiberNewError()
+	userIdentityStr := strconv.Itoa(int(userID))
+
+	rateLimiting := rateLimiting.Init(rateLimiting.RateLimitConfig{
+		Ctx:          ctx.Context(),
+		UserIp:       ctx.IP(),
+		UserIdentity: &userIdentityStr,
+		EndpointName: "api-account-activation-code-generate",
+	})
+
+	if !rateLimiting.ShouldAllowRequest() {
+		return ctx.Status(fiber.StatusTooManyRequests).SendString("Too many requests. Please try again later.")
 	}
 
 	user, err := users.GetUserById(ctx, int(userID))
 	if err != nil {
 		return fiber.NewError(fiber.StatusInternalServerError, err.Error())
+	}
+
+	verificationCode, expirationAt, err := GenerateAccountActivationCode(ctx, int(userID))
+	if err != nil {
+		log.Warnf("Error generating activation code: %v", err)
+		return appErrors.TranslatePostgresDbError(err).FiberNewError()
 	}
 
 	if err := (*handler.mailClient).SendAccountConfirmationEmail(ctx, morphyxisMailClient.SendAccountConfirmationEmailInput{
@@ -112,6 +129,8 @@ func (handler *handlers) generateAccountActivationCodeHandler(ctx fiber.Ctx) err
 	}); err != nil {
 		log.Warnf(warnSendingAccountVerifiedEmail+" %v", err)
 	}
+
+	rateLimiting.BlockForDuration(time.Minute)
 
 	return ctx.Status(fiber.StatusOK).JSON(ActivationCodeOutput{
 		ExpiresAt: expirationAt,
@@ -129,6 +148,7 @@ func (handler *handlers) generateAccountActivationCodeHandler(ctx fiber.Ctx) err
 // @Failure 400 {string} string "Invalid request body"
 // @Failure 401 {string} string "Unauthorized"
 // @Failure 404 {string} string notFoundActivationCodeError
+// @Failure 429 {string} string "Too many requests"
 // @Failure 500 {string} string "Internal server error"
 // @Router /api/account-activation-code/activate [post]
 func (handler *handlers) activateAccountHandler(ctx fiber.Ctx) error {
@@ -147,21 +167,42 @@ func (handler *handlers) activateAccountHandler(ctx fiber.Ctx) error {
 		return appErrors.Send(ctx, err)
 	}
 
+	userIdentityString := strconv.Itoa(int(userID))
+
+	rateLimiting := rateLimiting.Init(rateLimiting.RateLimitConfig{
+		Ctx:          ctx.Context(),
+		UserIp:       ctx.IP(),
+		UserIdentity: &userIdentityString,
+		EndpointName: "api-account-activation-code-activate",
+	})
+
+	if !rateLimiting.ShouldAllowRequest() {
+		return ctx.Status(fiber.StatusTooManyRequests).SendString("Too many requests. Please try again later.")
+	}
+
 	accountActivationData, err := GetAccountActivationCodeByUserId(ctx, int(userID))
 	if err != nil {
 		if appErrors.TranslatePostgresDbError(err).FiberNewError().Message == appErrors.ErrNotFound {
+			rateLimiting.SaveData()
+
 			return fiber.NewError(fiber.StatusNotFound, notFoundActivationCodeError)
 		}
+
+		rateLimiting.SaveData()
 
 		return appErrors.TranslatePostgresDbError(err).FiberNewError()
 	}
 
 	if accountActivationData.IsUsed {
+		rateLimiting.SaveData()
+
 		return fiber.NewError(fiber.StatusBadRequest, errorCodeAlreadyUsed)
 	}
 
 	isValidAndNotExpired, errMessage := isActivationCodeCorrectAndNotExpired(input.Code, accountActivationData.AccountActivationCode, accountActivationData.ExpiresAt)
 	if errMessage != "" {
+		rateLimiting.SaveData()
+
 		return fiber.NewError(fiber.StatusInternalServerError, errMessage)
 	}
 
@@ -170,8 +211,12 @@ func (handler *handlers) activateAccountHandler(ctx fiber.Ctx) error {
 		IsActive:   &isValidAndNotExpired,
 		IsVerified: &isValidAndNotExpired,
 	}, false); err != nil {
+		rateLimiting.SaveData()
+
 		return appErrors.TranslatePostgresDbError(err).FiberNewError()
 	}
+
+	rateLimiting.DeleteDataForIp()
 
 	user, err := users.GetUserById(ctx, int(userID))
 	if err != nil {

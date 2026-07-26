@@ -13,7 +13,8 @@ import { ClockSvg } from "@/assets/ClockSvg";
 import { getRemainingTimeOfLastUpdate } from "./UsersWorkspaces.utils";
 
 export function UsersWorkspaces() {
-  const { workspaces: unresolvedWorkspaces } = React.useContext(WorkspacesContext);
+  const { workspaces: unresolvedWorkspaces, setCurrentWorkspace } =
+    React.useContext(WorkspacesContext);
   const workspaces = unresolvedWorkspaces?.items ?? [];
 
   return (
@@ -72,6 +73,7 @@ export function UsersWorkspaces() {
 
                     <Link.AsNextLink
                       href={`/dashboard/workspaces/${workspace.id}`}
+                      onClick={() => setCurrentWorkspace?.(workspace)}
                       className={styles.usersWorkspaces_listItemButton}
                       marginLeft="auto"
                     >

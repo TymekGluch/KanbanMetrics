@@ -34,9 +34,9 @@ func defaultHTTPConfig() fiber.Handler {
 	}
 
 	return cors.New(cors.Config{
-		AllowOrigins: allowedOrigins,
-		AllowHeaders: allowedHeaders,
-		AllowMethods: parseAllowedHeaders(defaultMethods),
+		AllowOrigins:     allowedOrigins,
+		AllowHeaders:     allowedHeaders,
+		AllowMethods:     parseAllowedHeaders(defaultMethods),
 		AllowCredentials: true,
 	})
 }
